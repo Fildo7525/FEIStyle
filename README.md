@@ -156,11 +156,25 @@ texcount -inc example.tex
 
 If you installed MacTex distribution you also have application called TeX Live Utility (it is a front-end for `pkmgr` program) which is used to upgrade all TeX related packages, open it from time to time and do a full update.
 
-## Installation on Ubuntu / Fedora using eitl
+## Installation on Ubuntu
 
->**Note**: biblatex-iso690 is included in 2016 build of texlive
+### For newer versions of texlive type
 
+[Here](https://linuxconfig.org/how-to-install-latex-on-ubuntu-20-04-focal-fossa-linux) you can see detailed info about downloading latex on ubuntu.
+
+#### TL;DR
+
+ There are more types of download. They differ in the amount of contents you would download.
+ I recon the texlive-latex-recommended is recommended to download and then add the missing packages.
+ Worth mentioning is that the full version will download all the packages (also those like Japanese or Chinese language support).
+
+  ```
+   $ sudo apt install texlive-latex-recomended latexmk biber texlive-lang-czechslovaku texlive-bibertex-extra
+  ```
+
+ ### Older versions using eitl (works for Fedora too)
 Do following steps only if you have texlive 2015 or less
+>**Note**: biblatex-iso690 is included in 2016 build of texlive
 
  - download install script
   
@@ -177,8 +191,9 @@ Do following steps only if you have texlive 2015 or less
  - install TexLive
  
    ```
-   $ ./eitl /usr/share/texlive
+   $ ./eitl.sh /usr/share/texlive
    ```
+
 
 # TODO
 
