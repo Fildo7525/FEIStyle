@@ -1,6 +1,45 @@
-\section{Ukážka glossaries}
-\noindent Verzia FEIstyle 1.5 používa glossary\footnote{\url{https://www.ctan.org/pkg/glossaries?lang=en}} balík.
-\acrfull{cdma} je dlhá skratka naopak \acrshort{gsm} je skratka v krátkej forme.
+\section{ROS}
+\noindent Robotický operačný systém (\acrlong{ROS}) je súbor voľne dostupných softvérových knižníc a nástrojov, ktoré nám vytvárajú vhodné podmienky na písanie aplikácií pre mnohé druhy robotov. ROS má dve verzie. Vo všeobecnosti sa stretneme s tým, že pod názvom ROS1 alebo ROS sa myslí ROS verzie 1. Pod názvom ROS2 sa myslí ROS verzie 2. Aby nenastali nejasnosti budeme v tomto dokumente označovať ROS verzie 1 ako ROS1 a ROS verzie 2 ako ROS2 V prípade, keď budme hovoriť o spoločných vlastnostiach a funkcionalitách, ROS1 a ROS2 budeme označovať dokopy ako ROS.
+
+\subsection{ROS}
+
+\noindent Komunikácia v ROSe je zabezpečená cez IPC (\acrlong{IPC}) a TCP/IP komunikáciou pomocou troch zakladacích metód:
+topiky (Topics), služby (Service)a akcie (Actions)
+
+\subsubsection{Topiky}
+
+\textbf {Topiky} (IPC) sú najjednoduchší spôsob komunikácie. Vieme si ich prirovnať k UDP/IP protokolu. Definujeme si jedného poskytovateľa (publisher) a jedného príjemcu (subscriber). Medzi týmito dvoma účastníkmi sa následne posielajú správy (messages), ktoré sme si dopredu definovali.
+
+\subsubsection{Služby}
+
+\textbf {Služby} (TPC/IP) nám poskytujú rovnaký spôsob komunikácie ako topiky, až na to, že sa správy medzi servisom a klientom posielajú cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerými zariadeniami.
+
+\subsubsection{Akcie}
+
+\textbf {Akcie} (TCP/IP) su najzložitejším spôsobom komunikácie. Sú založené na službách a máju 3 stavy. Najprv pošle klient serveru akú akciu má vykonať, server mu potvrdí, že túto požiadavku dostal. Server začne následne vykonávať danú akciu a posielať klientovi priebežné správy o priebehu. Keď server skončí pošle klientovi výsledok akcie a klient mu obratom potvrdí obdržanie výsledku.
+
+\subsection{ROS1}
+
+\noindent ROS bol prvýkrát vydaný v roku 2010. Ide o softvér, ktorý sa začal vyvíjať so zámerom zjednodušiť programovanie a ovládanie robotov. Od doby, kedy vznikol prešiel mnohými verziami a úpravami. Jeho neoddeliteľnou súčasťou sú štrukturalizovanie programu do uzlov (nodov), komunikácia medzi uzlami, podpora viacerých programovacích jazykov ako sú C++, Python alebo Java a vytváranie balíčkov dostupných širokej verejnosti.
+
+Štrukturalizovanie ROS1 je spravené čo najstabilnejším spôsobom. Na počiatku programu musíme spustiť hlavný program (roscore), ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená prostredníctvom prepojenia uzlov cez LAN. Uzly môžu byť spustené aj na iných zariadeniach. Roscore ďalej poskytuje parametre jednotlivým uzlom z parametrového servera. Bez roscor-u by ROS1 nebol spustiteľný.
+
+Aj napriek mnohým výhodám má ROS aj nedostatky, ktoré sa ťahajú už od jeho počiatkov. Sú to napríklad:
+\begin{itemize}
+ \item Nepostačujúca distribuovanosť systému. Ak prestane fungovať roscore, prestane ísť celý program.
+ \item ROS1 je písaný v starom štandarde. Ráta s tým, že aj programátor bude v tom štandarde písať.
+ \item Kvalita komunikácie sa nedá ovplyvniť
+\end{itemize}
+
+Kvôli takýmto problémom sa začala vyvíjať nová verzia ROSu, ROS2. V roku 2025 sa skončí podpora poslednej distribúcie ROSu menom Noetic. Preto je odporúčané začínať nové projekty v ROS2.
+
+\subsection{ROS2}
+
+\noindent Ako už bolo spomenuté zámerom vývoja ROS2 je zlepšenie funkcionality a bezpečnosti ROSu. ROS2 nie je spätne kompatibilný. Podstata toho, ako sú zoskupované uzly a ako spolu komunikujú je diametrálne odlišná od ROS1. Z tohto dôvodu bol vyvinutý takzvaný rosbridge, ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to ale trvalé riešenie. Odporučané je nástroj využívať a počas toho prepisovať kód z verzie 1 do verzie 2. Komunikácia prebieha \newline v ROS2 rovnakým spôsobom ako v ROS1. Pomocou topikou, služieb a akcií.
+
+Pri spúštaní programov už nie je potrebné mať spustený roscore. Preto je štruktúra vykonávania uzlov plne decentralizovaná. Ak teda spadne jeden proces druhé budú fungovať naďalej. V ROS1 sme vedeli ovplyvniť počet uchovaných správ pokým nepretiekol zásobník. V ROS2 vieme zmeniť kvalitu komunikácie. Vieme si zadefinovať, či by sme radšej stratili niektoré správy, ale dostali by sme všetky rýchlo. Alebo aby sa zabezpečilo, že dostaneme všetky správy, ktoré boli vyslané, aj keby to trvalo dlhšie. Dokonca si vieme zadefinovať maximálny čas, ktorý budeme čakať na ďalšiu správu.
+
+Pri všetkých týchto zlepšeniach nemôžeme zabudnúť aj nasledovný nedostatok. Keďže ROS2 je mladší ako ROS1 nájdeme k nemu menej dokumentácie. Pridaním veľkého počtu funkcionalít začal vznikať problém pre začiatočníkov s porozumením niektorých kódov. Avšak tento problém je nedostatkom, ktorý časom zanikne.
 
 \subsection{Lorem Ipsum}
 Tento text bol prevzaty zo stranky \url{www.lipsum.com} \cite{lipsum}, preto ho treba riadne odcitovat.
@@ -35,11 +74,11 @@ zistime, ze tento \LaTeX template funguje, dokonca mozeme vkladat aj inline rovn
 % \end{equation}
 
 \section{Možnosti anonymizácie}
-\noindent Anonymizácia znamená zmena alebo úprava údajov tak, aby sa podľa nich nedala jednoznačne určiť osoba, ktorej tieto údaje patria \cite{t01}. Existuje niekoľko spôsobov, ktorými môžeme dosiahnuť rôznu úroveň anonymizácie na internete: od mazania cookies súborov po ukončení prehliadania webových stránok až po používanie operačných systémov, ktoré sú na anonymite založené; od bezplatných možností až po komerčné verzie.  
+\noindent Anonymizácia znamená zmena alebo úprava údajov tak, aby sa podľa nich nedala jednoznačne určiť osoba, ktorej tieto údaje patria \cite{t01}. Existuje niekoľko spôsobov, ktorými môžeme dosiahnuť rôznu úroveň anonymizácie na internete: od mazania cookies súborov po ukončení prehliadania webových stránok až po používanie operačných systémov, ktoré sú na anonymite založené; od bezplatných možností až po komerčné verzie.
 \newline Nasleduje priblíženie niektorých možnosti anonymizácie.
 
 \subsection{Súkromné prehliadanie}
-\noindent Najpoužívanejšie internetové prehliadače súčasnosti majú v sebe zabudovanú funkcionalitu, ktorá dokáže čiastočne anonymizovať prístup na internet. Táto funkcionalita blokuje ukladanie navštívených stránok do histórie a nezaznamenáva súbory, ktoré sa stiahnu z~internetu. \acrshort{sw} a \acrlong{hw} sú skratky.
+\noindent Najpoužívanejšie internetové prehliadače súčasnosti majú v sebe zabudovanú funkcionalitu, ktorá dokáže čiastočne anonymizovať prístup na internet. Táto funkcionalita blokuje ukladanie navštívených stránok do histórie a nezaznamenáva súbory, ktoré sa stiahnu z~internetu. sw a hw sú skratky.
 
 \begin{table}[!htbp]
 \caption{Moduly a ich funkcie pri anonymizácii}
@@ -49,7 +88,7 @@ zistime, ze tento \LaTeX template funguje, dokonca mozeme vkladat aj inline rovn
 & \multicolumn{14}{c}%
 	 {\textbf{Funkcia}}\\ \hline
 &&&& & &\multicolumn{8}{c}%
-	 {Modifikácia}\\ 
+	 {Modifikácia}\\
 \textbf{Modul} &\begin{sideways} zobrazenie hlavičky \end{sideways} &\begin{sideways} blokovanie skriptov \end{sideways} &\begin{sideways} zmena IP \end{sideways} & \begin{sideways} zmena lokalizácie \end{sideways} & \begin{sideways} zmazanie/blokovanie cookies \end{sideways} & \begin{sideways} blokovanie trackerov \end{sideways}  & \begin{sideways} popis \end{sideways} & \begin{sideways}používateľský agent\end{sideways} & \begin{sideways} kódové označenie prehliadača \end{sideways} & \begin{sideways} názov prehliadača \end{sideways} & \begin{sideways} verzia prehliadača \end{sideways} & \begin{sideways} platforma \end{sideways} & \begin{sideways} výrobca prehliadača \end{sideways} & \begin{sideways} označenie výrobcu prehliadača \end{sideways} \\ \hline
 User agent switcher & & & & & &  & X & X & X & X & X & X & X & X  \\ \hline
 Ghostery &  && & & X & X &  &  & & & & & & \\  \hline
@@ -89,7 +128,7 @@ Easy hide your IP and surf anonymously & & & X & X& &  &  & X & X & X & X &  &  
   \includegraphics[width=8cm]{img/vzhlad.png}
   \caption{Predpokladaný vzhľad rozšírenia}
   \label{vzhladobr}
-\end{figure}	 
+\end{figure}
 \noindent Dôležitou požiadavkou kladenou na rozšírenie bolo príjemné používateľské rozhranie.\cite{t00} Z~tohto dôvodu malo rozšírenie obsahovať zoznam modifikovaných vlastností a tlačidlo pre prístup k nastaveniam rozšírenia v jednoduchej a praktickej forme. Predpokladaný vzhľad je zobrazený na obrázku č. \ref{vzhladobr}.
 
 \begin{algorithm}
@@ -111,8 +150,8 @@ Easy hide your IP and surf anonymously & & & X & X& &  &  & X & X & X & X &  &  
  \COMMENT{<text>}
  \AND, \OR, \XOR, \NOT, \TO, \TRUE, \FALSE
 \end{algorithmic}
-\caption{Ukážka príkazov pre algorithmic}  
-\label{alg:preview}  
+\caption{Ukážka príkazov pre algorithmic}
+\label{alg:preview}
 \end{algorithm}
 
 \begin{lstlisting}[
