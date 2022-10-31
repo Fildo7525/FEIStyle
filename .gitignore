@@ -14,3 +14,9 @@
 *.out
 *.xml
 *.toc
+
+example_URK.acn
+example_URK.glo
+example_URK.ist
+example_URK.lol
+example_URK.synctex.gz
