@@ -15,10 +15,24 @@ ROS1 a ROS2 budeme označovať dokopy ako ROS.
 \textbf {Topiky} (IPC) sú najjednoduchší spôsob komunikácie. Vieme si ich prirovnať k UDP/IP protokolu. Definujeme si jedného poskytovateľa (publisher)
 a jedného príjemcu (subscriber). Medzi týmito dvoma účastníkmi sa následne posielajú správy (messages), ktoré sme si dopredu definovali.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=8cm]{img/topicsExplanation.png}
+	\caption{Vizualizacia topicu v ROSe \cite{RosDoc}}
+	\label{topics}
+\end{figure}
+
 \subsubsection{Služby}
 
 \textbf {Služby} (TCP/IP) nám poskytujú rovnaký spôsob komunikácie ako topiky, až na to, že sa správy medzi servisom a klientom posielajú
 cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerými zariadeniami.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=8cm]{img/serviceExplanation.png}
+	\caption{Vizualizacia sluzby v ROSe \cite{RosDoc}}
+	\label{topics}
+\end{figure}
 
 \subsubsection{Akcie}
 
@@ -26,48 +40,81 @@ cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerý
 má vykonať, server mu potvrdí, že túto požiadavku dostal. Server začne následne vykonávať danú akciu a posielať klientovi priebežné správy o priebehu.
 Keď server skončí pošle klientovi výsledok akcie a klient mu obratom potvrdí obdržanie výsledku.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=8cm]{img/actionExplanation.png}
+	\caption{Vizualizacia akcie v ROSe \cite{RosDoc}}
+	\label{topics}
+\end{figure}
+
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=15cm]{img/strukturaRos1Ros2.png}
-    \caption{Porovnanie štruktúr ROS1 a ROS2 \cite{comparison}}
+	\caption{Porovnanie štruktúr ROS1 a ROS2 \cite{comparison}}
 	\label{struktury}
 \end{figure}
+
+\pagebreak
 
 \subsection{ROS1}
 
 \noindent ROS bol prvýkrát vydaný v roku 2007. Ide o softvér, ktorý sa začal vyvíjať so zámerom zjednodušiť programovanie a ovládanie robotov. Od doby,
 kedy vznikol prešiel mnohými verziami a úpravami. Jeho neoddeliteľnou súčasťou sú štrukturalizovanie programu do uzlov (nodov), komunikácia medzi uzlami,
-podpora viacerých programovacích jazykov ako sú C alebo C++ a vytváranie balíčkov dostupných širokej verejnosti.
+podpora viacerých programovacích jazykov ako sú C, C++ alebo Python a vytváranie balíčkov dostupných širokej verejnosti.
 
 Štrukturalizovanie základov ROS1 je spravené monoliticky čo najstabilnejším spôsobom. Na počiatku programu musíme spustiť hlavný program (roscore),
-ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená prostredníctvom prepojenia uzlov cez LAN. Uzly môžu byť
-spustené aj na iných zariadeniach. Roscore ďalej poskytuje parametre jednotlivým uzlom z parametrového servera. Bez roscor-u by ROS1 nebol spustiteľný.
+ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená prostredníctvom prepojenia uzlov cez LAN/WLAN alebo IPC komunikaciu.
+Uzly môžu byť spustené aj na iných zariadeniach. Roscore ďalej poskytuje parametre jednotlivým uzlom z parametrového servera. Jeho najväčšou úlohou je zabezpečenie
+komunikácie uzlov v programe. Nezáleží na tom, či sú uzly na jednom alebo viacerých zariadeniach.
+
+\pagebreak
 
 Aj napriek mnohým výhodám má ROS aj nedostatky, ktoré sa ťahajú už od jeho počiatkov. Sú to napríklad:
 \begin{itemize}
- \item Nepostačujúca distribuovanosť systému. Ak prestane fungovať roscore, prestane ísť celý program.
- \item ROS1 je písaný v starom štandarde. Ráta s tým, že aj programátor bude v tom štandarde písať.
- \item Kvalita komunikácie sa nedá ovplyvniť
+	\item Nepostačujúca distribuovanosť systému. Ak prestane fungovať roscore, prestane ísť celý program,
+	\item ROS1 je písaný v starom štandarde a to vnáša do programu technologický dlh a bezpečnostné riziká,
+	\item Kvalita komunikácie sa nedá ovplyvniť
 \end{itemize}
 
-Kvôli takýmto problémom sa začala vyvíjať nová verzia ROSu, ROS2. V roku 2025 sa skončí podpora poslednej distribúcie ROSu menom Noetic.
+Kvôli takýmto problémom sa začala vyvíjať nová verzia ROSu, ROS2. V roku 2025 sa skončí podpora poslednej distribúcie ROS1 menom Noetic.
 Preto je odporúčané začínať nové projekty v ROS2.
 
 \subsection{ROS2}
 
-\noindent Ako už bolo spomenuté zámerom vývoja ROS2 je zlepšenie funkcionality a bezpečnosti ROSu. ROS2 nie je spätne kompatibilný.
+Ako už bolo spomenuté zámerom vývoja ROS2 je zlepšenie funkcionality a bezpečnosti systému. ROS2 nie je spätne kompatibilný.
 Podstata toho, ako sú zoskupované uzly a ako spolu komunikujú je diametrálne odlišná od ROS1. Z tohto dôvodu bol vyvinutý takzvaný rosbridge,
-ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to ale trvalé riešenie. Odporučané je nástroj využívať a počas toho prepisovať kód
-z verzie 1 do verzie 2. Komunikácia prebieha \newline v ROS2 rovnakým spôsobom ako v ROS1. Pomocou topikou, služieb a akcií.
+ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to ale trvalé riešenie. Odporúčané je nástroj využívať a počas toho prepisovať kód
+z verzie 1 do verzie 2. Komunikácia prebieha \newline v ROS2 rovnakým spôsobom ako v ROS1. Pomocou topikov, služieb a akcií.
 
-Pri spúštaní programov už nie je potrebné mať spustený roscore. Preto je štruktúra vykonávania uzlov plne decentralizovaná. Ak teda spadne
-jeden proces druhé budú fungovať naďalej. V ROS1 sme vedeli ovplyvniť počet uchovaných správ pokým nepretiekol zásobník. V ROS2 vieme zmeniť
-kvalitu komunikácie. Vieme si zadefinovať, či by sme radšej stratili niektoré správy, ale dostali by sme všetky rýchlo. Alebo aby sa zabezpečilo,
+Táto podobnosť končí na najvyššej vrstve. Ako sme videli na Obr.~\ref{struktury}. Štruktúra ROS2 je rozdelená do viacerých vrstiev.
+Najdôležitejšie je pre nás vedieť, že komunikácia je spracovávaná modelom DDS (\acrlong{DDS}). Tento model zlepšuje výkon, stabilitu
+a bezpečnosť modelu oproti ROS1. Je založený na TCP/UDP protokole. Z obrázku vyčítame aj lepšie rozloženie modulov. To zabezpečuje jednoduchšie
+prispôsobovanie systému pre nové funkcionality. Podpora operačných systémov sa v ROS2 rozšírila aj o Windows, Mac OS či operačné systémy reálneho času.
+Operačne systémy nie sú jediné rozšírenie ohľadom kompatibility. S ROS2 je možné programovať už aj v Jave či Matlabe.
+Tvorcovia mysleli aj na programátorov a pridali rozšírené možnosti testovania, debugovania či nasadzovania programu do reálneho využitia.
+
+ROS2 ma necentralizovanú štruktúru, a preto pri spúšťaní programov už nie je potrebné mať spustený roscore. Ak teda spadne
+jeden proces druhé budú fungovať naďalej. V ROS1 sme vedeli ovplyvniť počet uchovaných správ pokým nepretiekol zásobník, ktorý ich uchovával na neskoršie použitie.
+V ROS2 vieme zmeniť kvalitu komunikácie. Vieme si zadefinovať, či by sme radšej stratili niektoré správy, ale dostali by sme všetky rýchlo. Alebo aby sa zabezpečilo,
 že dostaneme všetky správy, ktoré boli vyslané, aj keby to trvalo dlhšie. Dokonca si vieme zadefinovať maximálny čas, ktorý budeme čakať na ďalšiu správu.
 
 Pri všetkých týchto zlepšeniach nemôžeme zabudnúť aj nasledovný nedostatok. Keďže ROS2 je mladší ako ROS1 nájdeme k nemu menej dokumentácie.
 Pridaním veľkého počtu funkcionalít začal vznikať problém pre začiatočníkov s porozumením niektorých kódov. Avšak tento problém je nedostatkom,
-ktorý časom zanikne.
+ktorý časom zanikne. V čase písania tejto prace pribudli na stránke dokumentácie 2 strany popisujúce pokročilejšie Funkcionality druhej verzie ROSu.
+
+\subsection{Rozdiely v kóde}
+
+Čo je určite dobrou správou pre všetkých programátorov, ktorí robili v prvej verzii a sú zvyknutí na jej štandardy a funkcionalitu sa nemajú čoho obávať.
+Prechod z ROS1 na ROS2 je dosť priamočiari. Čo sa zmenilo je spôsob písania kódu, ale koncepty funkcionality ostali všetky rovnaké. V tejto sekcii nebudeme
+písať konkrétne kódy, budeme len opisovať čo je podobné a čo zasa rozdielne medzi verziami spomínaného systému.
+
+\begin{itemize}
+	\item \textbf{Štandard} \newline
+Pokým ROS1 bola písaná v štandarde C++98 tak ROS2 je už písaná v novom štandarde. To zahŕňa inicializovanie templatov a ich použivanie. Definície a deklarácie
+templatov sú na knihu samú o sebe, preto do detailov nebudeme zachádzať. Stačí nám vedieť, ako ich inicializovať. V prvej verzii sme definovali publishera všeobecného
+a definovali sme mu cez aký topic má posielať spravy. V druhej verzii naväzujeme publishera na špecifický tip správy akú posielame. Nemôže sa teda stať, že takýto
+program by sme skompilovali a následne keď ho spustíme tak by spadol.
+\end{itemize}
 
 \subsection{Lorem Ipsum}
 Tento text bol prevzaty zo stranky \url{www.lipsum.com} \cite{lipsum}, preto ho treba riadne odcitovat.
@@ -84,21 +131,21 @@ Citujem všetky zdroje v \textbf{bibliography.bib}, \cite{t00, t01, t02, t03, kn
 \section{Rovnice}
 Pytagorova veta je definovana vztahom:
 \begin{equation}
-    a^2 + b^2 = c^2
-    \label{eq:pyth}
+	a^2 + b^2 = c^2
+	\label{eq:pyth}
 \end{equation}
 Dosadenim \eqref{eq:pyth} do linearneho modelu
 \begin{align}
-    \dot{\mathbf{x}} &= \mathbf{A} \mathbf{x} + \mathbf{B} \mathbf{u} \\
-    \mathbf{y} &= \mathbf{C} \mathbf{x} + \mathbf{D} \mathbf{u}
-    \label{eq:model}
+	\dot{\mathbf{x}} &= \mathbf{A} \mathbf{x} + \mathbf{B} \mathbf{u} \\
+	\mathbf{y} &= \mathbf{C} \mathbf{x} + \mathbf{D} \mathbf{u}
+	\label{eq:model}
 \end{align}
 zistime, ze tento \LaTeX template funguje, dokonca mozeme vkladat aj inline rovnice $D = b^2 - 4ac$.
 
 % \subsection{Podsekcia}
 % \begin{equation}
-%     E = m c^2
-%     \label{eq:emc2}
+%	 E = m c^2
+%	 \label{eq:emc2}
 % \end{equation}
 
 \section{Možnosti anonymizácie}
@@ -126,15 +173,15 @@ Modify headers & & &  &  & X &  &  & X &  &  &  & & &  \\  \hline
 Request policy & & &  &  & & X  &  &  &  &  &  & & &   \\  \hline
 Live HTTP headers & X& &  &  & &  &  &  &  &  &  & & &   \\  \hline
 User agent awitcher for chrome & & &  &  & &  & X & X &  &  &  & & &   \\  \hline
-Header hacker & & &  &  & &  & X & X & X & X & X & X & X & X    \\  \hline
-Mod header & & &  &  & &  & X & X & X & X & X & X & X & X    \\  \hline
-Script no & &X &  &  & &  &  &  &  &  &  &  &  &     \\  \hline
-No script & &X &  &  & &  &  &  &  &  &  &  &  &     \\  \hline
-Proxify it & & &X  & X & &  &  &  &  &  &  &  &  &     \\  \hline
-I'm not here & & &  & X & &  &  &  &  &  &  &  &  &     \\  \hline
-Get anonymous personal edition & &X &X &X &X&X &  &  &  &  &  &  &  &     \\  \hline
-Anonymous browsing toolbar & & & X & X & &  &  &  &  &  &  &  &  &     \\  \hline
-Easy hide your IP and surf anonymously & & & X & X& &  &  & X & X & X & X &  &  &     \\  \hline
+Header hacker & & &  &  & &  & X & X & X & X & X & X & X & X	\\  \hline
+Mod header & & &  &  & &  & X & X & X & X & X & X & X & X	\\  \hline
+Script no & &X &  &  & &  &  &  &  &  &  &  &  &	 \\  \hline
+No script & &X &  &  & &  &  &  &  &  &  &  &  &	 \\  \hline
+Proxify it & & &X  & X & &  &  &  &  &  &  &  &  &	 \\  \hline
+I'm not here & & &  & X & &  &  &  &  &  &  &  &  &	 \\  \hline
+Get anonymous personal edition & &X &X &X &X&X &  &  &  &  &  &  &  &	 \\  \hline
+Anonymous browsing toolbar & & & X & X & &  &  &  &  &  &  &  &  &	 \\  \hline
+Easy hide your IP and surf anonymously & & & X & X& &  &  & X & X & X & X &  &  &	 \\  \hline
 \end{tabular}
 \end{center}
 \end{table}
@@ -152,52 +199,52 @@ Easy hide your IP and surf anonymously & & & X & X& &  &  & X & X & X & X &  &  
 \subsection{Vzhľad}
 \noindent Dôležitou požiadavkou kladenou na rozšírenie bolo príjemné používateľské rozhranie. Z~tohto dôvodu malo rozšírenie obsahovať zoznam modifikovaných vlastností a tlačidlo pre prístup k nastaveniam rozšírenia v jednoduchej a praktickej forme. Predpokladaný vzhľad je zobrazený na obrázku č. \ref{vzhladobr}.
 \begin{figure}[!htbp]
-  \centering
-  \includegraphics[width=8cm]{img/vzhlad.png}
-  \caption{Predpokladaný vzhľad rozšírenia}
-  \label{vzhladobr}
+	\centering
+	\includegraphics[width=8cm]{img/vzhlad.png}
+	\caption{Predpokladaný vzhľad rozšírenia}
+	\label{vzhladobr}
 \end{figure}
 \noindent Dôležitou požiadavkou kladenou na rozšírenie bolo príjemné používateľské rozhranie.\cite{t00} Z~tohto dôvodu malo rozšírenie obsahovať zoznam modifikovaných vlastností a tlačidlo pre prístup k nastaveniam rozšírenia v jednoduchej a praktickej forme. Predpokladaný vzhľad je zobrazený na obrázku č. \ref{vzhladobr}.
 
 \begin{algorithm}
 \scriptsize
 \begin{algorithmic}
- \STATE <text>
- \IF{<condition>} \STATE {<text>} \ELSE \STATE{<text>} \ENDIF
- \IF{<condition>} \STATE {<text>} \ELSIF{<condition>} \STATE{<text>} \ENDIF
- \FOR{<condition>} \STATE {<text>} \ENDFOR
- \FOR{<condition> \TO <condition> } \STATE {<text>} \ENDFOR
- \FORALL{<condition>} \STATE{<text>} \ENDFOR
- \WHILE{<condition>} \STATE{<text>} \ENDWHILE
- \REPEAT \STATE{<text>} \UNTIL{<condition>}
- \LOOP \STATE{<text>} \ENDLOOP
- \REQUIRE <text>
- \ENSURE <text>
- \RETURN <text>
- \PRINT <text>
- \COMMENT{<text>}
- \AND, \OR, \XOR, \NOT, \TO, \TRUE, \FALSE
+	\STATE <text>
+	\IF{<condition>} \STATE {<text>} \ELSE \STATE{<text>} \ENDIF
+	\IF{<condition>} \STATE {<text>} \ELSIF{<condition>} \STATE{<text>} \ENDIF
+	\FOR{<condition>} \STATE {<text>} \ENDFOR
+	\FOR{<condition> \TO <condition> } \STATE {<text>} \ENDFOR
+	\FORALL{<condition>} \STATE{<text>} \ENDFOR
+	\WHILE{<condition>} \STATE{<text>} \ENDWHILE
+	\REPEAT \STATE{<text>} \UNTIL{<condition>}
+	\LOOP \STATE{<text>} \ENDLOOP
+	\REQUIRE <text>
+	\ENSURE <text>
+	\RETURN <text>
+	\PRINT <text>
+	\COMMENT{<text>}
+	\AND, \OR, \XOR, \NOT, \TO, \TRUE, \FALSE
 \end{algorithmic}
 \caption{Ukážka príkazov pre algorithmic}
 \label{alg:preview}
 \end{algorithm}
 
 \begin{lstlisting}[
-  caption={Ukážka algoritmu},
-  label={lst:main-c},
-  language=c
+	caption={Ukážka algoritmu},
+	label={lst:main-c},
+	language=c
 ]
 /* Hello World program */
 
 #include<stdio.h>
 
 struct cpu_info {
-    long unsigned utime, ntime, stime, itime;
-    long unsigned iowtime, irqtime, sirqtime;
+	long unsigned utime, ntime, stime, itime;
+	long unsigned iowtime, irqtime, sirqtime;
 };
 
 main()
 {
-    printf("Hello World");
+	printf("Hello World");
 }
 \end{lstlisting}
