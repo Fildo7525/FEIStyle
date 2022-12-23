@@ -1,28 +1,47 @@
 \section{ROS}
-\noindent Robotický operačný systém (\acrlong{ROS}) je súbor voľne dostupných softvérových knižníc a nástrojov, ktoré nám vytvárajú vhodné podmienky na písanie aplikácií pre mnohé druhy robotov. ROS má dve verzie. Vo všeobecnosti sa stretneme s tým, že pod názvom ROS1 alebo ROS sa myslí ROS verzie 1. Pod názvom ROS2 sa myslí ROS verzie 2. Aby nenastali nejasnosti budeme v tomto dokumente označovať ROS verzie 1 ako ROS1 a ROS verzie 2 ako ROS2 V prípade, keď budme hovoriť o spoločných vlastnostiach a funkcionalitách, ROS1 a ROS2 budeme označovať dokopy ako ROS.
+\noindent Robotický operačný systém (\acrlong{ROS}) je súbor voľne dostupných softvérových knižníc a nástrojov, ktoré nám vytvárajú
+vhodné podmienky na písanie aplikácií pre mnohé druhy robotov. ROS má dve verzie. Vo všeobecnosti sa stretneme s tým, že pod názvom
+ROS1 alebo ROS sa myslí ROS verzie 1. Pod názvom ROS2 sa myslí ROS verzie 2. Aby nenastali nejasnosti budeme v tomto dokumente
+označovať ROS verzie 1 ako ROS1 a ROS verzie 2 ako ROS2 V prípade, keď budme hovoriť o spoločných vlastnostiach a funkcionalitách,
+ROS1 a ROS2 budeme označovať dokopy ako ROS.
 
 \subsection{ROS}
 
-\noindent Komunikácia v ROSe je zabezpečená cez IPC (\acrlong{IPC}) a TCP/IP komunikáciou pomocou troch zakladacích metód:
-topiky (Topics), služby (Service)a akcie (Actions)
+\noindent Komunikácia v ROSe je zabezpečená cez IPC (\acrlong{IPC}), TCP/IP UDP/IP komunikáciou pomocou troch zakladacích metód:
+\textbf{topiky} (Topics), \textbf{služby} (Service) a \textbf{akcie} (Actions)
 
 \subsubsection{Topiky}
 
-\textbf {Topiky} (IPC) sú najjednoduchší spôsob komunikácie. Vieme si ich prirovnať k UDP/IP protokolu. Definujeme si jedného poskytovateľa (publisher) a jedného príjemcu (subscriber). Medzi týmito dvoma účastníkmi sa následne posielajú správy (messages), ktoré sme si dopredu definovali.
+\textbf {Topiky} (IPC) sú najjednoduchší spôsob komunikácie. Vieme si ich prirovnať k UDP/IP protokolu. Definujeme si jedného poskytovateľa (publisher)
+a jedného príjemcu (subscriber). Medzi týmito dvoma účastníkmi sa následne posielajú správy (messages), ktoré sme si dopredu definovali.
 
 \subsubsection{Služby}
 
-\textbf {Služby} (TPC/IP) nám poskytujú rovnaký spôsob komunikácie ako topiky, až na to, že sa správy medzi servisom a klientom posielajú cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerými zariadeniami.
+\textbf {Služby} (TCP/IP) nám poskytujú rovnaký spôsob komunikácie ako topiky, až na to, že sa správy medzi servisom a klientom posielajú
+cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerými zariadeniami.
 
 \subsubsection{Akcie}
 
-\textbf {Akcie} (TCP/IP) su najzložitejším spôsobom komunikácie. Sú založené na službách a máju 3 stavy. Najprv pošle klient serveru akú akciu má vykonať, server mu potvrdí, že túto požiadavku dostal. Server začne následne vykonávať danú akciu a posielať klientovi priebežné správy o priebehu. Keď server skončí pošle klientovi výsledok akcie a klient mu obratom potvrdí obdržanie výsledku.
+\textbf {Akcie} (TCP/IP) su najzložitejším spôsobom komunikácie. Sú založené na službách a máju 3 stavy. Najprv pošle klient serveru akú akciu
+má vykonať, server mu potvrdí, že túto požiadavku dostal. Server začne následne vykonávať danú akciu a posielať klientovi priebežné správy o priebehu.
+Keď server skončí pošle klientovi výsledok akcie a klient mu obratom potvrdí obdržanie výsledku.
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=15cm]{img/strukturaRos1Ros2.png}
+    \caption{Porovnanie štruktúr ROS1 a ROS2 \cite{comparison}}
+	\label{struktury}
+\end{figure}
 
 \subsection{ROS1}
 
-\noindent ROS bol prvýkrát vydaný v roku 2010. Ide o softvér, ktorý sa začal vyvíjať so zámerom zjednodušiť programovanie a ovládanie robotov. Od doby, kedy vznikol prešiel mnohými verziami a úpravami. Jeho neoddeliteľnou súčasťou sú štrukturalizovanie programu do uzlov (nodov), komunikácia medzi uzlami, podpora viacerých programovacích jazykov ako sú C++, Python alebo Java a vytváranie balíčkov dostupných širokej verejnosti.
+\noindent ROS bol prvýkrát vydaný v roku 2007. Ide o softvér, ktorý sa začal vyvíjať so zámerom zjednodušiť programovanie a ovládanie robotov. Od doby,
+kedy vznikol prešiel mnohými verziami a úpravami. Jeho neoddeliteľnou súčasťou sú štrukturalizovanie programu do uzlov (nodov), komunikácia medzi uzlami,
+podpora viacerých programovacích jazykov ako sú C alebo C++ a vytváranie balíčkov dostupných širokej verejnosti.
 
-Štrukturalizovanie ROS1 je spravené čo najstabilnejším spôsobom. Na počiatku programu musíme spustiť hlavný program (roscore), ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená prostredníctvom prepojenia uzlov cez LAN. Uzly môžu byť spustené aj na iných zariadeniach. Roscore ďalej poskytuje parametre jednotlivým uzlom z parametrového servera. Bez roscor-u by ROS1 nebol spustiteľný.
+Štrukturalizovanie základov ROS1 je spravené monoliticky čo najstabilnejším spôsobom. Na počiatku programu musíme spustiť hlavný program (roscore),
+ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená prostredníctvom prepojenia uzlov cez LAN. Uzly môžu byť
+spustené aj na iných zariadeniach. Roscore ďalej poskytuje parametre jednotlivým uzlom z parametrového servera. Bez roscor-u by ROS1 nebol spustiteľný.
 
 Aj napriek mnohým výhodám má ROS aj nedostatky, ktoré sa ťahajú už od jeho počiatkov. Sú to napríklad:
 \begin{itemize}
@@ -31,15 +50,24 @@ Aj napriek mnohým výhodám má ROS aj nedostatky, ktoré sa ťahajú už od je
  \item Kvalita komunikácie sa nedá ovplyvniť
 \end{itemize}
 
-Kvôli takýmto problémom sa začala vyvíjať nová verzia ROSu, ROS2. V roku 2025 sa skončí podpora poslednej distribúcie ROSu menom Noetic. Preto je odporúčané začínať nové projekty v ROS2.
+Kvôli takýmto problémom sa začala vyvíjať nová verzia ROSu, ROS2. V roku 2025 sa skončí podpora poslednej distribúcie ROSu menom Noetic.
+Preto je odporúčané začínať nové projekty v ROS2.
 
 \subsection{ROS2}
 
-\noindent Ako už bolo spomenuté zámerom vývoja ROS2 je zlepšenie funkcionality a bezpečnosti ROSu. ROS2 nie je spätne kompatibilný. Podstata toho, ako sú zoskupované uzly a ako spolu komunikujú je diametrálne odlišná od ROS1. Z tohto dôvodu bol vyvinutý takzvaný rosbridge, ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to ale trvalé riešenie. Odporučané je nástroj využívať a počas toho prepisovať kód z verzie 1 do verzie 2. Komunikácia prebieha \newline v ROS2 rovnakým spôsobom ako v ROS1. Pomocou topikou, služieb a akcií.
+\noindent Ako už bolo spomenuté zámerom vývoja ROS2 je zlepšenie funkcionality a bezpečnosti ROSu. ROS2 nie je spätne kompatibilný.
+Podstata toho, ako sú zoskupované uzly a ako spolu komunikujú je diametrálne odlišná od ROS1. Z tohto dôvodu bol vyvinutý takzvaný rosbridge,
+ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to ale trvalé riešenie. Odporučané je nástroj využívať a počas toho prepisovať kód
+z verzie 1 do verzie 2. Komunikácia prebieha \newline v ROS2 rovnakým spôsobom ako v ROS1. Pomocou topikou, služieb a akcií.
 
-Pri spúštaní programov už nie je potrebné mať spustený roscore. Preto je štruktúra vykonávania uzlov plne decentralizovaná. Ak teda spadne jeden proces druhé budú fungovať naďalej. V ROS1 sme vedeli ovplyvniť počet uchovaných správ pokým nepretiekol zásobník. V ROS2 vieme zmeniť kvalitu komunikácie. Vieme si zadefinovať, či by sme radšej stratili niektoré správy, ale dostali by sme všetky rýchlo. Alebo aby sa zabezpečilo, že dostaneme všetky správy, ktoré boli vyslané, aj keby to trvalo dlhšie. Dokonca si vieme zadefinovať maximálny čas, ktorý budeme čakať na ďalšiu správu.
+Pri spúštaní programov už nie je potrebné mať spustený roscore. Preto je štruktúra vykonávania uzlov plne decentralizovaná. Ak teda spadne
+jeden proces druhé budú fungovať naďalej. V ROS1 sme vedeli ovplyvniť počet uchovaných správ pokým nepretiekol zásobník. V ROS2 vieme zmeniť
+kvalitu komunikácie. Vieme si zadefinovať, či by sme radšej stratili niektoré správy, ale dostali by sme všetky rýchlo. Alebo aby sa zabezpečilo,
+že dostaneme všetky správy, ktoré boli vyslané, aj keby to trvalo dlhšie. Dokonca si vieme zadefinovať maximálny čas, ktorý budeme čakať na ďalšiu správu.
 
-Pri všetkých týchto zlepšeniach nemôžeme zabudnúť aj nasledovný nedostatok. Keďže ROS2 je mladší ako ROS1 nájdeme k nemu menej dokumentácie. Pridaním veľkého počtu funkcionalít začal vznikať problém pre začiatočníkov s porozumením niektorých kódov. Avšak tento problém je nedostatkom, ktorý časom zanikne.
+Pri všetkých týchto zlepšeniach nemôžeme zabudnúť aj nasledovný nedostatok. Keďže ROS2 je mladší ako ROS1 nájdeme k nemu menej dokumentácie.
+Pridaním veľkého počtu funkcionalít začal vznikať problém pre začiatočníkov s porozumením niektorých kódov. Avšak tento problém je nedostatkom,
+ktorý časom zanikne.
 
 \subsection{Lorem Ipsum}
 Tento text bol prevzaty zo stranky \url{www.lipsum.com} \cite{lipsum}, preto ho treba riadne odcitovat.
