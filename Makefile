@@ -1,7 +1,9 @@
 FILE = example_URK
 BUILD_DIR = .build
 
-LATEXMK_OPTIONS = -pdf -synctex=1 -output-directory=$(BUILD_DIR) -interaction=nonstopmode -silent
+LATEXMK_OPTIONS = -pdf -synctex=1 -output-directory=$(BUILD_DIR) -interaction=nonstopmode -enable-write18
+# -silent
+# -f
 LINE_WIDTH = error_line=240 half_error_line=160 max_print_line=240
 
 all: pdf

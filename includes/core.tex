@@ -19,7 +19,7 @@ a jedného príjemcu (subscriber). Medzi týmito dvoma účastníkmi sa následn
 	\centering
 	\includegraphics[width=8cm]{img/topicsExplanation.png}
 	\caption{Vizualizacia topicu v ROSe \cite{RosDoc}}
-	\label{topics}
+	\label{o_topics}
 \end{figure}
 
 \subsubsection{Služby}
@@ -30,28 +30,30 @@ cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerý
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{img/serviceExplanation.png}
-	\caption{Vizualizacia sluzby v ROSe \cite{RosDoc}}
-	\label{topics}
+	\caption{Vizualizácia služby v ROSe \cite{RosDoc}}
+	\label{o_service}
 \end{figure}
 
 \subsubsection{Akcie}
 
-\textbf {Akcie} (TCP/IP) su najzložitejším spôsobom komunikácie. Sú založené na službách a máju 3 stavy. Najprv pošle klient serveru akú akciu
-má vykonať, server mu potvrdí, že túto požiadavku dostal. Server začne následne vykonávať danú akciu a posielať klientovi priebežné správy o priebehu.
-Keď server skončí pošle klientovi výsledok akcie a klient mu obratom potvrdí obdržanie výsledku.
+\label{s_action}
+\textbf {Akcie} (TCP/IP) sú najzložitejším spôsobom komunikácie. Tento spôsob bol pridaný do ROS1 až neskor. V druhej verzii ROSu je tento
+typ komunikácie medzi troma základnými. Sú založené na službách a máju 3 stavy. Najprv pošle klient serveru akú akciu má vykonať, server mu potvrdí,
+že túto požiadavku dostal. Server začne následne vykonávať danú akciu a posielať klientovi priebežné správy o priebehu. Keď server skončí pošle
+klientovi výsledok akcie a klient mu obratom potvrdí obdržanie výsledku.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{img/actionExplanation.png}
-	\caption{Vizualizacia akcie v ROSe \cite{RosDoc}}
-	\label{topics}
+	\caption{Vizualizácia akcie v ROSe \cite{RosDoc}}
+	\label{o_action}
 \end{figure}
 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=15cm]{img/strukturaRos1Ros2.png}
 	\caption{Porovnanie štruktúr ROS1 a ROS2 \cite{comparison}}
-	\label{struktury}
+	\label{o_struktury}
 \end{figure}
 
 \pagebreak
@@ -87,7 +89,7 @@ ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to ale trvalé riešeni
 z verzie 1 do verzie 2. Komunikácia prebieha \newline v ROS2 rovnakým spôsobom ako v ROS1. Pomocou topikov, služieb a akcií.
 
 Táto podobnosť končí na najvyššej vrstve. Ako sme videli na Obr.~\ref{struktury}. Štruktúra ROS2 je rozdelená do viacerých vrstiev.
-Najdôležitejšie je pre nás vedieť, že komunikácia je spracovávaná modelom DDS (\acrlong{DDS}). Tento model zlepšuje výkon, stabilitu
+Najdôležitejšie je pre nás vedieť, že komunikácia je spracovávaná modelom DDS (Služba distribúcie údajov) z anglického (\acrlong{DDS}). Tento model zlepšuje výkon, stabilitu
 a bezpečnosť modelu oproti ROS1. Je založený na TCP/UDP protokole. Z obrázku vyčítame aj lepšie rozloženie modulov. To zabezpečuje jednoduchšie
 prispôsobovanie systému pre nové funkcionality. Podpora operačných systémov sa v ROS2 rozšírila aj o Windows, Mac OS či operačné systémy reálneho času.
 Operačne systémy nie sú jediné rozšírenie ohľadom kompatibility. S ROS2 je možné programovať už aj v Jave či Matlabe.
@@ -110,10 +112,20 @@ písať konkrétne kódy, budeme len opisovať čo je podobné a čo zasa rozdie
 
 \begin{itemize}
 	\item \textbf{Štandard} \newline
-Pokým ROS1 bola písaná v štandarde C++98 tak ROS2 je už písaná v novom štandarde. To zahŕňa inicializovanie templatov a ich použivanie. Definície a deklarácie
-templatov sú na knihu samú o sebe, preto do detailov nebudeme zachádzať. Stačí nám vedieť, ako ich inicializovať. V prvej verzii sme definovali publishera všeobecného
-a definovali sme mu cez aký topic má posielať spravy. V druhej verzii naväzujeme publishera na špecifický tip správy akú posielame. Nemôže sa teda stať, že takýto
-program by sme skompilovali a následne keď ho spustíme tak by spadol.
+		Pokým ROS1 bola písaná v štandarde C++98 tak ROS2 je už písaná v novom štandarde. To zahŕňa inicializovanie templatov a ich použivanie. Definície
+		a deklarácie templatov sú na knihu samú o sebe, preto do detailov nebudeme zachádzať. Stačí nám vedieť, ako ich inicializovať. V prvej verzii
+		sme definovali publishera (publikovateľa) všeobecného a definovali sme mu cez aký topic má posielať spravy. V druhej verzii naväzujeme publishera
+		na špecifický tip správy akú posielame. Nemôže sa teda stať, že takýto program by sme skompilovali a následne keď ho spustíme tak by spadol.
+
+	\item \textbf{Komunikácia} \newline
+		DDS (Služba distribúcie údajov) je stredný protokol používaný v ROS2 na komunikáciu medzi uzlami. Je to systém správ
+		publikovania (publish) / odoberania (subscribe), ktorý umožňuje uzlom komunikovať medzi sebou bez toho, aby poznali identitu ostatných uzlov. DDS je
+		štandardný protokol, ktorý sa okrem ROS2 používa vo viacerých odvetviach. \cite{chatgpt} Druh komunikácie je v ROS2 rozšírený ešte o akcie \ref{s_action}.
+
+	\item \textbf{Vlakna} \newline
+		Prvá verzia ROSu je založená na jedno vláknovom, synchrónnom komunikačnom modeli, zatiaľ čo ROS2 je založený na viac vláknovom, asynchrónnom
+		komunikačnom modeli.
+
 \end{itemize}
 
 \subsection{Lorem Ipsum}
