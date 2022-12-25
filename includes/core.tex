@@ -151,7 +151,61 @@ na dokumenty, stránky a kód, ktorý napísali. Všetky tieto údaje si spríst
 \newline \texttt{\$(HOME)/Desktop/Blackmetal}~\cite{timovyProjekt}.
 
 Robot je v tvare kvádra. Jeho šírka je 60cm a je vyzdvihnutý nad zem o 1.5cm. Nachádza sa na kolesách o polomere 8cm. Jeho kostra, až na oceľové pláty, ktoré držia robot,
-je spravená z hliníku. Konkrétne z hliníkových tyčí, ktoré sú pospájané plexisklovými plátmi. 
+je spravená z hliníku. Konkrétne z hliníkových tyčí, ktoré sú pospájané plexisklovými plátmi. Jeho podobizeň vidíme na nasledujúcom obrázku. 
+
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=0.95\textwidth]{img/robot.png}
+	\end{center}
+	\caption{Zobrazenie spodnej časti mobilného robota~\cite{timovyProjekt}}
+	\label{fig:robot}
+\end{figure}
+
+\noindent Na obrázku ďalej vidíme olemovanie robota pasom s LEDkami. Tie svietia nasledovným spôsobom. Keď sa robot nehýbe všetky LEDky svietia
+na zeleno. Keď sa robot pohne do nejakej strany, LEDky znázornia jeho pohyb tým, že svietia na strane, do ktorej sa robot hýbe. Keď nastane
+situácia, kedy počítač ovládajúci motory prestane komunikovať s Arduinom, ktoré sa stará o detekciu stavov robota tak LEDky začnú blikať červeno-modrými farbami.
+
+Ako bolo spomenuté LEDky znázorňujú pohyb robota. Ten sa pohybuje za pomoci diferenciálneho podvozku s dvoma podpornými všesmerovými kolesami. Motory robota
+sú pripojené na meniče. Tie sú ovládané priamo príkazmi z počítača. Príkazy sa na počítač posielajú cez sieť z externého počítača. Príkazy sa posielajú
+na počítač vo formáte \textbf{JSON}. Študenti, ktorí navrhovali systém posielania požiadavok (request) a odpovedí (response) robili tieto správu ručne. Preto nastávajú situácie,
+kedy robot posie správu, ktorá nespadá do štandardu písania JSON textu. Z tohto dôvodu sme nemohli použiť už existujúci kód, ktorý by nám zjednodušil prehľadávanie týchto sprav.
+
+\noindent Podla dokumentácie sa robot mal ovládať správami typu~\cite{BMdoc}
+
+\label{jsonSpeedRequestBad}
+\begin{lstlisting}
+		{"UserID":1,"Command":3,"RightWheelSpeed":50,"LeftWheelSpeed":50}
+\end{lstlisting}
+
+\noindent Význam jednotlivých parametrov:
+\begin{itemize}
+	\item \textbf{UserID} Znázorňuje ID užívateľa, ktorý je pripojený na robot. Predvolená hodnota je 1. Tato možností je v momentálnom stave robota nevyužitá.
+		Počet zariadení, ktoré sa kozu pripojiť na port, cez ktorý sa dá robot ovládať je 1.
+	\item \textbf{Command} Číselná hodnota znázorňujúca príkaz, ktorý ma robot vykonať
+		\begin{enumerate}
+			\setcounter{enumi}{-1}
+			\item Prázdny príkaz skučiaci na overenie spojenia
+			\item Núdzové zastavenie
+			\item Normálne zastavenie
+			\item Príkaz nastavujúc rýchlosti kolies mobilného robota
+			\item Prázdny príkaz % My sme ho neskor prepísali na príkaz, cez ktorý sa dá nastaviť žiadaná pozícia kolies robota (natočenie).
+			\item Prázdny príkaz
+			\item Príkaz pýtajúc si aktuálnu rýchlosti pravého a ľavého kolesa. Tento príkaz nebol sprave navrhnutý v kóde robota. Vracal nám žiadaná hodnotu
+				namiesto aktuálnej. Museli sme ho prepísať
+			\item Pripravenie motorov robota
+			\item Prázdny príkaz % Príkaz pýtajúci si aktuálnu pozíciu pravého a ľavého kolesa.
+		\end{enumerate}
+	\item \textbf{RightWheelSpeed} Nastavenie rýchlosti pre pravé koleso
+	\item \textbf{LeftWheelSpeed} Nastavenie rýchlosti pre ľavé koleso
+\end{itemize}
+
+\noindent Z tohto kusu kódu je jasné, že sa majú posielať celé čísla a na základe tohto vstupu sa bude robot hýbať. Čo sme zistili až po skompilovaní
+a spustení tímového projektu je, že sa majú posielať desatinné čísla z intervalu 0 až 1. Po spomenutí tejto skutočnosti môžeme uviesť vyznám jednotlivých parametrov.
+Toto bolo písané v dokumentácii, ktorá nám bola dodaná na začiatku programu. Mozeme preto priklad prepisat na retazec, ktory by fungoval
+\label{jsonSpeedRequestGood}
+\begin{lstlisting}
+		{"UserID":1,"Command":3,"RightWheelSpeed":0.50,"LeftWheelSpeed":0.50}
+\end{lstlisting}
 
 \begin{figure}[!htbp]
 	\begin{center}
