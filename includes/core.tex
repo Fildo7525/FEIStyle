@@ -19,7 +19,7 @@ a jedného príjemcu (subscriber). Medzi týmito dvoma účastníkmi sa následn
 	\centering
 	\includegraphics[width=8cm]{img/topicsExplanation.png}
 	\caption{Vizualizacia topicu v ROSe \cite{RosDoc}}
-	\label{o_topics}
+	\label{fig:topics}
 \end{figure}
 
 \subsubsection{Služby}
@@ -31,7 +31,7 @@ cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerý
 	\centering
 	\includegraphics[width=8cm]{img/serviceExplanation.png}
 	\caption{Vizualizácia služby v ROSe \cite{RosDoc}}
-	\label{o_service}
+	\label{fig:service}
 \end{figure}
 
 \subsubsection{Akcie}
@@ -46,14 +46,14 @@ klientovi výsledok akcie a klient mu obratom potvrdí obdržanie výsledku.
 	\centering
 	\includegraphics[width=8cm]{img/actionExplanation.png}
 	\caption{Vizualizácia akcie v ROSe \cite{RosDoc}}
-	\label{o_action}
+	\label{fig:action}
 \end{figure}
 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=15cm]{img/strukturaRos1Ros2.png}
 	\caption{Porovnanie štruktúr ROS1 a ROS2 \cite{comparison}}
-	\label{o_struktury}
+	\label{fig:struktury}
 \end{figure}
 
 \pagebreak
@@ -88,7 +88,7 @@ Podstata toho, ako sú zoskupované uzly a ako spolu komunikujú je diametrálne
 ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to ale trvalé riešenie. Odporúčané je nástroj využívať a počas toho prepisovať kód
 z verzie 1 do verzie 2. Komunikácia prebieha \newline v ROS2 rovnakým spôsobom ako v ROS1. Pomocou topikov, služieb a akcií.
 
-Táto podobnosť končí na najvyššej vrstve. Ako sme videli na Obr.~\ref{o_struktury}. Štruktúra ROS2 je rozdelená do viacerých vrstiev.
+Táto podobnosť končí na najvyššej vrstve. Ako sme videli na Obr.~\ref{fig:struktury}. Štruktúra ROS2 je rozdelená do viacerých vrstiev.
 Najdôležitejšie je pre nás vedieť, že komunikácia je spracovávaná modelom DDS (Služba distribúcie údajov) z anglického (\acrlong{DDS}). Tento model zlepšuje výkon, stabilitu
 a bezpečnosť modelu oproti ROS1. Je založený na TCP/UDP protokole. Z obrázku vyčítame aj lepšie rozloženie modulov. To zabezpečuje jednoduchšie
 prispôsobovanie systému pre nové funkcionality. Podpora operačných systémov sa v ROS2 rozšírila aj o Windows, Mac OS či operačné systémy reálneho času.
@@ -146,10 +146,20 @@ jazyku C++ tak sa aj tieto zmeny budu týkať hlavne C++.
 
 \section{Robot}
 
-Robot, s ktorým sme pracovali bol výsledkom tímového projektu viacerých študentov. Pri vysvetľovaní a opisovaní robota sa budeme odvolávať na dokumenty, stránky a kód,
-ktorý napísali. Všetky tieto údaje si sprístupnené na robote v záložke \texttt{\$(HOME)/Desktop/Blackmetal}~\cite{timovyProjekt}.
+Robot, s ktorým sme pracovali bol výsledkom tímového projektu viacerých študentov \newline z roku 2019. Pri vysvetľovaní a opisovaní robota sa budeme odvolávať
+na dokumenty, stránky a kód, ktorý napísali. Všetky tieto údaje si sprístupnené na mobilnom robote v záložke
+\newline \texttt{\$(HOME)/Desktop/Blackmetal}~\cite{timovyProjekt}.
 
+Robot je v tvare kvádra. Jeho šírka je 60cm a je vyzdvihnutý nad zem o 1.5cm. Nachádza sa na kolesách o polomere 8cm. Jeho kostra, až na oceľové pláty, ktoré držia robot,
+je spravená z hliníku. Konkrétne z hliníkových tyčí, ktoré sú pospájané plexisklovými plátmi. 
 
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=0.95\textwidth]{img/robotSpeedChar.png}
+	\end{center}
+	\caption{Prechodová charakteristika rýchlosti kolies \cite{timovyProjekt}. }
+	\label{fig:prechChar}
+\end{figure}
 
 \subsection{Lorem Ipsum}
 Tento text bol prevzaty zo stranky \url{www.lipsum.com} \cite{lipsum}, preto ho treba riadne odcitovat.
