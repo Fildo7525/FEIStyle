@@ -166,11 +166,30 @@ na zeleno. Keď sa robot pohne do nejakej strany, LEDky znázornia jeho pohyb t�
 situácia, kedy počítač ovládajúci motory prestane komunikovať s Arduinom, ktoré sa stará o detekciu stavov robota tak LEDky začnú blikať červeno-modrými farbami.
 
 Ako bolo spomenuté LEDky znázorňujú pohyb robota. Ten sa pohybuje za pomoci diferenciálneho podvozku s dvoma podpornými všesmerovými kolesami. Motory robota
-sú pripojené na meniče. Tie sú ovládané priamo príkazmi z počítača. Príkazy sa na počítač posielajú cez sieť z externého počítača. Príkazy sa posielajú
-na počítač vo formáte \textbf{JSON}. Študenti, ktorí navrhovali systém posielania požiadavok (request) a odpovedí (response) robili tieto správu ručne. Preto nastávajú situácie,
-kedy robot posie správu, ktorá nespadá do štandardu písania JSON textu. Z tohto dôvodu sme nemohli použiť už existujúci kód, ktorý by nám zjednodušil prehľadávanie týchto sprav.
+sú pripojené na meniče. Tie sú ovládané priamo príkazmi z počítača.
 
-\noindent Podla dokumentácie sa robot mal ovládať správami typu~\cite{BMdoc}
+\subsection{Komunikácia s robotom}
+
+S robotom sa vieme spojiť pomocou dvoch portov. Jeden port je otvorený na prijímanie požiadavok (requestov) a ten druhy je na monitorovanie stavu robota. 
+Port \textit{664} je otvorený pre tisíc užívateľov, ktorí môžu len sledovať stav robota. Druhy port je na prijímanie requestov \textit{665} a je otvorený
+len pre jedného užívateľa.
+
+\subsubsection{Logovanie}
+
+Spomínaný port \textit{664} je otvorený jednému užívateľovi. Keď sa užívateľ pripojí začne dostavať nepretržite správy typu JSON, ktoré hlásia stav robota. Spravy,
+ktoré dostávame sú nasledujúceho formátu
+\begin{lstlisting}
+		{"state":1,"direction":1}
+\end{lstlisting}
+Hodnoty sa pri stave (state) a ani pri smere (direction) nemenia. Sú to stále jednotky. Pokým robota nezastavíme buď príkazom, alebo stlačením tlačidla vypnutia,
+tak sa tieto správy budu posielať. Môžeme potom začať polemizovať o tom či by nebolo lepšie už tieto spravy využiť na to čo reálne spomenutý JSON reťazec ukazuje.
+
+\subsubsection{Ovládanie}
+
+Port \textit{665} je sprístupnený na prijímanie a odosielanie požiadavok a ich odpovedí. Príkazy sa na počítač posielajú cez sieť z externého počítača vo formáte
+\textbf{JSON}. Študenti, ktorí navrhovali systém posielania požiadavok (request) a odpovedí (response) robili tieto správy ručne. Preto nastávajú situácie, kedy
+robot pošle správu, ktorá nespadá do štandardu písania JSON textu. Z tohto dôvodu sme nemohli použiť už existujúci kód, ktorý by nám zjednodušil prehľadávanie
+týchto sprav. Podla dokumentácie sa robot mal ovládať správami typu~\cite{BMdoc}
 
 \label{jsonSpeedRequestBad}
 \begin{lstlisting}
@@ -179,33 +198,60 @@ kedy robot posie správu, ktorá nespadá do štandardu písania JSON textu. Z t
 
 \noindent Význam jednotlivých parametrov:
 \begin{itemize}
-	\item \textbf{UserID} Znázorňuje ID užívateľa, ktorý je pripojený na robot. Predvolená hodnota je 1. Tato možností je v momentálnom stave robota nevyužitá.
-		Počet zariadení, ktoré sa kozu pripojiť na port, cez ktorý sa dá robot ovládať je 1.
-	\item \textbf{Command} Číselná hodnota znázorňujúca príkaz, ktorý ma robot vykonať
+	\item \textbf{UserID} - Znázorňuje ID užívateľa, ktorý je pripojený na robot. Predvolená hodnota je 1.
+	\item \textbf{Command} -  Číselná hodnota znázorňujúca príkaz, ktorý ma robot vykonať
 		\begin{enumerate}
 			\setcounter{enumi}{-1}
-			\item Prázdny príkaz skučiaci na overenie spojenia
+			\item Prázdny príkaz slúžiaci na overenie spojenia
 			\item Núdzové zastavenie
 			\item Normálne zastavenie
 			\item Príkaz nastavujúc rýchlosti kolies mobilného robota
-			\item Prázdny príkaz % My sme ho neskor prepísali na príkaz, cez ktorý sa dá nastaviť žiadaná pozícia kolies robota (natočenie).
 			\item Prázdny príkaz
-			\item Príkaz pýtajúc si aktuálnu rýchlosti pravého a ľavého kolesa. Tento príkaz nebol sprave navrhnutý v kóde robota. Vracal nám žiadaná hodnotu
+			\item Prázdny príkaz
+			\item Príkaz pýtajúci si aktuálnu rýchlosti pravého a ľavého kolesa. Tento príkaz nebol sprave navrhnutý v kóde robota. Vracal nám žiadaná hodnotu
 				namiesto aktuálnej. Museli sme ho prepísať
 			\item Pripravenie motorov robota
-			\item Prázdny príkaz % Príkaz pýtajúci si aktuálnu pozíciu pravého a ľavého kolesa.
+			\item Príkaz pýtajúci si aktuálnu pozíciu pravého a ľavého kolesa.
 		\end{enumerate}
-	\item \textbf{RightWheelSpeed} Nastavenie rýchlosti pre pravé koleso
-	\item \textbf{LeftWheelSpeed} Nastavenie rýchlosti pre ľavé koleso
+	\item \textbf{RightWheelSpeed} - Nastavenie rýchlosti pre pravé koleso
+	\item \textbf{LeftWheelSpeed} - Nastavenie rýchlosti pre ľavé koleso
 \end{itemize}
 
 \noindent Z tohto kusu kódu je jasné, že sa majú posielať celé čísla a na základe tohto vstupu sa bude robot hýbať. Čo sme zistili až po skompilovaní
 a spustení tímového projektu je, že sa majú posielať desatinné čísla z intervalu 0 až 1. Po spomenutí tejto skutočnosti môžeme uviesť vyznám jednotlivých parametrov.
-Toto bolo písané v dokumentácii, ktorá nám bola dodaná na začiatku programu. Mozeme preto priklad prepisat na retazec, ktory by fungoval
+Toto bolo písané v dokumentácii, ktorá nám bola dodaná na začiatku programu. Môžeme preto príklad prepísať na reťazec, ktorý by fungoval
+
 \label{jsonSpeedRequestGood}
 \begin{lstlisting}
 		{"UserID":1,"Command":3,"RightWheelSpeed":0.50,"LeftWheelSpeed":0.50}
 \end{lstlisting}
+
+\subsection{Par slov k parametrom reťazca}
+
+\noindent \textbf{UserID} \newline
+\indent Táto možnosť je v momentálnom stave robota nevyužitá. Počet zariadení, ktoré sa môžu pripojiť na port, cez ktorý sa dá robot ovládať je 1. Je to ale
+dobrá možnosť na rozšírenie kódu. Keď sa budú môcť pripojiť viacerí užívatelia, tak sa bude musieť vyriešiť, koho príkaz bude mať akú prioritu. \newline
+
+\noindent \textbf{Command:4} \newline
+\indent Tento príkaz je prázdny. My sme ho ale neskôr prepísali na príkaz, cez ktorý sa dá nastaviť žiadaná pozícia kolies robota (natočenie). Táto funkcionalita nie je
+v takom stave ako sme si priali.
+
+\section{Oprava chyb na robote}
+\indent Ako bolo spomenute vyzssie ked posleme command s cislom 6 tak nam robot vrati aktualne rychlosti kolies. Pri skusani tejto funkcionality sme narazili na problem. 
+Ked sme sa robota spytali na jeho rychlosti dostali sme retazec, ktory obsahoval nahodne velke cisla. Tieto cisla za menili ked sme zadavali nejake hodnoty pre rchlosti kolies
+aby sa robot hybal. 
+
+\label{jsonWannabeSpeed}
+\begin{lstlisting}
+		{"LeftWheelSpeed"=236223201280 "RightWheelSpeed"=4294967296}
+\end{lstlisting}
+
+Tu vidime priklad obdrzanej spravy. Jeden z napadov bolo premenit toto cislo na desatinne cisla, kedze sme mu posielali desatinne cisla. Problem je v tom, ze ked 
+posielame request na nastavenie rychlosti kolies tak kod na robote funguje tak ze si to premeni na cele cisla v rozsahu 0 az 1000 a to je hodnota, na ktoru nastavy rychlost
+otacania kolies. Na druhu stranu ked si vypytame od robota rychlosti kolies tak zobrie informaciu z enkoderov a posle nam to bez spracovania.
+
+Po dokladnom prestudovani kodu sme zitili, ze hodnoty ktore nam posiela nie su ani vytahovane z enkoderov spravnou funkciou. Prote sme ju zmenili a zacali sme dostavat hodnoty,
+s ktorymi by sa uz mohlo dat pracovat.
 
 \begin{figure}[!htbp]
 	\begin{center}
