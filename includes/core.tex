@@ -137,12 +137,13 @@ jazyku C++ tak sa aj tieto zmeny budu týkať hlavne C++.
 
 \subsubsection{Kompilácia}
 
-	Zmenou verzii sa zmenil aj spôsob kompilácie programu. ROS1 bol skompilovaný pomocou \texttt{catkin} build systému. Catkin je založený na programe
+	Zmenou verzii sa zmenil aj spôsob kompilácie programu. ROS1 bol kompilovaný pomocou \texttt{catkin} build systému. Catkin je založený na programe
 	\texttt{cmake}. Jeho nastavenie dependencií je konfigurované pomocou súboru \texttt{package.xml} . ROS2 prešiel na viac nastaviteľný systém \texttt{Colcon}.
-	Tento systém je na rozdiel od catkinu založený na Pythone a jeho dependencie sa nastavujú pomocou \texttt{setup.py} súboru. V prípade colconu si môžeme definovať
-	spôsob kompilácie t.j. môžeme nastaviť, ako sa budú spracovávať dependencie. Jednou s najviac používaných možností je \texttt{ament\_cmake}. Je založený
-	na cmaku a spolupracuje s colconom. Medze ament\_cmake je založený na cmaku vieme mu definovať dependencie pomocou xml súboru ako v ROS1. Je to jeden zo spôsobov,
-	ako zmenšiť rozdiel medzi ROS1 a ROS2.
+	Tento systém je na rozdiel od catkinu založený na Pythone a jeho dependencie sa nastavujú pomocou \texttt{setup.py} súboru. V prípade colconu si môžeme
+	definovať spôsob kompilácie to znamena, ze môžeme nastaviť, ako sa budú spracovávať dependencie. Ponúkané možnosti sú \texttt{catkin\_make},
+	\texttt{catkin\_make\_isolated}, \texttt{catkin\_tools} a \texttt{ament\_cmake}. Jednou s najviac používaných možností je \texttt{ament\_cmake}.
+	Je založený na programe \texttt{cmake} a spolupracuje so systemom \texttt{colcon}. Z tohto dôvodu mu vieme mu definovať dependencie pomocou xml
+	súboru ako v ROS1 pričom možnosť definície pomocou python skriptu ostáva. Je to jeden zo spôsobov, ako zmenšiť rozdiel medzi ROS1 a ROS2.
 
 \section{Robot}
 
@@ -243,16 +244,16 @@ týchto sprav. Podla dokumentácie sa robot mal ovládať správami typu~\cite{B
 	\item \textbf{Command} --  Číselná hodnota znázorňujúca príkaz, ktorý ma robot vykonať
 		\begin{enumerate}
 			\setcounter{enumi}{-1}
-			\item Prázdny príkaz slúžiaci na overenie spojenia
-			\item Núdzové zastavenie
-			\item Normálne zastavenie
-			\item Príkaz nastavujúc rýchlosti kolies mobilného robota
-			\item Prázdny príkaz
-			\item Prázdny príkaz
-			\item Príkaz pýtajúci si aktuálnu rýchlosti pravého a ľavého kolesa. Tento príkaz nebol sprave navrhnutý v kóde robota. Vracal nám žiadaná hodnotu
+			\item \label{c0} Prázdny príkaz slúžiaci na overenie spojenia
+			\item \label{c1} Núdzové zastavenie
+			\item \label{c2} Normálne zastavenie
+			\item \label{c3} Príkaz nastavujúc rýchlosti kolies mobilného robota
+			\item \label{c4} Prázdny príkaz
+			\item \label{c5} Prázdny príkaz
+			\item \label{c6} Príkaz pýtajúci si aktuálnu rýchlosti pravého a ľavého kolesa. Tento príkaz nebol sprave navrhnutý v kóde robota. Vracal nám žiadaná hodnotu
 				namiesto aktuálnej. Museli sme ho prepísať
-			\item Pripravenie motorov robota
-			\item Príkaz pýtajúci si aktuálnu pozíciu pravého a ľavého kolesa.
+			\item \label{c7} Pripravenie motorov robota
+			\item \label{c8} Príkaz pýtajúci si aktuálnu pozíciu pravého a ľavého kolesa.
 		\end{enumerate}
 	\item \textbf{RightWheelSpeed} -- Nastavenie rýchlosti pre pravé koleso
 	\item \textbf{LeftWheelSpeed} -- Nastavenie rýchlosti pre ľavé koleso
@@ -275,10 +276,13 @@ dobrá možnosť na rozšírenie kódu. Keď sa budú môcť pripojiť viacerí 
 
 \noindent \textbf{Command:4} \newline
 \indent Tento príkaz je prázdny. My sme ho ale neskôr prepísali na príkaz, cez ktorý sa dá nastaviť žiadaná pozícia kolies robota (natočenie). Táto funkcionalita nie je
-v takom stave ako sme si priali.
+v takom stave ako sme si priali. \newline
 
-\section{Oprava chyb na robote}
-\indent Ako bolo spomenuté vyššie keď pošleme príkaz s číslom 6 tak na robot vráti aktuálne rýchlosti kolies. Pri skúšaní tejto funkcionality sme narazili na problém.
+\noindent \textbf{RightWheelSpeed/LeftWheelSpeed} \newline
+\noindent Nastavovanie rýchlosti pravého a ľavého kolesa nie sú povinne parametre. Musíme ich zadávať len v prípade posielania rýchlostí cez príkaz s číslom \ref{c3}.
+
+\section{Oprava chýb na robote}
+\indent Ako bolo spomenuté vyššie, pri poslaní príkazu s číslom \ref{c6} nám robot vráti aktuálne rýchlosti kolies. Počas skúšaní tejto funkcionality sme narazili na problém.
 Keď sme sa robota spýtali na jeho rýchlosti dostali sme reťazec, ktorý obsahoval náhodne veľké čísla. Tieto čísla za menili keď sme zadávali nejaké hodnoty pre rýchlosti kolies
 aby sa robot hýbal.
 
@@ -287,16 +291,17 @@ aby sa robot hýbal.
 		{"LeftWheelSpeed"=236223201280 "RightWheelSpeed"=4294967296}
 \end{lstlisting}
 
-Tu vidíme príklad obdržanej spravy. Jeden z nápadov bolo premeniť toto číslo na desatinne čísla, keďže sme mu posielali desatinne čísla. Problém je v tom, že keď 
-posielame request na nastavenie rýchlosti kolies tak kód na robote funguje tak že si to premení na cele čísla v rozsahu 0 až 1000 a to je hodnota, na ktoré nastaví rýchlosti
-otáčania kolies. Na druhu stranu keď si vypýtame od robota rýchlosti kolies tak zoberie informáciu z enkóderov a pošle nám to bez spracovania.
+Tu vidíme príklad obdržanej spravy. Jeden z nápadov, ktorý sme mali bolo premeniť toto číslo na desatinne čísla, keďže sme mu posielali desatinne čísla.
+Problém je v tom, že keď posielame request na nastavenie rýchlosti kolies tak kód na robote funguje tak že si to premení na cele čísla v rozsahu 0 až 1000
+a to je hodnota, na ktoré nastaví rýchlosti otáčania kolies. Na druhu stranu keď si vypýtame od robota rýchlosti kolies tak zoberie informáciu z enkóderov
+a pošle nám to bez spracovania.
 
 Po dôkladnom preštudovaní kódu sme zistili, že hodnoty ktoré nám posiela nie sú ani vyťahované z enkóderov správnou funkciou. Preto sme ju zmenili a začali sme dostavať hodnoty,
 s ktorými by sa z mohlo dať pracovať.
 
 Funkcie z knižnice zabezpečujúce komunikáciu z enkóderov motorov pochádzajú z firmy Maxon~\cite{EPOSdoc}. Funkcie, ktoré končia koncovkou `Target' majú
 návratné hodnoty reprezentujúce žiadané hodnoty. Funkcie s koncovkou `Is' vracajú aktuálne hodnoty. Z tohto dôvodu sme museli prepísať funkciu, ktorá sa vykonávala,
-keď sme chceli získať aktuálne hodnoty rýchlosti motora poslaním príkazu \textbf{6}.
+keď sme chceli získať aktuálne hodnoty rýchlosti motora poslaním príkazu \ref{c6}.
 
 \lstset{language=C++,
 	basicstyle=\ttfamily,
@@ -335,7 +340,7 @@ Nebolo treba ani meniť ani implementáciu kódu.
 	\label{fig:prechChar}
 \end{figure}
 
-\subsection{Lorem Ipsum}
+\section{Lorem Ipsum}
 Tento text bol prevzaty zo stranky \url{www.lipsum.com}~\cite{lipsum}, preto ho treba riadne odcitovat.
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum~\cite{lipsum}.
