@@ -252,12 +252,12 @@
 \titlespacing\subsubsection{12pt}{10pt}{0pt}
 
 \lstset{
-  basicstyle=\scriptsize\ttfamily,
-  columns=flexible, % removes spaces
-  breaklines=true,
-  breakatwhitespace=true,
-  showstringspaces=false, % removes ␣ character from " "
-  captionpos=b % caption below text
+	basicstyle=\scriptsize\ttfamily,
+	columns=flexible, % removes spaces
+	breaklines=true,
+	breakatwhitespace=true,
+	showstringspaces=false, % removes ␣ character from " "
+	captionpos=b % caption below text
 }
 
 \IfEqCase*{\FEIenglish}{
@@ -287,10 +287,10 @@
 
 \newcommand{\dir}[3]{
 \begin{description}[topsep=0pt,leftmargin=0.5cm,style=nextline]
-  \item[#1] $\cdot$ #2
+	\item[#1] $\cdot$ #2
 \end{description}
 \ifx&#3&%
-   % #3 is empty
+	% #3 is empty
 \else
 	\vspace{-5mm}
 	\begin{changemargin}{0.5cm}{0cm}
