@@ -237,21 +237,54 @@ dobrá možnosť na rozšírenie kódu. Keď sa budú môcť pripojiť viacerí 
 v takom stave ako sme si priali.
 
 \section{Oprava chyb na robote}
-\indent Ako bolo spomenute vyzssie ked posleme command s cislom 6 tak nam robot vrati aktualne rychlosti kolies. Pri skusani tejto funkcionality sme narazili na problem. 
-Ked sme sa robota spytali na jeho rychlosti dostali sme retazec, ktory obsahoval nahodne velke cisla. Tieto cisla za menili ked sme zadavali nejake hodnoty pre rchlosti kolies
-aby sa robot hybal. 
+\indent Ako bolo spomenuté vyššie keď pošleme príkaz s číslom 6 tak na robot vráti aktuálne rýchlosti kolies. Pri skúšaní tejto funkcionality sme narazili na problém.
+Keď sme sa robota spýtali na jeho rýchlosti dostali sme reťazec, ktorý obsahoval náhodne veľké čísla. Tieto čísla za menili keď sme zadávali nejaké hodnoty pre rýchlosti kolies
+aby sa robot hýbal.
 
 \label{jsonWannabeSpeed}
 \begin{lstlisting}
 		{"LeftWheelSpeed"=236223201280 "RightWheelSpeed"=4294967296}
 \end{lstlisting}
 
-Tu vidime priklad obdrzanej spravy. Jeden z napadov bolo premenit toto cislo na desatinne cisla, kedze sme mu posielali desatinne cisla. Problem je v tom, ze ked 
-posielame request na nastavenie rychlosti kolies tak kod na robote funguje tak ze si to premeni na cele cisla v rozsahu 0 az 1000 a to je hodnota, na ktoru nastavy rychlost
-otacania kolies. Na druhu stranu ked si vypytame od robota rychlosti kolies tak zobrie informaciu z enkoderov a posle nam to bez spracovania.
+Tu vidíme príklad obdržanej spravy. Jeden z nápadov bolo premeniť toto číslo na desatinne čísla, keďže sme mu posielali desatinne čísla. Problém je v tom, že keď 
+posielame request na nastavenie rýchlosti kolies tak kód na robote funguje tak že si to premení na cele čísla v rozsahu 0 až 1000 a to je hodnota, na ktoré nastaví rýchlosti
+otáčania kolies. Na druhu stranu keď si vypýtame od robota rýchlosti kolies tak zoberie informáciu z enkóderov a pošle nám to bez spracovania.
 
-Po dokladnom prestudovani kodu sme zitili, ze hodnoty ktore nam posiela nie su ani vytahovane z enkoderov spravnou funkciou. Prote sme ju zmenili a zacali sme dostavat hodnoty,
-s ktorymi by sa uz mohlo dat pracovat.
+Po dôkladnom preštudovaní kódu sme zistili, že hodnoty ktoré nám posiela nie sú ani vyťahované z enkóderov správnou funkciou. Preto sme ju zmenili a začali sme dostavať hodnoty,
+s ktorými by sa z mohlo dať pracovať.
+
+Funkcie z knižnice zabezpečujúce komunikáciu z enkóderov motorov pochádzajú z firmy Maxon~\cite{EPOSdoc}. Funkcie, ktoré končia koncovkou 'Target' majú
+návratné hodnoty reprezentujúce žiadané hodnoty. Funkcie s koncovkou 'Is' vracajú aktuálne hodnoty. Z tohto dôvodu sme museli prepísať funkciu, ktorá sa vykonávala,
+keď sme chceli získať aktuálne hodnoty rýchlosti motora poslaním príkazu \textbf{6}.
+
+\lstset{language=C++,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#},
+	numberstyle=\color{orange}
+}
+
+\label{VelocityIs}
+\begin{lstlisting}[language=C++]
+BOOL VCS_GetTargetVelocity(
+	HANDLE KeyHandle,
+	WORD NodeId,
+	long* pTargetVelocity,
+	DWORD* pErrorCode);
+\end{lstlisting}
+
+\begin{lstlisting}[language=C++]
+BOOL VCS_GetVelocityIs(
+	HANDLE KeyHandle,
+	WORD NodeId,
+	long* pVelocityIs,
+	DWORD* pErrorCode);
+\end{lstlisting}
+
+\noindent Ako môžeme vidieť v týchto predpisoch funkcii trebalo zmeniť ten názov funkcie a ostatne parametre ostali rovnaké.
+Nebolo treba ani meniť ani implementáciu kódu.
 
 \begin{figure}[!htbp]
 	\begin{center}
