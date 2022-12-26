@@ -18,7 +18,7 @@ a jedného príjemcu (subscriber). Medzi týmito dvoma účastníkmi sa následn
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{img/topicsExplanation.png}
-	\caption{Vizualizacia topicu v ROSe \cite{RosDoc}}
+	\caption{Vizualizacia topicu v ROSe~\cite{RosDoc}}
 	\label{fig:topics}
 \end{figure}
 
@@ -30,7 +30,7 @@ cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerý
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{img/serviceExplanation.png}
-	\caption{Vizualizácia služby v ROSe \cite{RosDoc}}
+	\caption{Vizualizácia služby v ROSe~\cite{RosDoc}}
 	\label{fig:service}
 \end{figure}
 
@@ -45,14 +45,14 @@ klientovi výsledok akcie a klient mu obratom potvrdí obdržanie výsledku.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{img/actionExplanation.png}
-	\caption{Vizualizácia akcie v ROSe \cite{RosDoc}}
+	\caption{Vizualizácia akcie v ROSe~\cite{RosDoc}}
 	\label{fig:action}
 \end{figure}
 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=15cm]{img/strukturaRos1Ros2.png}
-	\caption{Porovnanie štruktúr ROS1 a ROS2 \cite{comparison}}
+	\caption{Porovnanie štruktúr ROS1 a ROS2~\cite{comparison}}
 	\label{fig:struktury}
 \end{figure}
 
@@ -128,7 +128,7 @@ jazyku C++ tak sa aj tieto zmeny budu týkať hlavne C++.
 
 	DDS (Služba distribúcie údajov) je stredný protokol používaný v ROS2 na komunikáciu medzi uzlami. Je to systém správ
 	publikovania (publish) / odoberania (subscribe), ktorý umožňuje uzlom komunikovať medzi sebou bez toho, aby poznali identitu ostatných uzlov. DDS je
-	štandardný protokol, ktorý sa okrem ROS2 používa vo viacerých odvetviach. \cite{chatgpt} Druh komunikácie je v ROS2 rozšírený ešte o akcie \ref{s_action}.
+	štandardný protokol, ktorý sa okrem ROS2 používa vo viacerých odvetviach~\cite{chatgpt}. Druh komunikácie je v ROS2 rozšírený ešte o akcie \ref{s_action}.
 
 \subsubsection{Vlákna}
 
@@ -170,44 +170,44 @@ sú pripojené na meniče. Tie sú ovládané priamo príkazmi z počítača.
 
 \subsection{Hardware}
 
-Hardware robota sa sklada z
+Hardware robota sa skladá z
 \begin{itemize}
 	\item kontrolnej dosky Arduino Uno,
 
-	\item pocitaca ADVANTECH MIO-5272~\cite{robotPc} \newline
-		Pocitac obsahuje operacny system Ubuntu.
+	\item Počítača ADVANTECH MIO-5272~\cite{robotPc} \newline
+		Počítač obsahuje operačný systém Ubuntu.
 
-	\item extension board MIOe-210~\cite{extensionModule}
+	\item Extension board MIOe-210~\cite{extensionModule}
 
-	\item Menice MAXON EPOS 24/5 (s cislom 275512)~\cite{menic} \newline
-	 	Su napajane jednosmernym napatim 11 - 24 V a 5 A.
+	\item Meniče MAXON EPOS 24/5 (s číslom 275512)~\cite{menic} \newline
+	 	Sú napájané jednosmerným napätím 11 - 24 V a 5 A.
 
-	\item Enkodery MAXON Encoder MR Type L (s cislom 225787)~\cite{encoder} \newline
-		Rozlisenie enkoderov je 1024 impulzov s troma kanalmi.
+	\item Enkódery MAXON Encoder MR Type L (s číslom 225787)~\cite{encoder} \newline
+		Rozlíšenie enkóderov je 1024 impulzov s troma kanálmi.
 
-	\item Motory MAXON RE 40 (s cislom 148867)~\cite{motor} \newline
-		Motory s vykonom 150W. Maximalna rychlost je 12 000 rpm a efektivita 91\%.
+	\item Motory MAXON RE 40 (s číslom 148867)~\cite{motor} \newline
+		Motory s výkonom 150W. Maximálna rýchlosť je 12 000 rpm a efektivita 91\%.
 
-	\item Prevoodovka MAXON Planetary Gearhead GP 42 C (s cislom 202120)~\cite{prevodovka} \newline
-		Redukcia prevodovky je 43:1. Jej ucinnost je 72\%.
+	\item Prevodovka MAXON Planetary Gearhead GP 42 C (s číslom 202120)~\cite{prevodovka} \newline
+		Redukcia prevodovky je 43:1. Jej účinnosť je 72\%.
 \end{itemize}
 
-\noindent Ovladanie robota je zabezpecene externymi pocitacmi
+\noindent Ovládanie robota je zabezpečené externými počítačmi
 \begin{itemize}
-	\item Control PC Pocitac posielajuci prikazy na robot cez TCP/IP protokol.
-	\item Logging PC Pocitac prijmajuci stav robota cez TCP/IP protokol.
+	\item Control PC -- Počítač posielajúci príkazy na robot cez TCP/IP protokol.
+	\item Logging PC -- Počítač prijímajúci stav robota cez TCP/IP protokol.
 \end{itemize}
 
 \begin{figure}[!htbp]
 	\begin{center}
 		\includegraphics[width=9cm]{img/schemaRobota.png}
 	\end{center}
-	\caption{Schema zapojenia jednotlivych casti na robote}
+	\caption{Schéma zapojenia jednotlivých častí na robote}
 	\label{fig:schemaRobota}
 \end{figure}
 
-Na obrazku Obr.~\ref{fig:schemaRobota} vidime zapojenie jednotlivych casti robota. Co sme nespomenuli a je na obrazku je XBox ovladac. je to kvoli tomu, ze
-timovy projekt bol zamerany na ovaldanie robota pomocou tohto ovladaca.
+Na obrázku Obr.~\ref{fig:schemaRobota} vidíme zapojenie jednotlivých častí robota. Čo sme nespomenuli a je na obrázku je XBox ovládač je to kvôli tomu, že
+tímový projekt bol zameraný na ovládanie robota pomocou tohto ovládača.
 
 \subsection{Komunikácia s robotom}
 
@@ -239,8 +239,8 @@ týchto sprav. Podla dokumentácie sa robot mal ovládať správami typu~\cite{B
 
 \noindent Význam jednotlivých parametrov:
 \begin{itemize}
-	\item \textbf{UserID} - Znázorňuje ID užívateľa, ktorý je pripojený na robot. Predvolená hodnota je 1.
-	\item \textbf{Command} -  Číselná hodnota znázorňujúca príkaz, ktorý ma robot vykonať
+	\item \textbf{UserID} -- Znázorňuje ID užívateľa, ktorý je pripojený na robot. Predvolená hodnota je 1.
+	\item \textbf{Command} --  Číselná hodnota znázorňujúca príkaz, ktorý ma robot vykonať
 		\begin{enumerate}
 			\setcounter{enumi}{-1}
 			\item Prázdny príkaz slúžiaci na overenie spojenia
@@ -254,8 +254,8 @@ týchto sprav. Podla dokumentácie sa robot mal ovládať správami typu~\cite{B
 			\item Pripravenie motorov robota
 			\item Príkaz pýtajúci si aktuálnu pozíciu pravého a ľavého kolesa.
 		\end{enumerate}
-	\item \textbf{RightWheelSpeed} - Nastavenie rýchlosti pre pravé koleso
-	\item \textbf{LeftWheelSpeed} - Nastavenie rýchlosti pre ľavé koleso
+	\item \textbf{RightWheelSpeed} -- Nastavenie rýchlosti pre pravé koleso
+	\item \textbf{LeftWheelSpeed} -- Nastavenie rýchlosti pre ľavé koleso
 \end{itemize}
 
 \noindent Z tohto kusu kódu je jasné, že sa majú posielať celé čísla a na základe tohto vstupu sa bude robot hýbať. Čo sme zistili až po skompilovaní
@@ -294,8 +294,8 @@ otáčania kolies. Na druhu stranu keď si vypýtame od robota rýchlosti kolies
 Po dôkladnom preštudovaní kódu sme zistili, že hodnoty ktoré nám posiela nie sú ani vyťahované z enkóderov správnou funkciou. Preto sme ju zmenili a začali sme dostavať hodnoty,
 s ktorými by sa z mohlo dať pracovať.
 
-Funkcie z knižnice zabezpečujúce komunikáciu z enkóderov motorov pochádzajú z firmy Maxon~\cite{EPOSdoc}. Funkcie, ktoré končia koncovkou 'Target' majú
-návratné hodnoty reprezentujúce žiadané hodnoty. Funkcie s koncovkou 'Is' vracajú aktuálne hodnoty. Z tohto dôvodu sme museli prepísať funkciu, ktorá sa vykonávala,
+Funkcie z knižnice zabezpečujúce komunikáciu z enkóderov motorov pochádzajú z firmy Maxon~\cite{EPOSdoc}. Funkcie, ktoré končia koncovkou `Target' majú
+návratné hodnoty reprezentujúce žiadané hodnoty. Funkcie s koncovkou `Is' vracajú aktuálne hodnoty. Z tohto dôvodu sme museli prepísať funkciu, ktorá sa vykonávala,
 keď sme chceli získať aktuálne hodnoty rýchlosti motora poslaním príkazu \textbf{6}.
 
 \lstset{language=C++,
@@ -324,28 +324,28 @@ BOOL VCS_GetVelocityIs(
 	DWORD* pErrorCode);
 \end{lstlisting}
 
-\noindent Ako môžeme vidieť v týchto predpisoch funkcii trebalo zmeniť ten názov funkcie a ostatne parametre ostali rovnaké.
+\noindent Ako môžeme vidieť v týchto predpisoch funkcii bolo treba zmeniť ten názov funkcie a ostatne parametre ostali rovnaké.
 Nebolo treba ani meniť ani implementáciu kódu.
 
 \begin{figure}[!htbp]
 	\begin{center}
 		\includegraphics[width=0.95\textwidth]{img/robotSpeedChar.png}
 	\end{center}
-	\caption{Prechodová charakteristika rýchlosti kolies \cite{timovyProjekt}. }
+	\caption{Prechodová charakteristika rýchlosti kolies~\cite{timovyProjekt}. }
 	\label{fig:prechChar}
 \end{figure}
 
 \subsection{Lorem Ipsum}
-Tento text bol prevzaty zo stranky \url{www.lipsum.com} \cite{lipsum}, preto ho treba riadne odcitovat.
+Tento text bol prevzaty zo stranky \url{www.lipsum.com}~\cite{lipsum}, preto ho treba riadne odcitovat.
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum \cite{lipsum}.
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum~\cite{lipsum}.
 
-Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English \cite{lipsum}. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+Why do we use it? It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English~\cite{lipsum}. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
 
-Where does it come from? Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source \cite{lipsum}. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32 \cite{lipsum}.
+Where does it come from? Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source~\cite{lipsum}. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32~\cite{lipsum}.
 
 \section{Recitácia}
-Citujem všetky zdroje v \textbf{bibliography.bib}, \cite{t00, t01, t02, t03, kniha, kniha2, kniha3, small, big, cs, koll, kap, tug, knuth, zbornik, prispevok}. \newline Good luck.
+Citujem všetky zdroje v \textbf{bibliography.bib},~\cite{t00, t01, t02, t03, kniha, kniha2, kniha3, small, big, cs, koll, kap, tug, knuth, zbornik, prispevok}. \newline Good luck.
 
 \section{Rovnice}
 Pytagorova veta je definovana vztahom:
@@ -368,7 +368,7 @@ zistime, ze tento \LaTeX template funguje, dokonca mozeme vkladat aj inline rovn
 % \end{equation}
 
 \section{Možnosti anonymizácie}
-\noindent Anonymizácia znamená zmena alebo úprava údajov tak, aby sa podľa nich nedala jednoznačne určiť osoba, ktorej tieto údaje patria \cite{t01}. Existuje niekoľko spôsobov, ktorými môžeme dosiahnuť rôznu úroveň anonymizácie na internete: od mazania cookies súborov po ukončení prehliadania webových stránok až po používanie operačných systémov, ktoré sú na anonymite založené; od bezplatných možností až po komerčné verzie.
+\noindent Anonymizácia znamená zmena alebo úprava údajov tak, aby sa podľa nich nedala jednoznačne určiť osoba, ktorej tieto údaje patria~\cite{t01}. Existuje niekoľko spôsobov, ktorými môžeme dosiahnuť rôznu úroveň anonymizácie na internete: od mazania cookies súborov po ukončení prehliadania webových stránok až po používanie operačných systémov, ktoré sú na anonymite založené; od bezplatných možností až po komerčné verzie.
 \newline Nasleduje priblíženie niektorých možnosti anonymizácie.
 
 \subsection{Súkromné prehliadanie}
