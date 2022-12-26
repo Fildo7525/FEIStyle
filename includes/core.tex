@@ -168,6 +168,47 @@ situácia, kedy počítač ovládajúci motory prestane komunikovať s Arduinom,
 Ako bolo spomenuté LEDky znázorňujú pohyb robota. Ten sa pohybuje za pomoci diferenciálneho podvozku s dvoma podpornými všesmerovými kolesami. Motory robota
 sú pripojené na meniče. Tie sú ovládané priamo príkazmi z počítača.
 
+\subsection{Hardware}
+
+Hardware robota sa sklada z
+\begin{itemize}
+	\item kontrolnej dosky Arduino Uno,
+
+	\item pocitaca ADVANTECH MIO-5272~\cite{robotPc} \newline
+		Pocitac obsahuje operacny system Ubuntu.
+
+	\item extension board MIOe-210~\cite{extensionModule}
+
+	\item Menice MAXON EPOS 24/5 (s cislom 275512)~\cite{menic} \newline
+	 	Su napajane jednosmernym napatim 11 - 24 V a 5 A.
+
+	\item Enkodery MAXON Encoder MR Type L (s cislom 225787)~\cite{encoder} \newline
+		Rozlisenie enkoderov je 1024 impulzov s troma kanalmi.
+
+	\item Motory MAXON RE 40 (s cislom 148867)~\cite{motor} \newline
+		Motory s vykonom 150W. Maximalna rychlost je 12 000 rpm a efektivita 91\%.
+
+	\item Prevoodovka MAXON Planetary Gearhead GP 42 C (s cislom 202120)~\cite{prevodovka} \newline
+		Redukcia prevodovky je 43:1. Jej ucinnost je 72\%.
+\end{itemize}
+
+\noindent Ovladanie robota je zabezpecene externymi pocitacmi
+\begin{itemize}
+	\item Control PC Pocitac posielajuci prikazy na robot cez TCP/IP protokol.
+	\item Logging PC Pocitac prijmajuci stav robota cez TCP/IP protokol.
+\end{itemize}
+
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=9cm]{img/schemaRobota.png}
+	\end{center}
+	\caption{Schema zapojenia jednotlivych casti na robote}
+	\label{fig:schemaRobota}
+\end{figure}
+
+Na obrazku Obr.~\ref{fig:schemaRobota} vidime zapojenie jednotlivych casti robota. Co sme nespomenuli a je na obrazku je XBox ovladac. je to kvoli tomu, ze
+timovy projekt bol zamerany na ovaldanie robota pomocou tohto ovladaca.
+
 \subsection{Komunikácia s robotom}
 
 S robotom sa vieme spojiť pomocou dvoch portov. Jeden port je otvorený na prijímanie požiadavok (requestov) a ten druhy je na monitorovanie stavu robota. 
