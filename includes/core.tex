@@ -124,6 +124,7 @@ jazyku C++ tak sa aj tieto zmeny budu týkať hlavne C++.
 	V druhej verzii je zaužívaným štandardom tuto nodu precediť a použiť polymorfizmus pri objekte, ktorý musí existovať počas celej doby vykonávania programu. Pri
 	prvej verzii tomu tak nebolo. Museli sme vytvoriť už spomenutý NodeHandle. Ten sa nemusel využiť ako base trieda a nemusel ani existovať počas celého behu programu.
 
+\newpage
 \subsubsection{Komunikácia}
 
 	DDS (Služba distribúcie údajov) je stredný protokol používaný v ROS2 na komunikáciu medzi uzlami. Je to systém správ
@@ -134,6 +135,14 @@ jazyku C++ tak sa aj tieto zmeny budu týkať hlavne C++.
 
 	Prvá verzia ROSu je založená na jedno vláknovom, synchrónnom komunikačnom modeli, zatiaľ čo ROS2 je založený na viac vláknovom, asynchrónnom
 	komunikačnom modeli. Táto zmena znateľne zrýchľuje program, ale prináša väčšiu komplexnosť do programu.
+
+	\subsubsection{Nodelet alebo komponent}
+
+	ROS1 ponúka možnosť definície uzlov ako \texttt{nodlet}. Je to definovanie uzlu ako zdielanej knižnice (shared library). Je to spôsob ako uľahčiť
+	prácu CPU. Keď sa definuje zdielaná knižnica tak jeden proces môže spracovávať programy z viacerých uzlov. Táto funkcionalita sa nachádza aj v ROS2.
+	Volá sa komponent (\texttt{component}). Vylepšením oproti nodeletom je zjednotenie aplikačnej implementácie. Pokým nodelety mali vlastný spôsob
+	implementácie v ROS1 tak v ROS2 je implementácia uzla a komponentu rovnaká. Pri komponente sa musí len naviac definovať, že daný komponent existuje.
+	Použitie komponentov zjednodušuje prácu CPU a používa sa hlavne v zariadeniach, ktoré majú obmedzený výkon výpočtovej techniky.
 
 \subsubsection{Kompilácia}
 
