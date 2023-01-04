@@ -8,11 +8,11 @@ ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 \subsection{ROS}
 
 \noindent Komunikácia v~ROSe je zabezpečená cez IPC (\acrlong{IPC}), TCP/IP UDP/IP komunikáciou pomocou troch zakladacích metód:
-\textbf{topiky} (Topics), \textbf{služby} (Service) a~\textbf{akcie} (Actions)
+\textbf{témy} (Topics), \textbf{služby} (Service) a~\textbf{akcie} (Actions)
 
-\subsubsection{Topiky}
+\subsubsection{Témy}
 
-\textbf {Topiky} (IPC) sú najjednoduchší spôsob komunikácie. Vieme si ich prirovnať k UDP/IP protokolu. Definujeme si jedného poskytovateľa (publisher)
+\textbf {Témy} (IPC) sú najjednoduchší spôsob komunikácie. Vieme si ich prirovnať k UDP/IP protokolu. Definujeme si jedného poskytovateľa (publisher)
 a jedného príjemcu (subscriber). Medzi týmito dvoma účastníkmi sa následne posielajú správy (messages), ktoré sme si dopredu definovali.
 
 \begin{figure}[h]
@@ -24,7 +24,7 @@ a jedného príjemcu (subscriber). Medzi týmito dvoma účastníkmi sa následn
 
 \subsubsection{Služby}
 
-\textbf {Služby} (TCP/IP) nám poskytujú rovnaký spôsob komunikácie ako topiky, až na~to, že sa správy medzi servisom a~klientom posielajú
+\textbf {Služby} (TCP/IP) nám poskytujú rovnaký spôsob komunikácie ako témy, až na~to, že sa správy medzi servisom a~klientom posielajú
 cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerými zariadeniami.
 
 \begin{figure}[h]
