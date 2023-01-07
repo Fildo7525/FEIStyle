@@ -164,12 +164,12 @@ If you installed MacTex distribution you also have application called TeX Live U
 
 #### TL;DR
 
- There are more types of download. They differ in the amount of contents you would download.
+ There are more types of downloads. They differ in the amount of contents you would download.
  I recon the texlive-latex-recommended is recommended to download and then add the missing packages.
  Worth mentioning is that the full version will download all the packages (also those like Japanese or Chinese language support).
 
   ```
-   $ sudo apt install texlive-latex-recomended latexmk biber texlive-lang-czechslovaku texlive-bibertex-extra
+   $ sudo apt install texlive-latex-recomended latexmk biber texlive-lang-czechslovak texlive-bibtex-extra texlive-science
   ```
 
  ### Older versions using eitl (works for Fedora too)
