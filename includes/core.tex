@@ -1,32 +1,32 @@
 \section{ROS}
-\noindent Robotický operačný systém (\acrlong{ROS}) je súbor voľne dostupných softvérových knižníc a~nástrojov, ktoré nám vytvárajú
-vhodné podmienky na~písanie aplikácií pre~mnohé druhy robotov. ROS má dve verzie. Vo všeobecnosti sa stretneme s~tým, že pod názvom
-ROS1 alebo ROS sa myslí ROS verzie 1. Pod názvom ROS2 sa myslí ROS verzie 2. Aby nenastali nejasnosti budeme v~tomto dokumente
-označovať ROS verzie 1 ako ROS1 a~ROS verzie 2 ako ROS2. V~prípade, keď budme hovoriť o~spoločných vlastnostiach a~funkcionalitách,
-ROS1 a~ROS2 budeme označovať dokopy ako ROS.
+\noindent Robotický operačný systém (\acrlong{ROS}) je súbor voľne dostupných softvérových knižníc a~nástrojov, ktoré vytvárajú
+vhodné podmienky pre programátorov na~písanie aplikácií pre~mnohé druhy robotov. ROS má dve verzie. Vo všeobecnosti sa stretneme
+s~tým, že pod názvom ROS1 alebo ROS sa myslí ROS verzie 1. Pod názvom ROS2 sa myslí ROS verzie 2. Aby nenastali nejasnosti
+budeme v~tomto dokumente označovať ROS verzie 1 ako ROS1 a~ROS verzie 2 ako ROS2. V~prípade, keď budme hovoriť o~spoločných
+vlastnostiach a~funkcionalitách, ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 
 \subsection{ROS}
 
 \noindent Komunikácia v~ROSe je zabezpečená cez IPC (\acrlong{IPC}), TCP/IP UDP/IP komunikáciou pomocou troch zakladacích metód:
-\textbf{témy} (Topics), \textbf{služby} (Service) a~\textbf{akcie} (Actions)
+\textbf{témy} (Topics), \textbf{služby} (Service) a~\textbf{akcie} (Actions).
 
 \subsubsection{Témy}
 
-\textbf {Témy} (IPC) sú najjednoduchší spôsob komunikácie. Vieme si ich prirovnať k UDP/IP protokolu. Definujeme si jedného poskytovateľa (publisher)
-a jedného príjemcu (subscriber). Medzi týmito dvoma účastníkmi sa následne posielajú správy (messages), ktoré sme si dopredu definovali.
+\textbf {Témy} sú sprostredkované pomocou IPC - Medzi procesová komunikácia z anglického \acrlong{IPC}. Je to najjednoduchší spôsob
+komunikácie. Vieme si ich prirovnať k~UDP/IP protokolu, s tým že neprebiehajú cez sieť. Definujeme si jedného poskytovateľa (publisher)
+a~jedného alebo viacerých príjemcov (subscriber). Medzi týmito dvoma alebo viacerými účastníkmi sa následne posielajú správy (messages),
+ktoré sme si dopredu definovali.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=8cm]{img/topicsExplanation.png}
-	\caption{Vizualizacia topicu v~ROSe~\cite{RosDoc}}
-	\label{fig:topics}
-\end{figure}
+	\caption{Vizualizácia témy v~ROSe~\cite{RosDoc}} \label{fig:topics} \end{figure}
 
 \newpage
 \subsubsection{Služby}
 
-\textbf {Služby} (TCP/IP) nám poskytujú rovnaký spôsob komunikácie ako témy, až na~to, že sa správy medzi servisom a~klientom posielajú
-cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerými zariadeniami.
+\textbf {Služby} sú sprostredkované pomocou TCP/IP protokolu. Poskytujú nám rovnaký spôsob komunikácie ako témy, až na~to, že sa správy
+medzi servisom a~klientom posielajú cez LAN (\acrlong{LAN}) a oboma smermi. Služby sa využívajú pri komunikácii medzi viacerými zariadeniami.
 
 \begin{figure}[h]
 	\centering
@@ -39,7 +39,7 @@ cez LAN (\acrlong{LAN}). Služby sa využívajú pri komunikácii medzi viacerý
 
 \label{s_action}
 \textbf {Akcie} (TCP/IP) sú najzložitejším spôsobom komunikácie. Tento spôsob bol pridaný do~ROS1 až neskôr. V~druhej verzii ROSu je tento
-typ komunikácie medzi troma základnými. Sú založené na~službách a prebiehaju asynchronne~\cite{ROS2book}. a~máju 3 stavy. Najprv pošle klient serveru,
+typ komunikácie medzi troma základnými. Sú založené na~službách a prebiehajú asynchrónne~\cite{ROS2book} a~máju 3 stavy. Najprv pošle klient serveru,
 akú akciu má vykonať, server mu potvrdí, že túto požiadavku dostal. Server začne následne vykonávať danú akciu a~posielať klientovi priebežné správy
 o~priebehu vykonávania žiadanej úlohy. Keď server skončí pošle klientovi výsledok akcie a~klient mu obratom potvrdí obdržanie výsledku.
 
@@ -53,7 +53,7 @@ o~priebehu vykonávania žiadanej úlohy. Keď server skončí pošle klientovi 
 \subsection{Parametre}
 
 \label{s_parametre}
-\textbf{Parametre} sú spôsob, ako môže komunikovať užívateľ so základnými nastaveniami programu bez potreby zmenenia kodu a jeho naslednej kompilacie.
+\textbf{Parametre} sú spôsob, ako môže komunikovať užívateľ so základnými nastaveniami programu bez potreby zmenenia kódu a jeho následnej kompilácie.
 Definujú sa v~\textit{yaml} konfiguračnom súbore. V~ňom si môžeme zadefinovať mená jednotlivých parametrov a ich základné hodnoty. Tie si vieme v~programe
 vytiahnuť pomocou API, \acrlong{API}, (Aplikačné Programovacie Rozhranie) v~ROSe.
 
@@ -71,8 +71,8 @@ kedy vznikol prešiel mnohými verziami a~úpravami. Jeho neoddeliteľnou súča
 podpora viacerých programovacích jazykov ako sú C, C++ alebo Python a~vytváranie balíčkov dostupných širokej verejnosti.
 
 Štrukturalizovanie základov ROS1 je spravené monoliticky čo najstabilnejším spôsobom. Na~počiatku programu musíme spustiť hlavný program (roscore),
-ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená prostredníctvom prepojenia uzlov cez LAN/WLAN alebo IPC komunikaciu.
-Ak su uzly spustené na~iných zariadeniach, tak sa využíva len komunikácia cez sieť. Roscore ďalej poskytuje parametre jednotlivým uzlom z~parametrového
+ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená prostredníctvom prepojenia uzlov cez LAN/WLAN alebo IPC komunikáciu.
+Ak sú uzly spustené na~iných zariadeniach, tak sa využíva len komunikácia cez sieť. Roscore ďalej poskytuje parametre jednotlivým uzlom z~parametrového
 servera. Jeho najväčšou úlohou je zabezpečenie komunikácie uzlov v~programe.
 
 \pagebreak
@@ -93,7 +93,7 @@ podpora poslednej distribúcie ROS1 menom \textit{Noetic}. Preto~je odporúčan�
 Ako už bolo spomenuté zámerom vývoja ROS2 je zlepšenie funkcionality a~bezpečnosti systému. ROS2 nie je spätne kompatibilný.
 Podstata toho, ako sú zoskupované uzly a~ako spolu komunikujú je diametrálne odlišná od~ROS1. Z~tohto dôvodu bol vyvinutý takzvaný rosbridge,
 ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to~ale trvalé riešenie. Odporúčané je nástroj využívať a~počas toho prepisovať kód
-z verzie 1 do~verzie 2. Komunikácia prebieha \newline v~ROS2 rovnakým spôsobom ako v~ROS1. Pomocou topikov, služieb a~akcií.
+z verzie 1 do~verzie 2. Komunikácia prebieha \newline v~ROS2 rovnakým spôsobom ako v~ROS1. Pomocou tém, služieb a~akcií.
 
 Táto podobnosť končí na~najvyššej vrstve. Ako sme videli na~Obr.~\ref{fig:struktury}. Štruktúra ROS2 je rozdelená do~viacerých vrstiev.
 Najdôležitejšie je pre~nás vedieť, že komunikácia je spracovávaná modelom DDS (Služba distribúcie údajov) z~anglického (\acrlong{DDS}). Tento model zlepšuje výkon, stabilitu
@@ -125,7 +125,7 @@ jazyku C++ tak sa aj tieto zmeny budu týkať hlavne C++.
 	sme definovali publishera (publikovateľa) všeobecného a~definovali sme mu cez aký topic má posielať správy. V~druhej verzii naväzujeme publishera
 	na špecifický tip správy akú posielame. Nemôže sa teda stať, že takýto program by sme skompilovali a~následne keď ho spustíme tak by spadol.
 
-\subsubsection{Inicializácia nody}
+\subsubsection{Inicializácia nody(uzla)}
 
 	Tak isto ako v~prvej verzii aj v~druhej verzii musíme definovať nodu. Rozdiel je v~tom, že prvá verzia obsahovala NodeHandle a~druha verzia obsahuje priamo Node.
 	V druhej verzii je zaužívaným štandardom tuto nodu precediť a~použiť polymorfizmus pri objekte, ktorý musí existovať počas celej doby vykonávania programu. Pri
@@ -213,8 +213,8 @@ Hardware robota sa skladá z
 
 \noindent Ovládanie robota je zabezpečené externými počítačmi
 \begin{itemize}
-	\item Control PC (Kontrolny pocitac) -- Počítač posielajúci príkazy na~robot cez TCP/IP protokol.
-	\item Logging PC (Logovaci pocitac) -- Počítač prijímajúci stav robota cez TCP/IP protokol.
+	\item Control PC (Kontrolný počítač) -- Počítač posielajúci príkazy na~robot cez TCP/IP protokol.
+	\item Logging PC (Logovací počítač) -- Počítač prijímajúci stav robota cez TCP/IP protokol.
 \end{itemize}
 
 \begin{figure}[!htbp]
