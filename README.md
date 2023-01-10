@@ -4,6 +4,12 @@
 
 - [FEIstyle](#feistyle)
     - [Changelog](#changelog)
+- [Latex installation](#latex-installation)
+  - [Installation on macOS](#installation-on-macos)
+    - [Updating TeX packages](#updating-tex-packages)
+  - [Installation on Ubuntu / Fedora](#installation-on-ubuntu-and-fedora)
+      - [Newer versions of Ubuntu](#for-newer-versions-of-ubuntu)
+      - [Older versions of Ubuntu and Fedora](#older-versions-using-eitl)
 - [Usage](#usage)
 - [Compile chain](#compile-chain)
   - [Manual compiling](#manual-compiling)
@@ -12,9 +18,6 @@
   - [Sublime-text 3 project file](#sublime-text-3-project-file)
 - [Hints and trics](#hints-and-trics)
   - [Counting words, lines and characters](#counting-words-lines-and-characters)
-  - [Installation on macOS](#installation-on-macos)
-    - [Updating TeX packages](#updating-tex-packages)
-  - [Installation on Ubuntu / Fedora using eitl](#installation-on-ubuntu--fedora-using-eitl)
 - [TODO](#todo)
 - [Contribution](#contribution)
 
@@ -43,8 +46,70 @@ Change-log is located [here](CHANGELOG.md).
 
 >**Note**: Minor changes are not noted in change-log.
 
+# Latex installation
+
+[Here](https://www.tug.org/texlive/) you can find the full documentation of how to download Latex for Linux, Windows and macOS.
+
+## Installation on macOS
+
+ - install [MacTex distribution](https://tug.org/mactex/) using [homebrew](http://brew.sh/index.html) (~2GB / 6GB installed)
+
+    ```
+    $ brew cask install mactex
+    ```
+ - you can download MacTex manually from [tug.org](http://www.tug.org/mactex/mactex-download.html).
+
+>**Note**: MacTex installs also BibDesk which can be used to maintain your bibliography in a very nice way.
+
+### Updating TeX packages
+
+If you installed MacTex distribution you also have application called TeX Live Utility (it is a front-end for `pkmgr` program)
+which is used to upgrade all TeX related packages, open it from time to time and do a full update.
+
+## Installation on Ubuntu and Fedora
+
+### For newer versions of Ubuntu
+
+[Here](https://www.tug.org/texlive/) you can see detailed info about downloading latex on ubuntu.
+
+#### TL;DR
+
+ There are more types of downloads. They differ in the amount of contents you would download.
+ The texlive-latex-recommended is recommended to download. The full version will download every
+ package linked with texlive (also those like Japanese or Chinese language support). Then add
+ the missing packages. This can be achieved using command:
+
+  ```
+   $ sudo apt install texlive-latex-recomended latexmk biber texlive-lang-czechslovak texlive-bibtex-extra texlive-science
+  ```
+
+### Older versions using eitl
+>**Note**:  Works for Fedora too
+
+Do following steps only if you have texlive 2015 or less
+
+>**Note**: biblatex-iso690 is included in 2016 build of texlive
+
+ - download install script
+  
+   ```
+   $ wget http://mirrors.ctan.org/support/texlive/eitl.zip
+   ```
+ 
+ - unzip
+   
+   ```
+   $ unzip eitl.zip && cd eitl
+   ```
+
+ - install TexLive
+ 
+   ```
+   $ ./eitl.sh /usr/share/texlive
+   ```
+
 # Usage
- - Download all [files](https://github.com/Kyslik/FEIStyle/archive/master.zip) from repository, extract to desired folder and enjoy.
+  Download the [zip](https://github.com/Kyslik/FEIStyle/archive/master.zip) file or clone the repository. In case of the zip file, extract it to desired folder and enjoy. 
 
 # Compile chain
 
@@ -140,59 +205,6 @@ Counting words from source file (**not recommended**, since template does a lot 
 ```
 texcount -inc example.tex
 ```
-
-## Installation on macOS
-
- - install [MacTex distribution](https://tug.org/mactex/) using [homebrew](http://brew.sh/index.html) (~2GB / 6GB installed)
-
-    ```
-    $ brew cask install mactex
-    ```
- - you can download MacTex manually from [tug.org](http://www.tug.org/mactex/mactex-download.html).
-
->**Note**: MacTex installs also BibDesk which can be used to maintain your bibliography in a very nice way.
-
-### Updating TeX packages
-
-If you installed MacTex distribution you also have application called TeX Live Utility (it is a front-end for `pkmgr` program) which is used to upgrade all TeX related packages, open it from time to time and do a full update.
-
-## Installation on Ubuntu
-
-### For newer versions of texlive type
-
-[Here](https://linuxconfig.org/how-to-install-latex-on-ubuntu-20-04-focal-fossa-linux) you can see detailed info about downloading latex on ubuntu.
-
-#### TL;DR
-
- There are more types of downloads. They differ in the amount of contents you would download.
- I recon the texlive-latex-recommended is recommended to download and then add the missing packages.
- Worth mentioning is that the full version will download all the packages (also those like Japanese or Chinese language support).
-
-  ```
-   $ sudo apt install texlive-latex-recomended latexmk biber texlive-lang-czechslovak texlive-bibtex-extra texlive-science
-  ```
-
- ### Older versions using eitl (works for Fedora too)
-Do following steps only if you have texlive 2015 or less
->**Note**: biblatex-iso690 is included in 2016 build of texlive
-
- - download install script
-  
-   ```
-   $ wget http://mirrors.ctan.org/support/texlive/eitl.zip
-   ```
- 
- - unzip
-   
-   ```
-   $ unzip eitl.zip && cd eitl
-   ```
-
- - install TexLive
- 
-   ```
-   $ ./eitl.sh /usr/share/texlive
-   ```
 
 
 # TODO
