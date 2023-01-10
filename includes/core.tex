@@ -132,7 +132,7 @@ projekt bol písaný v~programovacom jazyku C++ tak sa aj tieto zmeny budu týka
 	a~C++17. To~zahŕňa inicializovanie templatov a~ich použivanie. Definície a deklarácie templatov sú na~knihu samú o~sebe, preto do~detailov
 	nebudeme zachádzať. Stačí nám vedieť, ako ich inicializovať. V~prvej verzii sme definovali všeobecného publishera (publikovateľa) a~definovali
 	sme mu len cez akú tému má posielať správy. V~druhej verzii naväzujeme publishera na špecifický tip správy akú posielame. Nemôže sa teda stať,
-	že takýto program by sme skompilovali a~následne keď ho spustíme tak by spadol z dôvodu, že čítame iný typ spravy ako posielame.
+	že takýto program by sme skompilovali a~následne, keď ho spustíme, tak by spadol z dôvodu, že čítame iný typ spravy ako posielame.
 
 \subsubsection{Inicializácia nody(uzla)}
 
@@ -156,7 +156,7 @@ projekt bol písaný v~programovacom jazyku C++ tak sa aj tieto zmeny budu týka
 
 \subsubsection{Nodelet alebo komponent}
 
-	ROS1 ponúka možnosť definície uzlov ako uzlík ()\texttt{nodelet}). Je to~definovanie uzlu ako zdielanej knižnice (shared library). Je
+	ROS1 ponúka možnosť definície uzlov ako uzlík (\texttt{nodelet}). Je to~definovanie uzlu ako zdielanej knižnice (shared library). Je
 	to~spôsob ako uľahčiť prácu CPU. Keď sa definuje uzol ako uzlík, tak jeden proces môže spracovávať programy z~viacerých takýchto uzlíkov.
 	Táto funkcionalita sa nachádza aj v~ROS2. Volá sa komponent (\texttt{component}). Vylepšením oproti nodelet-om je zjednotenie aplikačnej
 	implementácie (API). Pokým nodelet-y mali vlastný spôsob implementácie v~ROS1 tak v~ROS2 je implementácia uzla a~komponentu rovnaká.
@@ -177,7 +177,7 @@ projekt bol písaný v~programovacom jazyku C++ tak sa aj tieto zmeny budu týka
 \subsubsection{Vlákna}
 
 	ROS1 dovoľuje programátorom vybrať si medzi jedno vláknovým a viac vláknovým vykonávaním programu. Tvorcovia ROS2 si dali zaležať na~modularite
-	aj tejto oblasti kódu. V druhej verzii ROS-u si vieme zadefinovať typ vykonávania programu separátne pre každý uzol a vieme si tento typ
+	aj tejto oblasti kódu. V~druhej verzii ROS-u si vieme zadefinovať typ vykonávania programu separátne pre každý uzol a vieme si tento typ
 	zadefinovať aj sami~\cite{ROS2design}.
 
 \section{Robot}
