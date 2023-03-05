@@ -418,3 +418,111 @@ a~ľavého motora.
 	\label{fig:prechChar}
 \end{figure}
 
+\section{Ziskavanie rychlosti robota}
+\label{sec:ziskavanieRychlosti}
+
+Ako bolo spomenuté v~predchádzajúcej kapitole, rýchlosti kolies sa dajú získať z~enkóderov. Tieto dáta sa posielajú v sprave, ktorá pripomína JSON formát.
+Z~týchto vzoriek poslaných robotom nevieme priamo vypočítať polohu. Musíme si tieto dáta premeniť z~impulzov za sekundu \(\frac{1}{s}\) na metre
+za sekundu \(\frac{m}{s}\). Tento prevod nebude jednoznačný, pretože jazdy enkódery posiela dáta inak zašumené. Preto je potrebne zistiť, ako sa zmení
+rýchlosť pri zmene impulzov za sekundu. Tento prevod je nožne získať z~merania, kde po~nastavení rýchlosti zoberieme veľa dát z~enkóderov a zistíme,
+ako sa zmení rýchlosť pri zmene impulzov za sekundu. Prvý nápad na získanie čo najlepšej prevodovej charakteristiky bolo cez všetky dáta položiť
+lineárnu regresiu. To sa ukázalo ako zlé riešenie, lebo dáta, ktoré dostávame majú veľmi veľký rozptyl. Jednou z~nasledujúcich úvah bolo spraviť
+kĺzavý priemer. Toto riešenie malo tiež svoje chyby a to v tom, že zmeny zaznamenaných impulzov za sekundu sa zmenili v~závislosti od~rýchlosti a~smeru.
+V~tomto bode sme vyskúšali počítať biometriu z~obdržaných dát. Táto implementácia bola veľmi nepresná. Tento pokus nám potvrdil, že~potrebujeme filter
+obdržaných impulzov. Výsledky pokusu, kde sme zisťovali prevodovú charakteristiku z~impulzov za sekundu na~rýchlosť v~SI jednotkách nájdeme
+na nasledovných grafoch.
+
+\begin{figure}[!htbp]
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/lw_nf.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/rw_nf.png}
+	\end{subfigure}
+	\caption{Ziskanie prevodu z impulzov na rychlost v SI jednotkach.}
+	\label{fig:rw_lw_nf}
+\end{figure}
+
+Implementovali sme si preto dolnopriepustný kvadraticky filter. Jeho parameter \(\alpha\) sme získali viacerými meraniami. Začali sme
+najsilnejším filtrom s hodnotou \(\alpha =  0.9\)
+
+\begin{figure}[!htbp]
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/lw_09250.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/rw_09250.png}
+	\end{subfigure}
+	\caption{Ziskanie prevodu z impulzov na rychlost v SI jednotkach. \(\alpha\) = 0.9.}
+	\label{fig:rw_lw_09250}
+\end{figure}
+
+Ako môžeme vidieť na obrázkoch Obr.~\ref{fig:rw_lw_09250} a Obr.~\ref{fig:rw_lw_nf} aplikácia filtra výrazne pomohla proti sumu signálu.
+Problémom pri silnom filtri je to, že ak na začiatku merania dostaneme zlu hodnotu, tak sa tato hodnota ťažko mení na správnu.
+Tento problém sme riešili postupným menením parametra filtru. Ďalšiu hodnotu sme použili \(\alpha = 0.7\)
+
+\begin{figure}[!htbp]
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/lw_07250.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/rw_07250.png}
+	\end{subfigure}
+	\caption{Ziskanie prevodu z impulzov na rychlost v SI jednotkach. \(\alpha\) = 0.7.}
+	\label{fig:rw_lw_07250}
+\end{figure}
+
+\newpage
+
+Pri pouziti hodnoty \(\alpha = 0.7\) sme zistili, že sa hodnoty rýchlosti aj pri aplikacii filtru vyrazne menili.
+Spravili sme preto dalsie meranie, kde sme pouzili hodnotu \(\alpha = 0.75\).
+
+\begin{figure}[!htbp]
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/lw_075250.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/rw_075250.png}
+	\end{subfigure}
+	\caption{Ziskanie prevodu z impulzov na rychlost v SI jednotkach. \(\alpha\) = 0.75.}
+	\label{fig:rw_lw_07250}
+\end{figure}
+
+Pouzitie silnejsieho filtra
+
+\begin{figure}[!htbp]
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/lw_08250.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/rw_08250.png}
+	\end{subfigure}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.8.}
+	\label{fig:rw_lw_07250}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/lw_08100.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/rw_08100.png}
+	\end{subfigure}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.8.}
+	\label{fig:rw_lw_07250}
+\end{figure}
+
+\newpage
+
+Najlepšia možná hodnota tohto parametru nám vyšla \(\alpha = 0.8\). Pri implementácii tohto filtra sme museli myslieť na dôležitú vec.
+Keď sa zmenia jednorazovo impulzy na hodnotu 0 a hneď spať, tak nám táto vzorka pokazí výsledok. Musíme preto túto vzorku ignorovať. Ďalšia
+prekážka, ktorú sme mali pred sebou bola zmena rýchlosti. Obyčajná implementácia filtra by nám spomalila zmenu vypočítanej rýchlosti
+a teda aj veľkú odchýlku v polohe. Tento problém sme opravili prestavením počiatočnej hodnoty filtra na prvú hodnotu po zmene rýchlosti.
+Toto riešenie sa ukázalo ako najlepšie so skúšaných riešení.
+
