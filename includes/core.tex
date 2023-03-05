@@ -256,6 +256,7 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 \textit{665} a~je otvorený len pre~jedného užívateľa.
 
 \subsubsection{Logovanie}
+\label{sec:logovanie}
 
 	Spomínaný port \textit{664} je otvorený jednému užívateľovi. Keď sa užívateľ pripojí začne dostávať nepretržite správy typu
 	\textit{JSON}~(\acrlong{JSON}), ktoré hlásia stav robota. Správy, ktoré dostávame sú nasledujúceho formátu
@@ -269,6 +270,7 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 	využiť na~to~čo reálne spomenutý \textit{JSON} reťazec ukazuje. A to udávať smer a stav robota.
 
 \subsubsection{Ovládanie}
+\label{sec:ovladanie}
 
 	Port \textit{665} je sprístupnený na~prijímanie a~odosielanie požiadavok a~ich odpovedí. Príkazy sa na~počítač posielajú cez sieť z~externého
 	počítača vo formáte \textbf{JSON}. Študenti, ktorí navrhovali systém posielania požiadavok (request) a~odpovedí (response) robili tieto správy
@@ -330,6 +332,91 @@ na~preddefinované miesto. \newline
 \noindent \textbf{RightWheelSpeed/LeftWheelSpeed} \newline
 \indent Nastavovanie rýchlosti pravého a~ľavého kolesa nie sú povinne parametre. Musíme ich zadávať len v~prípade posielania rýchlostí
 cez~príkaz s~číslom \ref{c3}.
+
+\section{Správanie programu}
+\label{sec:program}
+
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{img/BlackMetal_flowchart.png}
+	\end{center}
+	\caption{Graf vykonávania programu na ovládanie robota pomocou ROS2.}
+	\label{fig:flowchart}
+\end{figure}
+
+\subsection{Uvod do citania grafu}
+\label{sec:citanie_grafu}
+
+Na obrazku Obr.~\ref{fig:flowchart} mozeme vidiet viacero objektov roznych farieb. Objekty zobrazene cervenou farbou su uzly spracovavane
+a vytvarane v ramci ROS2. Kazdy tento objekt bezi v separatnom procese. Objekty zobrazene oraznovou farbou su objekty, ktore maju svoje
+vlastne vlakno. Tieto objekty boli vytvorene uzlom BlackMetal. Datove struktury Queue, zobrazene bielou farbou su vytvorene  tak aby
+zabezpecovali bezchybnu komunikaciu medzi viacerimi vlaknami. Objekt so zelenou farbou je vstup do programu. Je zadavany uzivatelom
+a reprezentuje ziadanu rychlost robota. Modry objekt je vystupom probtramu. Je to topic, na ktory sa publikuje aktualna pozicia robota.
+Robot samotny je zobrazeny bielou farbou vo fome maleho oblacika. Prerusovane ciary na diagrame znazornuju sietovu komunikaciu programu
+a robota. Cervene dvojite ciary udavaju presne ktore objekty patria ROS-u. Nakoniec cierne plne ciary reprezentuju tok dat medzi objektami.
+
+\subsection{Uzly}
+
+Na obrazku Obr.~\ref{fig:flowchart} mozeme vidiet postup vykonavania programu na ovaldanie robota BlackMetal pomocou ROS2.
+Na zaciatku programu sa vytvoria 3 uzly. Prvy uzol \textbf{Position Publisher Node} je uzol, na ktory sa publikuje vypocitana pozicia robota.
+Pocita sa na zakalde obdrzanych dat z enkoderov robota. Uzol \textbf{Logger Node} sluzi na zaznamenavanie stavu robota \ref{sec:logovanie}.
+Posledny uzol \textbf{BlackMetal Node} ovlada robota na zaklade zadanych dat uzivatelom.
+
+\subsection{Vstup}
+
+Uzol \textit{BlackMetal Node} vytvorí príjemcu, ktorý počúva na téme \textit{geometry\_msgs/msg/Twist}. Tento vstup je vo forme príkazu
+zadaného v príkazovom riadku. Vyzera nasledovne:
+
+\lstset{language=bash,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{orange}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#},
+	numberstyle=\color{red}
+}
+
+\label{requestCommand}
+\begin{lstlisting}[language=bash]
+	ros2 topic pub /cmd_vel geometry_msgs/msg/Twist
+		"linear:
+			x: 0.0,
+			y: 0.0,
+			z: 0.0,
+		angular:
+			x: 0.0,
+			y: 0.0,
+			z: 0.0" -1
+\end{lstlisting}
+
+Tento \hyperref[requestCommand]{príkaz} publikuje jednu správu (\textit{-1}) o lineárnych a uhlových rýchlostiach na tému \textit{/cmd\_vel}
+Táto sprava je typu \textit{geometry\_msgs/mgs/Twist}. Je nasledne spracovana a ulozena do rady \textit{Queue}. Tato rada je prioritne zalozena.
+To znamena, ze poziadavka s nizsim kodom ma vyzsiu prioritu. Poziadavky a ich kody mozeme vidiet v sekcii \ref{sec:ovladanie}.
+
+\subsection{Komunikacia s robotom}
+\label{sec:robotComms}
+
+Ako je naznacene na Obr.~\ref{fig:flowchart}, klient si vo svojom vlastnom vlakne vytiahne prvu spravu z rady a pretransformuje ju do formy JSON.
+Tento typ spravy mozeme vidiet v \ref{sec:ovladanie}. Prikaz je poslany robotu a ten obratom da vediet, ci danu poziadavku obdrzal. Ak tato sprava
+ziadala rychlosti kolies, tak robot dalsou spravou odpovie na danu poziadavku. Typ tejto odpovede mozeme vidiet v \ref{jsonWannabeSpeed}. V tomto pripade
+sa sprava spracuje a ulozi sa do dalsej rady.
+
+\subsection{Odometria}
+\label{sec:odometria}
+
+Odometria, pocitanie polohy na zaklade rychlosti kolies, sa vykonava rovkako ako komunikacia s robotom v separatnom vlakne. Tu je potreba si uvedomit
+jednu skutocnost. To je ta, ze ked posielame ziadost na nastavenie rychlosti kolies robota, tak robot si hodnoty v ziadosti prepocita a data da nasledne
+enkoderom. Ked si ale tieto rychlosti vyziadame z enkoderov, tak sa robot tychto dat nechyta a my si ich musime prepocitat na metre za sekundu. Zaroven
+si tento objekt neustale pyta od robota rychlosti kolies. Ako sme uz spomenuli v \ref{sec:robotComms}, tieto spravy maju nizsiu prioritu ako nastavenie
+rychlosti kolies alebo bezpocnostne zastavenie robota. Preto sa moze stat, ze spravy posielane robotu nebudu dodrziavat presne stanovenu frekvenciu v case
+ked mu bude uzivatel posielat prikazy.
+
+\subsection{Zdielanie polohy}
+\label{sec:zdielanie_polohy}
+
+Dalsiu vec, ktoru je treba vysvetlit ku grafu Obr.~\ref{fig:flowchart} je zdielanie polohy. Odometria po kazdom dopocitani polohy robota publikuje tuto
+informaciu na temu \textit{/position} tato sprava je typu \textit{geometry\_msgs/msg/Vector3}. Obsahuje 3 hodnoty, ktore su x, y a z.
+Suradnice reprezentuju aktualnu polohu robota.
 
 \section{Oprava chýb na~robote}
 
@@ -418,7 +505,9 @@ a~ľavého motora.
 	\label{fig:prechChar}
 \end{figure}
 
-\section{Ziskavanie rychlosti robota}
+\clearpage
+
+\section{Získavanie rýchlostí robota}
 \label{sec:ziskavanieRychlosti}
 
 Ako bolo spomenuté v~predchádzajúcej kapitole, rýchlosti kolies sa dajú získať z~enkóderov. Tieto dáta sa posielajú v sprave, ktorá pripomína JSON formát.
@@ -440,7 +529,7 @@ na nasledovných grafoch.
 	\begin{subfigure}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{img/rw_nf.png}
 	\end{subfigure}
-	\caption{Ziskanie prevodu z impulzov na rychlost v SI jednotkach.}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách.}
 	\label{fig:rw_lw_nf}
 \end{figure}
 
@@ -455,7 +544,7 @@ najsilnejším filtrom s hodnotou \(\alpha =  0.9\)
 	\begin{subfigure}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{img/rw_09250.png}
 	\end{subfigure}
-	\caption{Ziskanie prevodu z impulzov na rychlost v SI jednotkach. \(\alpha\) = 0.9.}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.9.}
 	\label{fig:rw_lw_09250}
 \end{figure}
 
@@ -471,14 +560,14 @@ Tento problém sme riešili postupným menením parametra filtru. Ďalšiu hodno
 	\begin{subfigure}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{img/rw_07250.png}
 	\end{subfigure}
-	\caption{Ziskanie prevodu z impulzov na rychlost v SI jednotkach. \(\alpha\) = 0.7.}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.7.}
 	\label{fig:rw_lw_07250}
 \end{figure}
 
 \newpage
 
-Pri pouziti hodnoty \(\alpha = 0.7\) sme zistili, že sa hodnoty rýchlosti aj pri aplikacii filtru vyrazne menili.
-Spravili sme preto dalsie meranie, kde sme pouzili hodnotu \(\alpha = 0.75\).
+Pri použití hodnoty \(\alpha = 0.7\) sme zistili, že sa hodnoty rýchlosti aj pri aplikácii filtra výrazne menili.
+Spravili sme preto ďalšie meranie, kde sme použili hodnotu \(\alpha = 0.75\).
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -488,11 +577,11 @@ Spravili sme preto dalsie meranie, kde sme pouzili hodnotu \(\alpha = 0.75\).
 	\begin{subfigure}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{img/rw_075250.png}
 	\end{subfigure}
-	\caption{Ziskanie prevodu z impulzov na rychlost v SI jednotkach. \(\alpha\) = 0.75.}
-	\label{fig:rw_lw_07250}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.75.}
+	\label{fig:rw_lw_075250}
 \end{figure}
 
-Pouzitie silnejsieho filtra
+Použitie silnejšieho filtra síce pomohlo rýchlejšiemu ustáleniu hodnoty, ale skúsili sme ešte silnejší filter s hodnotou \(\alpha = 0.8\).
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -503,8 +592,15 @@ Pouzitie silnejsieho filtra
 		\includegraphics[width=\textwidth]{img/rw_08250.png}
 	\end{subfigure}
 	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.8.}
-	\label{fig:rw_lw_07250}
+	\label{fig:rw_lw_08250}
 \end{figure}
+
+\newpage
+
+Ako môžeme vidieť na Obr.~\ref{fig:rw_lw_08250} ustálenie hodnôt je veľmi jednoznačne. Vybrali sme si preto filter s hodnotou \(\alpha = 0.8\).
+Zatiaľ všetky dáta čo sme merali holo s frekvenciou 4Hz (1 vzorka za 250 milisekúnd). Pre presnejší výsledok sme tuto frekvenciu ešte zvýšili.
+Z testov robota sme vypozorovali, že najsilnejšia frekvencia, ktorú môže robot sprostredkovať je 10Hz (1 vzorka za 100 milisekúnd).
+Spravili sme si preto test na prevod rýchlosti ešte raz s rovnakou hodnotou \(\alpha = 0.8\), ale s frekvenciou 10Hz.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -514,11 +610,9 @@ Pouzitie silnejsieho filtra
 	\begin{subfigure}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{img/rw_08100.png}
 	\end{subfigure}
-	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.8.}
-	\label{fig:rw_lw_07250}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.8 a frekvenciou 10Hz.}
+	\label{fig:rw_lw_08100}
 \end{figure}
-
-\newpage
 
 Najlepšia možná hodnota tohto parametru nám vyšla \(\alpha = 0.8\). Pri implementácii tohto filtra sme museli myslieť na dôležitú vec.
 Keď sa zmenia jednorazovo impulzy na hodnotu 0 a hneď spať, tak nám táto vzorka pokazí výsledok. Musíme preto túto vzorku ignorovať. Ďalšia
