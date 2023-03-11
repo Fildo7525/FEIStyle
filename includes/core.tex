@@ -12,6 +12,7 @@ vlastnostiach a~funkcionalitách, ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 \textbf{témy} (Topics), \textbf{služby} (Service) a~\textbf{akcie} (Actions).
 
 \subsubsection{Témy}
+\label{sec:topic}
 
 	\textbf {Témy} sú sprostredkované pomocou IPC - Medzi procesová komunikácia z anglického \acrlong{IPC}. Je to najjednoduchší spôsob
 	komunikácie. Vieme si ich prirovnať k~UDP/IP protokolu, s tým že neprebiehajú cez sieť. Definujeme si jedného poskytovateľa (publisher)
@@ -27,9 +28,11 @@ vlastnostiach a~funkcionalitách, ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 
 \newpage
 \subsubsection{Služby}
+\label{sec:services}
 
 	\textbf {Služby} sú sprostredkované pomocou TCP/IP protokolu. Poskytujú nám rovnaký spôsob komunikácie ako témy, až na~to, že sa správy
-	medzi servisom a~klientom posielajú cez LAN (\acrlong{LAN}) a oboma smermi. Služby sa využívajú pri komunikácii medzi viacerými zariadeniami.
+	medzi servisom a~klientom posielajú cez LAN (\acrlong{LAN}). Tieto správy sa posielajú oboma smermi. Služby sa využívajú pri komunikácii
+	medzi viacerými zariadeniami.
 
 	\begin{figure}[h]
 		\centering
@@ -39,13 +42,13 @@ vlastnostiach a~funkcionalitách, ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 	\end{figure}
 
 \subsubsection{Akcie}
-
+\label{sec:actions}
 	\label{s_action}
 	\textbf {Akcie} sú taktiež sprostredkované TCP/IP protokolom. Sú najzložitejším spôsobom komunikácie. Tento spôsob bol pridaný do~ROS1
-	až neskôr. V~druhej verzii ROSu je tento typ komunikácie medzi troma základnými. Sú založené na~službách a prebiehajú asynchrónne~\cite{ROS2book}.
-	Máju 3 stavy viď Obr.~\ref{fig:action}. Najprv pošle klient serveru, akú akciu má vykonať, server mu potvrdí, že túto požiadavku dostal. Server
-	začne následne vykonávať danú akciu a~posielať klientovi priebežné správy o~priebehu vykonávania žiadanej úlohy. Keď server skončí pošle klientovi
-	výsledok akcie a~klient mu obratom potvrdí obdržanie výsledku.
+	až neskôr. V~druhej verzii ROSu je tento typ komunikácie medzi troma základnými formami komunikácie uzlov. Sú založené na~službách
+	a~prebiehajú asynchrónne~\cite{ROS2book}. Máju 3 stavy viď Obr.~\ref{fig:action}. Najprv pošle klient serveru, akú akciu má vykonať,
+	server mu potvrdí, že túto požiadavku dostal. Server začne následne vykonávať danú akciu a~posielať klientovi priebežné správy o~priebehu
+	vykonávania žiadanej úlohy. Keď server skončí, pošle klientovi výsledok akcie a~klient mu obratom potvrdí obdržanie výsledku.
 
 	\begin{figure}[h]
 		\centering
@@ -55,12 +58,12 @@ vlastnostiach a~funkcionalitách, ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 	\end{figure}
 
 \subsection{Parametre}
-\label{s_parametre}
+\label{sec:parametre}
 
-\textbf{Parametre} sú spôsob, ako môže komunikovať užívateľ so základnými nastaveniami programu bez potreby zmenenia kódu a jeho
-následnej kompilácie. Definujú sa v~\textit{yaml} konfiguračnom súbore. V~ňom si môžeme zadefinovať mená jednotlivých parametrov
-a~ich základné hodnoty. Tie si programátor vie v~programe vytiahnuť pomocou API, \acrlong{API}, (Aplikačné Programovacie Rozhranie)
-v~ROSe.
+\textbf{Parametre} sú spôsob, ako môže komunikovať užívateľ so základnými nastaveniami uzlov bez~potreby zmenenia kódu a jeho
+následnej kompilácie, čo pri väčších projektoch môže zabrať aj trištvrte hodiny. Konfigurácie sa definujú v~\textit{yaml} konfiguračnom
+súbore. V~ňom si môžeme zadefinovať mená jednotlivých parametrov a~ich základné hodnoty. Tie si programátor vie v~programe
+vytiahnuť pomocou API, \acrlong{API}, (Aplikačné Programovacie Rozhranie) v~ROSe.
 
 \begin{figure}[!htbp]
 	\centering
@@ -76,7 +79,7 @@ Od doby, kedy vznikol prešiel mnohými verziami a~úpravami. Jeho neoddeliteľn
 komunikácia medzi uzlami, podpora viacerých programovacích jazykov ako sú C, C++ alebo Python a~vytváranie balíčkov dostupných širokej
 verejnosti.
 
-Štrukturalizovanie základov ROS1 je spravené monoliticky čo najstabilnejším spôsobom. Na~počiatku musí byt spustený hlavný program (roscore),
+Štrukturalizovanie základov ROS1 je spravené monoliticky čo najstabilnejším spôsobom. Na~počiatku musí byť spustený hlavný program (roscore),
 ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená prostredníctvom prepojenia uzlov cez LAN/WLAN
 alebo IPC komunikáciu. Ak sú uzly spustené na~iných zariadeniach, tak sa využíva len komunikácia cez sieť. Roscore ďalej poskytuje parametre
 jednotlivým uzlom z~parametrového servera. Jeho najdôležitejšou úlohou je zabezpečenie komunikácie uzlov v~programe.
@@ -87,7 +90,8 @@ Aj napriek mnohým výhodám má ROS1 aj nedostatky, ktoré sa ťahajú už od~j
 	\item Nepostačujúca distribuovanosť systému. Všetky uzly sa spoliehajú na funkčnosť roscore-u,
 	\item ROS1 je písaný v~starom štandarde, to~vnáša do~programu technologický dlh a~bezpečnostné riziká,
 	\item Kvalita komunikácie sa nedá ovplyvniť,
-	\item Preddefinované vláknové moduly~\cite{ROS2design}.
+	\item Preddefinované vláknové moduly~\cite{ROS2design},
+	\item Možnosť užívateľa predefinovať základne prvky ROS-u.
 \end{itemize}
 
 Kvôli takýmto problémom a nedostatkom sa začala vyvíjať nová verzia ROSu, ROS2. Tá mala vyriešiť tieto problémy a~zlepšiť funkcionalitu
@@ -96,63 +100,78 @@ v~ROS2.
 
 \subsection{ROS2}
 
-Ako už bolo spomenuté zámerom vývoja ROS2 bolo zlepšenie funkcionality a~bezpečnosti systému. ROS2 nie je spätne kompatibilný.
-Podstata toho, ako sú zoskupované uzly a~ako spolu komunikujú je diametrálne odlišná od~ROS1. Z~tohto dôvodu bol vyvinutý takzvaný rosbridge,
-ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to~ale trvalé riešenie. Odporúčané je nástroj využívať a~počas toho prepisovať kód
-z~verzie 1 do~verzie 2. Komunikácia prebieha v~ROS2 rovnakým spôsobom ako v~ROS1. Pomocou tém, služieb a~akcií.
+Ako už bolo spomenuté zámerom vývoja ROS2 bolo zlepšenie funkcionality a~bezpečnosti systému. Jeden z dôsledkov tohto vývoja je, že ROS2
+nie je spätne kompatibilný. Podstata toho, ako sú zoskupované uzly a~ako spolu komunikujú je diametrálne odlišná od~ROS1. Z~tohto dôvodu
+bol vyvinutý takzvaný rosbridge, ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to~ale trvalé riešenie. Odporúčané je nástroj
+využívať a~počas toho prepisovať kód z~verzie 1 do~verzie 2. Komunikácia prebieha v~ROS2 rovnakým spôsobom ako v~ROS1. Pomocou tém
+\ref{sec:topic}, služieb \ref{sec:services} a~akcií \ref{sec:actions}.
 
 Táto podobnosť končí na~najvyššej vrstve. Ako sme videli na~Obr.~\ref{fig:struktury}. Štruktúra ROS2 je rozdelená do~viacerých vrstiev.
 Najdôležitejšie je pre~nás vedieť, že komunikácia je spracovávaná modelom DDS (Služba distribúcie údajov) z~anglického (\acrlong{DDS}). Tento
-model zlepšuje výkon, stabilitu a~bezpečnosť modelu oproti ROS1. Je založený na~TCP/UDP protokole. Z~obrázku vyčítame aj lepšie rozloženie
-modulov. To~zabezpečuje jednoduchšie prispôsobovanie systému pre~nové funkcionality. Podpora operačných systémov sa v~ROS2 rozšírila aj o~Windows,
-Mac OS či~operačné systémy reálneho času. Operačné systémy nie sú jediné rozšírenie ohľadom kompatibility. S~ROS2 je možné programovať už aj
-v~Jave či~Matlabe. Tvorcovia mysleli aj na~programátorov a~pridali rozšírené možnosti testovania, debugovania či~nasadzovania programu
-do~reálneho využitia.
+model zlepšuje výkon, stabilitu a~bezpečnosť modelu oproti ROS1. Je založený na~TCP/IP a UDP/IP protokole. Z~obrázku Obr.~\ref{fig:struktury}
+vyčítame aj lepšie rozloženie modulov. To~zabezpečuje jednoduchšie prispôsobovanie systému pre~nové funkcionality. Podpora operačných systémov
+sa v~ROS2 rozšírila aj o~Windows, Mac OS či~RTOS (Operačné systémy reálneho času) z~anglického \acrlong{RTOS}. Operačné systémy nie sú jediné
+rozšírenie ohľadom kompatibility. S~ROS2 je možné programovať už aj v~Jave či~Matlabe. Tvorcovia mysleli aj na~programátorov a~pridali rozšírené
+možnosti testovania, debugovania či~nasadzovania programu do~reálneho využitia.
 
-ROS2 má necentralizovanú štruktúru, a~preto pri spúšťaní programov už nie je potrebné mať spustený roscore. Ak teda spadne jeden proces druhé budú
-fungovať naďalej. V~ROS1 sme vedeli ovplyvniť počet uchovaných správ pokým nepretiekol zásobník, ktorý ich uchovával na~neskoršie použitie. V~ROS2
-vieme zmeniť kvalitu komunikácie. Vieme si zadefinovať, či~by sme radšej stratili niektoré správy, ale dostali by sme všetky rýchlo. Alebo aby
-sa zabezpečilo, že dostaneme všetky správy, ktoré boli vyslané, aj keby to~trvalo dlhšie. Dokonca si vieme zadefinovať maximálny čas, ktorý budeme
-čakať na~ďalšiu správu.
+Testovanie prebieha pomocou použivanie Google testov. Debugovania je možné uskutočniť pomocou debuggera gnu-gdb. Pri spustení programu
+cez~spúšťací súbor (launch file) je potrebné pridať príkaz na spustenie spomenutého debugovacieho programu.
+
+ROS2 má necentralizovanú štruktúru, a~preto pri spúšťaní programov už nie je potrebné mať spustený roscore. Ak teda spadne jeden uzol všetky
+ostatné uzly budú fungovať naďalej. V~ROS1 sme vedeli ovplyvniť počet uchovaných správ komunikácie pokým nepretiekol zásobník, ktorý ich uchovával
+na~neskoršie použitie. V~ROS2 vieme implementovať túto schopnosť použitím takzvanej \textit{QoS} triedy (kvalita komunikácie), z~anglického \acrlong{QoS}.
+Pomocou tejto triedy vieme aj zmeniť kvalitu komunikácie. Vieme si zadefinovať, či~by sme radšej stratili niektoré správy, ale dostali by~sme
+všetky rýchlo. Alebo aby sa zabezpečilo, že dostaneme všetky správy, ktoré boli vyslané, aj keby to~trvalo dlhšie. Dokonca si vieme zadefinovať
+maximálny čas, ktorý budeme čakať na~ďalšiu správu.
+
+Ak by bol užívateľ veľmi schopný programátor a potreboval by si zmeniť triedy, ktoré definujú základnú funkcionalitu ROS-u, tak aj toto je možné.
+Jednou z takýchto funkcionalít je, že užívateľ si vie predefinovať triedu, ktorá bude alokovať miesto na (IPC) komunikáciu (medziprocesovú komunikáciu).
+K~tomuto bodu je dodať, že tento prípad je špecifický a väčšina programátorov sa s takouto možnosťou do kontaktu nedostane.
 
 Pri všetkých týchto zlepšeniach nemôžeme zabudnúť spomenúť aj nasledovný nedostatok. Keďže ROS2 je mladší ako ROS1 nájdeme k nemu menej dokumentácie.
 Pridaním veľkého počtu funkcionalít začal vznikať problém pre~začiatočníkov s~porozumením niektorých kódov. Avšak tento problém je nedostatkom,
-ktorý časom zanikne. V~čase písania tejto prace pribudli na~stránke dokumentácie 2 strany popisujúce pokročilejšie Funkcionality druhej verzie ROSu.
+ktorý časom zanikne. V~čase písania tejto práce pribudli na~stránke dokumentácie minimálne 2 strany popisujúce pokročilejšie Funkcionality druhej
+verzie ROSu.
 
 \subsection{Rozdiely}
 
-Čo je určite dobrou správou pre~všetkých programátorov, ktorí robili v~prvej verzii a~sú zvyknutí na~jej štandardy a~funkcionalitu sa nemajú
-čoho obávať. Prechod z~ROS1 na~ROS2 je dosť priamočiary. Čo sa zmenilo je spôsob písania kódu, ale koncepty ostali všetky rovnaké. V~tejto
-sekcii nebudeme písať konkrétne kódy, budeme len opisovať čo je podobné a~čo zasa rozdielne medzi verziami spomínaného systému. Keďže celý
-projekt bol písaný v~programovacom jazyku C++ tak sa aj tieto zmeny budu týkať hlavne C++.
+Čo je určite dobrou správou pre~všetkých programátorov, ktorí robili v~prvej verzii a~sú zvyknutí na~jej štandardy a~funkcionalitu. Tak títo
+sa nemajú čoho obávať. Prechod z~ROS1 na~ROS2 je dosť priamočiary. Čo sa zmenilo je spôsob písania kódu, ale koncepty ostali všetky rovnaké.
+V~tejto sekcii nebudeme písať konkrétne kódy, budeme len opisovať čo je podobné a~čo zasa rozdielne medzi verziami spomínaného systému. Keďže
+celý projekt bol písaný v~programovacom jazyku C++ tak sa aj tieto zmeny budu týkať hlavne jazyka C++.
 
 \subsubsection{Štandard jazyka}
 
-	Pokým ROS1 bola písaná v~štandarde C++03 tak ROS2 je už písaná v~novom štandarde. A to hlavne C++11, ale pouziva aj nejake casti z C++14
-	a~C++17. To~zahŕňa inicializovanie templatov a~ich použivanie. Definície a deklarácie templatov sú na~knihu samú o~sebe, preto do~detailov
-	nebudeme zachádzať. Stačí nám vedieť, ako ich inicializovať. V~prvej verzii sme definovali všeobecného publishera (publikovateľa) a~definovali
-	sme mu len cez akú tému má posielať správy. V~druhej verzii naväzujeme publishera na špecifický tip správy akú posielame. Nemôže sa teda stať,
-	že takýto program by sme skompilovali a~následne, keď ho spustíme, tak by spadol z dôvodu, že čítame iný typ spravy ako posielame.
+	Pokým ROS1 bola písaná v~štandarde C++03 tak ROS2 je už písaná v~novom štandarde. A to hlavne C++11, ale používa aj nejaké časti z~C++14
+	a~C++17. To~zahŕňa inicializovanie templatov a~ich používanie. Tým, že ROS2 je stále nová a stále vyvíjajúca sa platforma, tak môžeme očakávať aj časti
+	kódu, ktoré budú podporovať najnovší C++ štandard a to štandard z rokov 2020 a 2023.
 
-\subsubsection{Inicializácia nody(uzla)}
+	Definície a deklarácie templatov sú na~knihu samú o~sebe, preto do~detailov nebudeme zachádzať. Stačí nám vedieť, ako ich inicializovať.
+	V~prvej verzii sme definovali všeobecného publishera (publikovateľa) a~definovali sme mu len cez akú tému má posielať správy. V~druhej verzii
+	naväzujeme publishera na špecifický tip správy akú posielame. Nemôže sa teda stať, že takýto program by sme skompilovali a~následne, keď
+	ho spustíme, tak by spadol z~dôvodu, že~čítame iný typ správy ako posielame.
 
-	Tak isto ako v~prvej verzii aj v~druhej verzii musíme definovať uzol (node). Rozdiel je v~tom, že prvá verzia obsahovala NodeHandle a~druhá
-	verzia obsahuje priamo Node. V druhej verzii je zaužívaným štandardom túto nodu predediť a~použiť polymorfizmus pri objekte, ktorý bude
-	existovať počas celej doby vykonávania programu. Pri prvej verzii tomu tak nebolo. Museli sme vytvoriť už spomenutý NodeHandle. Ten sa nemusel
-	využiť ako base trieda a~nemusel ani~existovať počas celého behu programu.
+\subsubsection{Inicializácia nody (uzla)}
+
+	Tak isto ako v~prvej verzii aj v~druhej verzii musíme definovať uzol (node). Rozdiel je v~tom, že prvá verzia obsahovala NodeHandle (Ovládač uzla)
+	a~druhá verzia obsahuje priamo Node (Uzol). V druhej verzii je zaužívaným štandardom túto nodu predediť a~použiť polymorfizmus pri objekte,
+	ktorý bude existovať počas celej doby vykonávania programu. Pri prvej verzii tomu tak nebolo. Tam sme museli vytvoriť už spomenutý NodeHandle.
+	Ten sa nemusel využiť ako base trieda a~nemusel ani~existovať počas celého behu programu.
 
 \subsubsection{Komunikácia}
 
-	DDS (Služba distribúcie údajov) je protokol strednej vrstvy (middleware) implementovaný nad UDP~\cite{ROS2book}. Je používaný v~ROS2
-	na~komunikáciu medzi uzlami. Je to~systém správ publikovania (publish) / odoberania (subscribe), ktorý umožňuje uzlom komunikovať medzi
-	sebou bez toho, aby poznali identitu ostatných uzlov. Druh komunikácie je v~ROS2 rozšírený ešte o~akcie viď~\ref{s_action}.
+	DDS (Služba distribúcie údajov) je protokol strednej vrstvy (middleware) implementovaný nad UDP~\cite{ROS2book}. Na implementáciu tohto protokolu
+	je použitý protokol z~IoT (internet veci) (\acrlong{IoT}) sféry. Je to protokol MQTT. DDS je používaný v~ROS2 na~komunikáciu medzi uzlami. Je
+	to~systém správ publikovania (publish) / odoberania (subscribe), ktorý umožňuje uzlom komunikovať medzi sebou bez toho, aby poznali identitu
+	ostatných uzlov. Druh komunikácie je v~ROS2 rozšírený ešte o~akcie viď~\ref{s_action}.
 
 \subsection{Parametre}
 
 	ROS1 používa parametrový server, ktorý sa nachádza v~roscore-e. Každý uzol si mohol vytiahnuť parametre, ktoré boli zapísané v~konfiguračnom
 	súbore. ROS2 žiadny roscore nemá, preto sa parametre musia distribuovať iným spôsobom. Parametre v~druhej verzii ROSu patria jednotlivým uzlom.
 	To~znamená, že jednotlivé parametre sa dajú vytiahnuť len daným uzlom. Tieto parametre taktiež existujú len počas existencie daného uzlu. Parametre
-	sú ďalej distribuované pomocou už spomínaného DDS protokolu.
+	sú ďalej distribuované pomocou už spomínaného DDS protokolu. V prípade, že sa tieto parametre nepodari vytiahnuť z konfiguračného súboru. Či už z~dôvodu,
+	že daný súbor neexistuje, alebo iného dôvodu, tak sa aplikujú základné hodnoty, ktoré si zvolil užívateľ pri používaní funkcie na ich zisťovanie.
 
 \subsubsection{Nodelet alebo komponent}
 
@@ -161,17 +180,17 @@ projekt bol písaný v~programovacom jazyku C++ tak sa aj tieto zmeny budu týka
 	Táto funkcionalita sa nachádza aj v~ROS2. Volá sa komponent (\texttt{component}). Vylepšením oproti nodelet-om je zjednotenie aplikačnej
 	implementácie (API). Pokým nodelet-y mali vlastný spôsob implementácie v~ROS1 tak v~ROS2 je implementácia uzla a~komponentu rovnaká.
 	Pri~komponente sa musí len naviac definovať, že daný komponent existuje pomocou makra. Použitie komponentov zjednodušuje prácu CPU
-	a~používa sa hlavne v~zariadeniach, ktoré majú obmedzený výkon výpočtovej techniky.
+	a~používa sa hlavne v~zariadeniach, ktoré majú obmedzený výkon výpočtovej techniky. Sú to napríklad mikroprocesory, ktoré ovládajú roboty.
 
 \subsubsection{Kompilácia}
 
 	Zmenou verzii sa zmenil aj spôsob kompilácie programu. ROS1 bol kompilovaný pomocou \texttt{catkin} build systému. Catkin je založený
-	na~programe \texttt{cmake}. Jeho nastavenie dependencií je konfigurované pomocou súboru \texttt{package.xml} . ROS2 prešiel na~viac
+	na~programe \texttt{cmake}. Jeho nastavenie dependencií je konfigurované pomocou súboru \texttt{package.xml}. ROS2 prešiel na~viac
 	nastaviteľný systém \texttt{Colcon}. Tento systém je na~rozdiel od~catkin-u založený na~Python-e a~jeho dependencie sa nastavujú pomocou
 	\texttt{setup.py} súboru. V~prípade colcon-u si môžeme definovať spôsob kompilácie to~znamená, že môžeme nastaviť, ako sa budú spracovávať
 	dependencie. Ponúkané možnosti sú \texttt{catkin\_make}, \texttt{catkin\_make\_isolated}, \texttt{catkin\_tools} a~\texttt{ament\_cmake}.
 	Jednou s~najviac používaných možností je \texttt{ament\_cmake}. Je založený na~programe \texttt{cmake} a~spolupracuje so systémom \texttt{colcon}.
-	Z~tohto dôvodu mu vieme definovať dependencie pomocou xml súboru ako tomu bolo v~ROS1 pričom možnosť tefinície pomocou Python skriptu ostáva.
+	Z~tohto dôvodu mu vieme definovať dependencie pomocou xml súboru ako tomu bolo v~ROS1 pričom možnosť definície pomocou Python skriptu ostáva.
 	Je to~jeden zo spôsobov, ako zmenšiť rozdiel medzi ROS1 a~ROS2.
 
 \subsubsection{Vlákna}
@@ -180,7 +199,7 @@ projekt bol písaný v~programovacom jazyku C++ tak sa aj tieto zmeny budu týka
 	aj tejto oblasti kódu. V~druhej verzii ROS-u si vieme zadefinovať typ vykonávania programu separátne pre každý uzol a vieme si tento typ
 	zadefinovať aj sami~\cite{ROS2design}.
 
-\section{Robot a jeho ovladanie}
+\section{Robot a jeho ovládanie}
 
 Robot, s~ktorým sme pracovali bol výsledkom tímového projektu viacerých študentov \newline z~roku 2019. Pri~vysvetľovaní a~opisovaní robota sa budeme
 odvolávať na dokumenty, stránky a~kód, ktorý napísali. Všetky tieto údaje si sprístupnené na~mobilnom robote v~záložke
@@ -265,17 +284,18 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 			{"state":1,"direction":1}
 	\end{lstlisting}
 
-	Hodnoty sa pri stave (state) a~ani pri smere (direction) nemenia. Sú to~stále jednotky. Pokým robota nezastavíme buď príkazom, alebo
-	stlačením tlačidla vypnutia, tak sa tieto správy budú posielať. Môžeme potom začať polemizovať o~tom či~by nebolo lepšie už tieto správy
-	využiť na~to~čo reálne spomenutý \textit{JSON} reťazec ukazuje. A to udávať smer a stav robota.
+	Hodnoty sa pri stave (state) a~ani pri smere (direction) nemenia. Sú to~stále jednotky. Pokým robota nezastavíme buď príkazom, stlačením
+	tlačidla vypnutia alebo zablokovaním jedného z kolies, tak sa tieto správy budú posielať. Môžeme potom začať polemizovať o~tom či~by nebolo
+	lepšie už tieto správy využiť na~to~čo reálne spomenutý \textit{JSON} reťazec ukazuje. A to udávať smer a stav robota. Momentálne tieto správy
+	slučia len na to, aby sme vedeli, že tento robot je aktívny a vie primať a spracúvať informácie.
 
 \subsubsection{Ovládanie}
 \label{sec:ovladanie}
 
-	Port \textit{665} je sprístupnený na~prijímanie a~odosielanie požiadavok a~ich odpovedí. Príkazy sa na~počítač posielajú cez sieť z~externého
+	Port \textit{665} je sprístupnený na~prijímanie a~odosielanie požiadavok a~ich odpovedí. Príkazy sa na~počítač posielajú cez~sieť z~externého
 	počítača vo formáte \textbf{JSON}. Študenti, ktorí navrhovali systém posielania požiadavok (request) a~odpovedí (response) robili tieto správy
 	ručne. Preto~nastávajú situácie, kedy robot pošle správu, ktorá nespadá do~štandardu písania JSON textu. Z~tohto dôvodu sme nemohli použiť už
-	existujúci kód, ktorý by nám zjednodušil prehľadávanie týchto správ. Podla dokumentácie sa robot mal ovládať správami typu~\cite{BMdoc}
+	existujúci kód (parser), ktorý by nám zjednodušil prehľadávanie týchto správ. Podla dokumentácie sa robot mal ovládať správami typu~\cite{BMdoc}
 
 	\label{jsonSpeedRequestBad}
 	\begin{lstlisting}
@@ -314,7 +334,7 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 			{"UserID":1,"Command":3,"RightWheelSpeed":0.50,"LeftWheelSpeed":0.50}
 	\end{lstlisting}
 
-\subsection{Par slov k parametrom reťazca}
+\subsection{Vysvetlenie kľúčov reťazca}
 
 \noindent \textbf{UserID} \newline
 \indent Táto možnosť je v~momentálnom stave robota nevyužitá. Počet zariadení, ktoré sa môžu pripojiť na~port, cez ktorý sa dá robot ovládať
@@ -323,19 +343,23 @@ bude mať akú prioritu. \newline
 
 \noindent \textbf{Command:~\ref{c4}} \newline
 \indent Tento príkaz je prázdny. My sme ho ale neskôr prepísali na~príkaz, cez ktorý sa dá nastaviť žiadaná pozícia kolies robota (natočenie).
-Táto funkcionalita nie je v~takom stave ako sme si priali. \newline
+Táto funkcionalita nie je v~takom stave ako sme si priali. Je to spôsobené hlavne nedostačujúcov dokumentáciou enkóderov na robote. Síce sme našli
+v~dokumentácii funkciu, ktorá by mala túto možnosť povoľovať. Čo sa ale stane pri poslaní príkazu je to, že kolesá sa začnú točiť rýchlosťou
+0.5 metra za sekundu.\newline
 
 \noindent \textbf{Command:~\ref{c8}} \newline
-\indent Príkaz na~nastavenie polohy kolies nebol originálne naprogramovaný na robote. Pridali sme ho za cieľom presného dostavia sa robota
-na~preddefinované miesto. \newline
+\indent Príkaz na~zisťovanie polohy kolies nebol originálne naprogramovaný na robote. Pridali sme ho za cieľom presného dostavia sa robota
+na~preddefinované miesto. Táto funkcionalita nefunguje správne rovnako ako v predchádzajúcom príklade, keď si vypýtame polohu kolies od robota,
+dáta ktoré obdržme sú, že jedno koleso je priamo nastavené na hodnotu, ktorú sme si vyžiadali a to druhé koleso vráti náhodnú hodnotu.
+Počas toho sa ale kolesá robota stále točia.\newline
 
 \noindent \textbf{RightWheelSpeed/LeftWheelSpeed} \newline
-\indent Nastavovanie rýchlosti pravého a~ľavého kolesa nie sú povinne parametre. Musíme ich zadávať len v~prípade posielania rýchlostí
-cez~príkaz s~číslom \ref{c3}.
+\indent Nastavovanie rýchlosti pravého a~ľavého kolesa nie sú povinné parametre. Musíme ich zadávať len v~prípade posielania rýchlostí
+cez~príkaz s~číslom \ref{c3} alebo \ref{c4}.
 
-\section{Oprava chýb na~robote}
+\subsection{Oprava chýb na robote}
 
-\subsection{Nesprávna funkcia}
+\subsubsection{Nesprávna funkcia}
 
 Ako bolo spomenuté vyššie, pri poslaní príkazu s~číslom~\ref{c6} nám robot vráti aktuálne rýchlosti kolies. Počas skúšaní tejto funkcionality
 sme narazili na~problém. Keď sme sa robota spýtali na~jeho rýchlosti dostali sme reťazec, ktorý obsahoval náhodne veľké čísla. Tieto čísla sa
@@ -389,7 +413,7 @@ BOOL VCS_GetVelocityIs(
 \noindent Ako môžeme vidieť v~týchto predpisoch funkcií, bolo treba zmeniť názov funkcie a~ostatné parametre ostali rovnaké.
 Nebolo treba meniť implementáciu kódu.
 
-\subsection{Zašumený výstup}
+\subsubsection{Zašumený výstup}
 
 Po~prepísaní funkcie na~získavanie rýchlostí robota sme spravili pár meraní, aby sme zistili, aké presné informácie o~rýchlostiach
 motorov dostávame. Aby nám robot neodbiehal postavili sme ho na vyvýšené miesto, tak aby sa kolesá nedotýkali zeme. V~takomto
@@ -422,7 +446,7 @@ a~ľavého motora.
 
 \clearpage
 
-\section{Správanie programu}
+\section{Implementácia ovládača}
 \label{sec:program}
 
 \begin{figure}[!htbp]
