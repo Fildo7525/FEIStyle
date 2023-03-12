@@ -361,28 +361,49 @@ cez~príkaz s~číslom \ref{c3} alebo \ref{c4}.
 
 \subsubsection{Nesprávna funkcia}
 
-Ako bolo spomenuté vyššie, pri poslaní príkazu s~číslom~\ref{c6} nám robot vráti aktuálne rýchlosti kolies. Počas skúšaní tejto funkcionality
-sme narazili na~problém. Keď sme sa robota spýtali na~jeho rýchlosti dostali sme reťazec, ktorý obsahoval náhodne veľké čísla. Tieto čísla sa
-menili, keď sme zadávali nejaké hodnoty pre~rýchlosti kolies aby sa robot hýbal.
+Ako bolo spomenuté vyššie, pri~poslaní príkazu s~číslom~\ref{c6} nám robot vráti aktuálne rýchlosti kolies. Počas skúšania tejto funkcionality
+sme narazili na~problém. Keď sme sa robota spýtali na~jeho rýchlosti. Dostali sme reťazec, ktorý obsahoval náhodne veľké čísla. Tieto čísla sa
+menili, keď sme zadávali nejaké hodnoty pre~rýchlosti kolies aby~sa robot hýbal. Ich magnitúda ostávala rovnaká. V~nasledujúcom príklade môžeme
+vidieť ako tento reťazec vyzeral:
 
 \label{jsonWannabeSpeed}
 \begin{lstlisting}
 		{"LeftWheelSpeed"=236223201280 "RightWheelSpeed"=4294967296}
 \end{lstlisting}
 
-Tu vidíme príklad obdržanej spravy. Ako si môžeme všimnúť. Pri~tomto type správ nie je dodržaná správna forma reťazca typu JSON. Namiesto `:'
-máme `=' a medzi argumentmi sa nenachádza čiarka. Jeden z~nápadov, ktorý sme mali bolo premeniť tieto čísla na~desatinné čísla, keďže sme mu
-posielali taký formát čísel. Problém je v~tom, že keď posielame request na~nastavenie rýchlosti kolies, tak kód na~robote funguje tak, že si
-ich premení na~celé čísla v~rozsahu 0 až 1000. To~je hodnota, na~ktorú nastaví rýchlosti otáčania kolies respektíve rýchlosť otáčania motora.
-Na~druhú stranu, keď si vypýtame od~robota rýchlosti kolies. On zoberie informáciu z~enkóderov a pošle nám to~bez spracovania. Aj napriek týmto
-poznatkom sa nám nepodarilo získať z týchto dát žiadané rýchlosti.
+Tu vidíme príklad obdržanej správy. Ako si môžeme všimnúť. Pri~tomto type správ nie je dodržaná správna forma reťazca typu JSON. Namiesto `:'
+máme `=' a~medzi argumentmi sa nenachádza čiarka. Hneď ako prvú vec sme chceli tento štandard napraviť. Bohužiaľ na~tomto robote už~bolo
+spravených niekoľko projektov a~museli by sme prejsť každý z~nich a~zistiť či~používajú túto spätnú väzbu. Ak~by ju používali museli by sme
+tieto kódy upraviť.
+
+\newpage
+
+V~dokumentácii robota bohužiaľ nebolo písané v~akom formáte sa tieto rýchlosti kolies majú nachádzať. Preto jeden z~nápadov ako zistiť presne
+v~akom formáte sa posielali tieto čísla bolo vyskúšať pár možností. Boli to
+
+\begin{itemize}
+	\item \textit{long} - celé číslo s malým endianom
+	\item \textit{long} - celé číslo s veľkým endianom
+	\item \textit{float} - desatinné číslo s malým endianom
+	\item \textit{float} - desatinné číslo s veľkým endianom
+\end{itemize}
+
+Keďže robot má počítač so~63 bytovým procesorom \cite{robotPc}, tak~\textit{long} aj~\textit{float} budú mať 64 bitovú dĺžku. Po~skúsení všetkých
+štyroch možností sa~ukázalo, že ani jedna nebola správna a~problém je niekde inde.
+
+Problém je v~tom, že keď posielame request na~nastavenie rýchlosti kolies, tak kód na~robote funguje tak, že si ich premení na~celé čísla v~rozsahu
+0~až~1000. To~je hodnota, na~ktorú nastaví rýchlosti otáčania pravého a ľavého kolesa respektíve rýchlosť otáčania ich motorov. Na~druhú stranu,
+keď si vypýtame od~robota rýchlosti kolies. On zoberie informáciu z~enkóderov a pošle nám ju~bez spracovania. Aj napriek týmto poznatkom sa nám
+nepodarilo získať z~týchto dát žiadané rýchlosti.
 
 Po dôkladnom preštudovaní kódu sme zistili, že hodnoty ktoré nám posiela robot nie sú ani~vyťahované z~enkóderov správnou funkciou. Preto~sme ju
 zmenili a~začali sme dostávať hodnoty, s~ktorými by sa mohlo dať pracovať.
 
-Funkcie z~knižnice zabezpečujúce komunikáciu z~enkóderov motorov pochádzajú z~firmy Maxon~\cite{EPOSdoc}. Funkcie, ktoré končia koncovkou `Target'
-majú návratné hodnoty reprezentujúce žiadané hodnoty. Funkcie s~koncovkou `Is' vracajú aktuálne hodnoty. Z~tohto dôvodu sme museli prepísať
-funkciu, ktorá sa vykonávala, keď sme chceli získať aktuálne hodnoty rýchlosti motora poslaním príkazu \ref{c6}.
+Funkcie z~knižnice zabezpečujúce komunikáciu z~enkóderov motorov pochádzajú z~firmy Maxon~\cite{EPOSdoc}. Táto dokumentácia nebola moc nápomocná.
+Opisy jednotlivých funkcií boli len~ich rozložené názvy na~osobitné slová. Aj~napriek tomu sa nám podarilo nájsť funkcie, ktoré sme potrebovali.
+Funkcie, ktoré končia koncovkou `Target', alebo toto slovo obsahujú, majú návratné hodnoty reprezentujúce žiadané hodnoty. Funkcie s~koncovkou
+`Is' vracajú aktuálne hodnoty. Z~tohto dôvodu sme museli prepísať funkciu na robote, ktorá sa vykonávala, keď sme chceli získať aktuálne hodnoty
+rýchlosti motora poslaním príkazu \ref{c6}. Funkciu, ktorú sme zmenili môžeme vidieť v nasledujúcej ukážke:
 
 \lstset{language=C++,
 	basicstyle=\ttfamily,
@@ -421,19 +442,15 @@ postavení sa robot nepohne z~miesta a~my môžeme bez~problémov odmerať prech
 a~ľavého motora.
 
 \begin{figure}[!htbp]
-	\begin{center}
-		\includegraphics[width=8cm]{img/Left_wheel.png}
-	\end{center}
-	\caption{Ustálené hodnoty rýchlosti ľavého motora. }
-	\label{fig:laveKoleso}
-\end{figure}
-
-\begin{figure}[!htbp]
-	\begin{center}
-		\includegraphics[width=8cm]{img/Right_wheel.png}
-	\end{center}
-	\caption{Ustálené hodnoty rýchlosti pravého motora. }
-	\label{fig:praveKoleso}
+	\begin{subfile}
+		\includegraphics[width=8cm]{img/Left_wheel_2.png}
+	\end{subfile}
+	\hfill
+	\begin{subfile}
+		\includegraphics[width=8cm]{img/Right_wheel_2.png}
+	\end{subfile}
+	\caption{Ustálené hodnoty rýchlosti ľavého a pravého motora. }
+	\label{fig:lavePraveKoleso}
 \end{figure}
 
 \begin{figure}[!htbp]
