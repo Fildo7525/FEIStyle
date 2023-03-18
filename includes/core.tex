@@ -345,7 +345,7 @@ bude mať akú prioritu. \newline
 \indent Tento príkaz je prázdny. My sme ho ale neskôr prepísali na~príkaz, cez ktorý sa dá nastaviť žiadaná pozícia kolies robota (natočenie).
 Táto funkcionalita nie je v~takom stave ako sme si priali. Je to spôsobené hlavne nedostačujúcov dokumentáciou enkóderov na robote. Síce sme našli
 v~dokumentácii funkciu, ktorá by mala túto možnosť povoľovať. Čo sa ale stane pri poslaní príkazu je to, že kolesá sa začnú točiť rýchlosťou
-0.5 metra za sekundu.\newline
+0,5 metra za sekundu.\newline
 
 \noindent \textbf{Command:~\ref{c8}} \newline
 \indent Príkaz na~zisťovanie polohy kolies nebol originálne naprogramovaný na robote. Pridali sme ho za cieľom presného dostavia sa robota
@@ -442,16 +442,20 @@ postavení sa robot nepohne z~miesta a~my môžeme bez~problémov odmerať prech
 a~ľavého motora.
 
 \begin{figure}[!htbp]
-	\begin{subfile}
-		\includegraphics[width=8cm]{img/Left_wheel_2.png}
-	\end{subfile}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/Left_wheel_2.png}
+	\end{subfigure}
 	\hfill
-	\begin{subfile}
-		\includegraphics[width=8cm]{img/Right_wheel_2.png}
-	\end{subfile}
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/Right_wheel_2.png}
+	\end{subfigure}
 	\caption{Ustálené hodnoty rýchlosti ľavého a pravého motora. }
 	\label{fig:lavePraveKoleso}
 \end{figure}
+
+Po~obdržaní takýchto dát sme kontaktovali jedného z~autorov tímového projektu~\cite{timovyProjekt}, Adriána Kasperkevic. On nám odpísal s~tým,
+že aj oni mali problémy s~enkódermi. Na obrázku Obr.~\ref{fig:prechChar} vidíme zašmený signál rýchlosti poskytovanú enkódermi. Ich problémy
+boli naviazané na~staré enkódery, ktoré neskôr vymenili. Na~nových enkodéroch avšak netestovali ich spätnú väzbu.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -460,8 +464,6 @@ a~ľavého motora.
 	\caption{Prechodová charakteristika rýchlosti kolies~\cite{timovyProjekt}. }
 	\label{fig:prechChar}
 \end{figure}
-
-\clearpage
 
 \section{Implementácia ovládača}
 \label{sec:program}
@@ -541,7 +543,7 @@ si tento objekt neustále pýta od robota rýchlosti kolies. Ako sme už spomenu
 rýchlosti kolies alebo bezpečnostné zastavenie robota. Preto sa môže stat, že správy posielané robotu nebudú dodržiavať presne stanovenú frekvenciu v čase
 keď mu bude užívateľ posielať príkazy.
 
-\subsection{Zdielanie polohy}
+\subsection{Zdieľanie polohy}
 \label{sec:zdielanie_polohy}
 
 Ďalšiu vec, ktorú je treba vysvetliť ku grafu Obr.~\ref{fig:flowchart} je zdieľanie polohy. Odometria po každom prepočítaní polohy robota publikuje tuto
@@ -551,16 +553,18 @@ Súradnice reprezentujú aktuálnu polohu robota.
 \section{Filtrovanie zašumeného signálu}
 \label{sec:ziskavanieRychlosti}
 
-Ako bolo spomenuté v~predchádzajúcej kapitole, rýchlosti kolies sa dajú získať z~enkóderov. Tieto dáta sa posielajú v sprave, ktorá pripomína JSON formát.
+Ako bolo spomenuté v~predchádzajúcej kapitole, rýchlosti kolies sa dajú získať z~enkóderov. Tieto dáta sa posielajú v správe, ktorá pripomína JSON formát.
 Z~týchto vzoriek poslaných robotom nevieme priamo vypočítať polohu. Musíme si tieto dáta premeniť z~impulzov za sekundu \(\frac{1}{s}\) na metre
-za sekundu \(\frac{m}{s}\). Tento prevod nebude jednoznačný, pretože jazdy enkódery posiela dáta inak zašumené. Preto je potrebne zistiť, ako sa zmení
-rýchlosť pri zmene impulzov za sekundu. Tento prevod je nožne získať z~merania, kde po~nastavení rýchlosti zoberieme veľa dát z~enkóderov a zistíme,
-ako sa zmení rýchlosť pri zmene impulzov za sekundu. Prvý nápad na získanie čo najlepšej prevodovej charakteristiky bolo cez všetky dáta položiť
-lineárnu regresiu. To sa ukázalo ako zlé riešenie, lebo dáta, ktoré dostávame majú veľmi veľký rozptyl. Jednou z~nasledujúcich úvah bolo spraviť
-kĺzavý priemer. Toto riešenie malo tiež svoje chyby a to v tom, že zmeny zaznamenaných impulzov za sekundu sa zmenili v~závislosti od~rýchlosti a~smeru.
-V~tomto bode sme vyskúšali počítať biometriu z~obdržaných dát. Táto implementácia bola veľmi nepresná. Tento pokus nám potvrdil, že~potrebujeme filter
-obdržaných impulzov. Výsledky pokusu, kde sme zisťovali prevodovú charakteristiku z~impulzov za sekundu na~rýchlosť v~SI jednotkách nájdeme
-na nasledovných grafoch.
+za sekundu \(\frac{m}{s}\). Tento prevod nebude jednoznačný, pretože každý enkódery posiela dáta inak zašumené. Preto je potrebné zistiť, ako sa zmení
+rýchlosť pri zmene impulzov za sekundu. Tento prevod je možné získať z~merania, kde po~nastavení rýchlostí zoberieme veľa dát z~enkóderov a zistíme,
+ako sa zmení rýchlosť pri zmene impulzov za sekundu.
+
+Prvý nápad na získanie čo najlepšej prevodovej charakteristiky bolo cez všetky dáta položiť lineárnu regresiu. To sa ukázalo ako zlé riešenie, lebo dáta,
+ktoré dostávame majú veľmi veľký rozptyl. Jednou z~nasledujúcich úvah bolo spraviť kĺzavý priemer. Toto riešenie malo tiež svoje chyby a to v tom, že zmeny
+zaznamenaných impulzov za sekundu sa zmenili v~závislosti od~rýchlosti a~smeru Obr.~\ref{fig:rw_lw_nf}. V~tomto bode sme vyskúšali počítať odometriu
+z~obdržaných dát. Táto implementácia bola veľmi nepresná. Zároveň nám tento pokus potvrdil, že~potrebujeme filtrovať dáta, ktoré dostávame
+od~robota, a ktoré reprezentujú jeho rýchlosť v impulzoch. Výsledky pokusu, kde sme zisťovali prevodovú charakteristiku z~impulzov za sekundu na~rýchlosť
+v~SI jednotkách nájdeme na nasledovných grafoch.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -574,8 +578,24 @@ na nasledovných grafoch.
 	\label{fig:rw_lw_nf}
 \end{figure}
 
-Implementovali sme si preto dolnopriepustný kvadraticky filter. Jeho parameter \(\alpha\) sme získali viacerými meraniami. Začali sme
-najsilnejším filtrom s hodnotou \(\alpha =  0.9\)
+Ako prvú vec sme si vykreslili všetky \textbf{nazbierané dáta}. Tie sú zobrazené \textbf{modrou} farbou. Cez ne sme spravili \textbf{lineárnu regresiu}. Je zobrazená
+ako \textbf{červená} úsečka. Z~nazbieraných dát sme si nakoniec spravili priemer, aby sme videli, ako presne aproximuje nami vypočítaná lineárna regresia priemer
+nazbieraných dát. \textbf{Priemery} jednotlivých rýchlostí sú zobrazené ako \textbf{oranžové} body.
+
+Môžeme si všimnúť, že vypočítané priemery takmer presne ležia na vypočítanej lineárnej regresii. Problémom je, ako už bolo spomenuté, že dáta,
+ktoré dostávame od robota sú veľmi zašumené. Preto z nich nevieme priamo počítať polohu robota. Na zobrazenie veľkosti odchýlky sme spravili
+meranie. Nechali sme robot aby prešiel dráhu štvorca so~stranou dlhou 1 meter a~rýchlosťou 0,5 \(\frac{m}{s}\). Výsledok bol veľmi nepresný.
+Metrom sme si odmerali jeho \textit{x}-ovú a \textit{y}-ovú súradnicu s~počiatkom v~bode, kde sme na robote spustili náš ovládač. Jeho skutočná
+poloha bola v~bode~(-0,3m,~0m). Čo~nám ale vypočítala odometriu je, že sa robot nachádzal 4 metre od~počiatku súradnicového systému.
+
+\subsection{Zisťovanie parametru \(\alpha\)}
+
+Implementovali sme si preto dolnopriepustný kvadraticky filter. Fungovanie tohto filtra spočíva v~skombinovaní nového vstupného parametra a~starého parametra
+uloženého vo~filtri v~danom pomere. Tento pomer je daný parametrom \textbf{alpha} $\alpha$.
+
+$$ stavFiltra = \alpha * stavFiltra + (1 - \alpha) * nováVzorka $$
+
+Jeho parameter \(\alpha\) sme získali viacerými meraniami. Začali sme najsilnejším filtrom s~hodnotou $\alpha$ rovnou  0,9.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -585,13 +605,16 @@ najsilnejším filtrom s hodnotou \(\alpha =  0.9\)
 	\begin{subfigure}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{img/rw_09250.png}
 	\end{subfigure}
-	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.9.}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. $\alpha$ = 0,9.}
 	\label{fig:rw_lw_09250}
 \end{figure}
 
-Ako môžeme vidieť na obrázkoch Obr.~\ref{fig:rw_lw_09250} a Obr.~\ref{fig:rw_lw_nf} aplikácia filtra výrazne pomohla proti sumu signálu.
-Problémom pri silnom filtri je to, že ak na začiatku merania dostaneme zlu hodnotu, tak sa tato hodnota ťažko mení na správnu.
-Tento problém sme riešili postupným menením parametra filtru. Ďalšiu hodnotu sme použili \(\alpha = 0.7\)
+Ako môžeme vidieť na obrázkoch Obr.~\ref{fig:rw_lw_09250} a~Obr.~\ref{fig:rw_lw_nf} aplikácia filtra výrazne pomohla proti~šumu signálu.
+Problémom pri~silnom filtri je to, že ak na~začiatku merania dostaneme zlú hodnotu, tak sa táto hodnota ťažko mení na~správnu. Tento
+efekt si môžeme všimnúť skoro pri~každej meranej rýchlosti. Najviditeľnejší dopad môžeme vidieť pri~pravom kolese
+na~Obr.~\ref{fig:rw_lw_09250} pri~rýchlosti -0,6$\frac{m}{s}$. Tento problém sme riešili postupným menením parametra filtru.
+Aby sme predišli veľkému množstvu meraní, tak sme použili metódy binárneho vyhľadávania. V~tomto prípade sme začali s~veľkou hodnotou
+a~postupne sme skákali do~stredu nášho intervalu. Preto sme si ako ďalšiu hodnotu zvolili alphu $\alpha$ rovnú 0,7.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -601,14 +624,16 @@ Tento problém sme riešili postupným menením parametra filtru. Ďalšiu hodno
 	\begin{subfigure}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{img/rw_07250.png}
 	\end{subfigure}
-	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.7.}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. $\alpha$ = 0,7.}
 	\label{fig:rw_lw_07250}
 \end{figure}
 
-\newpage
-
-Pri použití hodnoty \(\alpha = 0.7\) sme zistili, že sa hodnoty rýchlosti aj pri aplikácii filtra výrazne menili.
-Spravili sme preto ďalšie meranie, kde sme použili hodnotu \(\alpha = 0.75\).
+Pri použití hodnoty $\alpha$ rovnou 0,7 (Obr.~\ref{fig:rw_lw_07250}) sme zistili, že sa hodnoty rýchlosti aj pri aplikácii filtra výrazne menili. Ustálené
+hodnoty zobrazené oranžovou farbou sú podobne ako pri~meraní s~filtrom s~alphou $\alpha$ rovnou 0,9 mimo lineárnej regresie.
+Je to zapríčinené iným dôvodom ako pri~silnejšom filtri. Pokým pri~silnejšom filtri sme dostali zlú začiatočnú hodnotu, tak
+už bolo zložité ju zmeniť. Pri~slabšom filtri, ak dostávame rozdielne vstupné hodnoty tak sa výstupná hodnota filtra ľahko
+mení. To má za dôsledok posun priemeru vstupných hodnôt. Tento efekt sa dá odstrániť zosilnením filtra, čiže zväčšením
+koeficientu alpha $\alpha$. Spravili sme preto ďalšie meranie, kde sme použili hodnotu $\alpha$ rovnou 0,75.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -618,11 +643,14 @@ Spravili sme preto ďalšie meranie, kde sme použili hodnotu \(\alpha = 0.75\).
 	\begin{subfigure}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{img/rw_075250.png}
 	\end{subfigure}
-	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.75.}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0,75.}
 	\label{fig:rw_lw_075250}
 \end{figure}
 
-Použitie silnejšieho filtra síce pomohlo rýchlejšiemu ustáleniu hodnoty, ale skúsili sme ešte silnejší filter s hodnotou \(\alpha = 0.8\).
+Obr.~\ref{fig:rw_lw_075250} zobrazuje graf výsledkov nameraných pri~aplikácii filtra s~koeficientom alpha o~veľkosti 0,75.
+V~tomto prípade sa priemerné hodnoty na~rozdiel od~filtrov s~koeficientami alpha 0,9 a 0,7 dostali takmer priamo na~úsečku
+lineárnej regresie prevodu z~impulzov za~sekundu na~metre za~sekundu. Použitie silnejšieho filtra síce pomohlo rýchlejšiemu
+ustáleniu hodnoty, ale skúsili sme ešte silnejší filter s~hodnotou alpha $\alpha$ rovnou 0,8.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -632,16 +660,15 @@ Použitie silnejšieho filtra síce pomohlo rýchlejšiemu ustáleniu hodnoty, a
 	\begin{subfigure}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{img/rw_08250.png}
 	\end{subfigure}
-	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.8.}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. $\alpha$ = 0,8.}
 	\label{fig:rw_lw_08250}
 \end{figure}
 
-\newpage
-
-Ako môžeme vidieť na Obr.~\ref{fig:rw_lw_08250} ustálenie hodnôt je veľmi jednoznačne. Vybrali sme si preto filter s hodnotou \(\alpha = 0.8\).
-Zatiaľ všetky dáta čo sme merali holo s frekvenciou 4Hz (1 vzorka za 250 milisekúnd). Pre presnejší výsledok sme tuto frekvenciu ešte zvýšili.
-Z testov robota sme vypozorovali, že najsilnejšia frekvencia, ktorú môže robot sprostredkovať je 10Hz (1 vzorka za 100 milisekúnd).
-Spravili sme si preto test na prevod rýchlosti ešte raz s rovnakou hodnotou \(\alpha = 0.8\), ale s frekvenciou 10Hz.
+Ako môžeme vidieť na Obr.~\ref{fig:rw_lw_08250} ustálenie hodnôt je veľmi jednoznačné. Vybrali sme si preto filter s~hodnotou
+koeficientu alpha $\alpha$ rovnou 0,8. Zatiaľ všetky dáta čo sme merali boli s~frekvenciou 4Hz (1 vzorka za 250 milisekúnd).
+Pre~presnejší výsledok sme túto frekvenciu ešte zvýšili. Z~testov robota sme vypozorovali, že najfrekventovaniejsia frekvencia,
+ktorú môže robot sprostredkovať je 10Hz (1 vzorka za 100 milisekúnd). Spravili sme si preto test na prevod rýchlosti ešte raz
+s~rovnakou hodnotou koeficientu alpha $\alpha$ rovnou 0,8, ale s~frekvenciou 10Hz namiesto už spomenutých 4Hz.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -651,13 +678,29 @@ Spravili sme si preto test na prevod rýchlosti ešte raz s rovnakou hodnotou \(
 	\begin{subfigure}{0.5\textwidth}
 		\includegraphics[width=\textwidth]{img/rw_08100.png}
 	\end{subfigure}
-	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. \(\alpha\) = 0.8 a frekvenciou 10Hz.}
+	\caption{Získanie prevodu z impulzov na rýchlosť v SI jednotkách. $\alpha$ = 0,8 a frekvenciou 10Hz.}
 	\label{fig:rw_lw_08100}
 \end{figure}
 
-Najlepšia možná hodnota tohto parametru nám vyšla \(\alpha = 0.8\). Pri implementácii tohto filtra sme museli myslieť na dôležitú vec.
+Najlepšia možná hodnota tohto koeficientu nám vyšla $\alpha$ rovná 0,8. Pri implementácii tohto filtra sme museli myslieť na dôležitú vec.
 Keď sa zmenia jednorazovo impulzy na hodnotu 0 a hneď spať, tak nám táto vzorka pokazí výsledok. Musíme preto túto vzorku ignorovať. Ďalšia
 prekážka, ktorú sme mali pred sebou bola zmena rýchlosti. Obyčajná implementácia filtra by nám spomalila zmenu vypočítanej rýchlosti
 a teda aj veľkú odchýlku v polohe. Tento problém sme opravili prestavením počiatočnej hodnoty filtra na prvú hodnotu po zmene rýchlosti.
 Toto riešenie sa ukázalo ako najlepšie so skúšaných riešení.
+
+Problém so~zlou počiatočnou hodnotou môžeme vidieť aj na~posledom grafe Obr.~\ref{fig:rw_lw_08100}. Tento problém sme vyriešili
+predpočítavaním prvej hodnoty filtra po~zmene rýchlosti. Keďže sme už mali koeficienty lineárnej regresie, tak sme ich využili
+na~predpočítanie počiatočnej hodnoty. Výsledok tohto postupu vidíme na~nasledujúcom grafe.
+
+\begin{figure}[!htbp]
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/lw_08100_3.png}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{img/rw_08100_3.png}
+	\end{subfigure}
+	\caption{Získanie prevodu z~impulzov na rýchlosť v~SI jednotkách. $\alpha$ = 0,8 a~frekvenciou 10Hz a~prvou prepočítanou hodnotou.}
+	\label{fig:rw_lw_08100}
+\end{figure}
 
