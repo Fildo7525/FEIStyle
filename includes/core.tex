@@ -1,10 +1,12 @@
 \section{Pažite technológie}
+\label{sec:technologies}
 
 Našou úlohou v~tejto bakalárskej práci je naprogramovať a~otestovať nami vytvorený ovládač pre mobilného robota. Tento ovládač
 bude vytvorený v~jazyku C++ v~systéme ROS. Pred tým ako začneme preberať tento spomenutý ovládač a~robota, ktorého budeme riadiť,
 tak~si predstavíme technológie, ktoré budeme používať pri~vytváraní ovládača. Si to Linux, C++, ROS a~samotný robot.
 
 \subsection{Operačný systém}
+\label{sec:operating_system}
 
 Na~začiatku našej práce sme sa museli rozhodnúť, či budeme písať program na~náš ovládač v~operačnom systéme Windows 11 alebo
 v~operačnom systéme Ubuntu 22.04, ktorý je založený na~Linuxe. Ako programátori sme už dlhšie pracovali s operačným systémom
@@ -12,6 +14,7 @@ Ubuntu a~poznáme aj jeho výhody a~nevýhody. To iste platí aj pre operačný 
 pri~výbere operačného systému, ktorý sme používali počas celej bakalárskej práce.
 
 \subsubsection{Windows}
+\label{sec:windows}
 
 Windows je najpoužívanejším operačným systémom na~počítače na~svete. Je to hlavne preto, že~je jednoduchý na~použivanie
 pre netechnických užívateľov. Windows ale nie je bezpečným operačným systémom a~taktiež aj jeho stabilita a~rýchlosť
@@ -21,6 +24,7 @@ výhodný. Nastavovanie prostredia pre programovanie je v~tomto operačnom syst�
 prekladačov programov (z~anglického compiler) je v~tomto operačnom systéme oveľa horšia ako už v~spomenutom Linuxe.
 
 \subsubsection{Ubuntu}
+\label{sec:ubuntu}
 
 Ubuntu je stabilný a~bezpečný operačný systém, ktorý je založený na~Linuxe. Väčšina ľudí hovori o Linuxe ako o operačnom systéme. Pravdou
 to ale nie je. Linux je totižto len \textbf{kernel} (jadro) operačného systému. Kernel je hlavný program, ktorý sa stará o správu hardvéru,
@@ -57,7 +61,13 @@ Nad~operačným systémom Windows ma niekoľko vyhoď.
 		niečo nové na~objavovanie.
 \end{itemize}
 
+\subsection{Programovaci jazyk a jeho porstredie}
+\label{sec:programovaci_jazyk}
+
+
+
 \section{ROS}
+\label{sec:ros}
 
 \noindent Robotický operačný systém (\acrlong{ROS}) je súbor voľne dostupných softvérových knižníc a~nástrojov, ktoré vytvárajú
 vhodné podmienky pre programátorov na~písanie aplikácií pre~mnohé druhy robotov. ROS má dve verzie. Vo všeobecnosti sa stretneme
@@ -66,6 +76,7 @@ budeme v~tomto dokumente označovať ROS verzie 1 ako ROS1 a~ROS verzie 2 ako RO
 vlastnostiach a~funkcionalitách, ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 
 \subsection{Základné pojmy}
+\label{sec:zakladne_pojmy}
 
 \noindent Komunikácia v~ROSe je zabezpečená cez~IPC (\acrlong{IPC}), TCP/IP UDP/IP komunikáciou pomocou troch zakladacích metód:
 \textbf{témy} (Topics), \textbf{služby} (Service) a~\textbf{akcie} (Actions).
