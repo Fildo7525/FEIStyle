@@ -1,0 +1,157 @@
+\section{Pôvodný stav robota}
+
+\subsection{Robot a~jeho ovládanie}
+
+Robot, s~ktorým sme pracovali bol výsledkom tímového projektu viacerých študentov \newline z~roku 2019. Pri~vysvetľovaní a~opisovaní robota sa budeme
+odvolávať na~dokumenty, stránky a~kód, ktorý napísali. Všetky tieto údaje si sprístupnené na~mobilnom robote v~záložke
+\newline \texttt{\$(HOME)/Desktop/Blackmetal}~\cite{timovyProjekt}.
+
+Robot je v~tvare kvádra. Jeho šírka je 60cm a~je vyzdvihnutý nad zem o~1.5cm. Nachádza sa na~kolesách o~polomere 8cm. Jeho kostra, až na~oceľové pláty,
+ktoré držia robot, je spravená z~hliníku. Konkrétne z~hliníkových tyčí, ktoré sú pospájané plexisklovými plátmi. Jeho podobizeň vidíme na~nasledujúcom
+obrázku.
+
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=0.95\textwidth]{img/robot.png}
+	\end{center}
+	\caption{Zobrazenie spodnej časti mobilného robota~\cite{timovyProjekt}}
+	\label{fig:robot}
+\end{figure}
+
+\noindent Na~obrázku ďalej vidíme olemovanie robota pásom s~LED-kami. Tie svietia nasledovným spôsobom. Keď sa robot nehýbe všetky LED-ky svietia
+na zeleno. Keď sa robot pohne do~nejakej strany, LED-ky znázornia jeho pohyb tým, že~svietia na~strane, do~ktorej sa robot hýbe. Keď nastane
+situácia, kedy počítač ovládajúci motory prestane komunikovať s~Arduinom, ktoré sa stará o~detekciu stavov robota tak~LED-ky začnú blikať
+červeno-modrými farbami.
+
+Ako bolo spomenuté LED-ky znázorňujú pohyb robota. Ten sa pohybuje za pomoci diferenciálneho podvozku s~dvoma podpornými všesmerovými kolesami.
+Motory robota sú pripojené na~meniče. Tie sú ovládané priamo príkazmi z~počítača.
+
+Hardware robota sa skladá z:
+\begin{itemize}
+	\item kontrolnej dosky Arduino Uno,
+
+	\item Počítača ADVANTECH MIO-5272~\cite{robotPc} \newline
+		Počítač obsahuje operačný systém Ubuntu 16.04.
+
+	\item Extension board MIOe-210~\cite{extensionModule}
+
+	\item Meniče MAXON EPOS 24/5 (s číslom 275512)~\cite{menic} \newline
+	 	Sú napájané jednosmerným napätím 11 - 24 V~a~5 A.
+
+	\item Enkódery MAXON Encoder MR Type L (s číslom 225787)~\cite{encoder} \newline
+		Rozlíšenie enkóderov je 1024 impulzov s~troma kanálmi.
+
+	\item Motory MAXON RE 40 (s číslom 148867)~\cite{motor} \newline
+		Motory s~výkonom 150W. Maximálna rýchlosť je 12 000 rpm a~efektivita 91\%.
+
+	\item Prevodovka MAXON Planetary Gearhead GP 42 C (s číslom 202120)~\cite{prevodovka} \newline
+		Redukcia prevodovky je 43:1. Jej účinnosť je 72\%.
+\end{itemize}
+
+\noindent Ovládanie robota je zabezpečené externými počítačmi
+\begin{itemize}
+	\item Control PC (Kontrolný počítač) -- Počítač posielajúci príkazy na~robot cez~TCP/IP protokol.
+	\item Logging PC (Logovací počítač) -- Počítač prijímajúci stav robota cez~TCP/IP protokol.
+\end{itemize}
+
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=9cm]{img/schemaRobota.png}
+	\end{center}
+	\caption{Schéma zapojenia jednotlivých častí na~robote}
+	\label{fig:schemaRobota}
+\end{figure}
+
+\noindent Tieto počítače sú len reprezentácia servera. V~realite to môže byť jeden a~ten istý počítač.
+
+\noindent Na obrázku Obr.~\ref{fig:schemaRobota} vidíme zapojenie jednotlivých častí robota. Čo sme nespomenuli a~je na~obrázku je XBox ovládač
+je to~kvôli tomu, že~tímový projekt bol zameraný na~ovládanie robota pomocou tohto ovládača. My ho ale použivať nebudeme.
+
+\subsection{Komunikácia s~robotom}
+
+S robotom sa vieme spojiť pomocou dvoch portov. Jeden port je otvorený na~prijímanie požiadavok (requestov) a~ten druhý je na~monitorovanie
+stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí môžu len sledovať stav robota. Druhý port je na~prijímanie requestov
+\textit{665} a~je otvorený len pre~jedného užívateľa.
+
+\subsubsection{Logovanie}
+\label{sec:logovanie}
+
+	Spomínaný port \textit{664} je otvorený jednému užívateľovi. Keď sa užívateľ pripojí začne dostávať nepretržite správy typu
+	\textit{JSON}~(\acrlong{JSON}), ktoré hlásia stav robota. Správy, ktoré dostávame sú nasledujúceho formátu
+
+	\begin{lstlisting}
+			{"state":1,"direction":1}
+	\end{lstlisting}
+
+	Hodnoty sa pri~stave (state) a~ani pri~smere (direction) nemenia. Sú to~stále jednotky. Pokým robota nezastavíme buď príkazom, stlačením
+	tlačidla vypnutia alebo zablokovaním jedného z~kolies, tak~sa tieto správy budú posielať. Môžeme potom začať polemizovať o~tom či~by nebolo
+	lepšie už tieto správy využiť na~to~čo reálne spomenutý \textit{JSON} reťazec ukazuje. A~to udávať smer a~stav robota. Momentálne tieto správy
+	slučia len na~to, aby sme vedeli, že~tento robot je aktívny a~vie primať a~spracúvať informácie.
+
+\subsubsection{Ovládanie}
+\label{sec:ovladanie}
+
+	Port \textit{665} je sprístupnený na~prijímanie a~odosielanie požiadavok a~ich odpovedí. Príkazy sa na~počítač posielajú cez~sieť z~externého
+	počítača vo~formáte \textbf{JSON}. Študenti, ktorí navrhovali systém posielania požiadavok (request) a~odpovedí (response) robili tieto správy
+	ručne. Preto~nastávajú situácie, kedy robot pošle správu, ktorá nespadá do~štandardu písania JSON textu. Z~tohto dôvodu sme nemohli použiť už
+	existujúci kód (parser), ktorý by nám zjednodušil prehľadávanie týchto správ. Podla dokumentácie sa robot mal ovládať správami typu~\cite{BMdoc}
+
+	\label{jsonSpeedRequestBad}
+	\begin{lstlisting}
+			{"UserID":1,"Command":3,"RightWheelSpeed":50,"LeftWheelSpeed":50}
+	\end{lstlisting}
+
+	\newpage
+
+	\noindent Význam jednotlivých parametrov:
+	\begin{itemize}
+		\item \textbf{UserID} -- Znázorňuje ID užívateľa, ktorý je pripojený na~robot. Predvolená hodnota je 1.
+		\item \textbf{Command} --  Číselná hodnota znázorňujúca príkaz, ktorý ma robot vykonať
+			\begin{enumerate}
+				\setcounter{enumi}{-1}
+				\item \label{c0} Prázdny príkaz slúžiaci na~overenie spojenia
+				\item \label{c1} Núdzové zastavenie
+				\item \label{c2} Normálne zastavenie
+				\item \label{c3} Príkaz nastavujúc rýchlosti kolies mobilného robota
+				\item \label{c4} Prázdny príkaz
+				\item \label{c5} Prázdny príkaz
+				\item \label{c6} Príkaz pýtajúci si aktuálnu rýchlosti pravého a~ľavého kolesa. Tento príkaz nebol sprave navrhnutý v~kóde
+					robota. Vracal nám žiadaná hodnotu namiesto aktuálnej. Museli sme ho prepísať.
+				\item \label{c7} Pripravenie motorov robota
+				\item \label{c8} Príkaz pýtajúci si aktuálnu pozíciu pravého a~ľavého kolesa.
+			\end{enumerate}
+		\item \textbf{RightWheelSpeed} -- Nastavenie rýchlosti pre~pravé koleso
+		\item \textbf{LeftWheelSpeed} -- Nastavenie rýchlosti pre~ľavé koleso
+	\end{itemize}
+
+	\noindent Z~tohto kusu kódu je jasné, že~sa majú posielať celé čísla a~na základe tohto vstupu sa bude robot hýbať. Čo sme zistili až
+	po skompilovaní a~spustení tímového projektu je, že~sa majú posielať desatinné čísla z~intervalu 0 až 1. Toto nebolo písané
+	v~dokumentácii, ktorá nám bola dodaná na~začiatku programu. Môžeme preto príklad prepísať na~reťazec, ktorý by fungoval
+
+	\label{jsonSpeedRequestGood}
+	\begin{lstlisting}
+			{"UserID":1,"Command":3,"RightWheelSpeed":0.50,"LeftWheelSpeed":0.50}
+	\end{lstlisting}
+
+\subsection{Vysvetlenie kľúčov reťazca}
+
+\noindent \textbf{UserID} \newline
+\indent Táto možnosť je v~momentálnom stave robota nevyužitá. Počet zariadení, ktoré sa môžu pripojiť na~port, cez~ktorý sa dá robot ovládať
+je 1. Je to~ale dobrá možnosť na~rozšírenie kódu. Keď sa budú môcť pripojiť viacerí užívatelia, tak~sa bude musieť vyriešiť, koho príkaz
+bude mať akú prioritu. \newline
+
+\noindent \textbf{Command:~\ref{c4}} \newline
+\indent Tento príkaz je prázdny. My sme ho ale neskôr prepísali na~príkaz, cez~ktorý sa dá nastaviť žiadaná pozícia kolies robota (natočenie).
+Táto funkcionalita nie je v~takom stave ako sme si priali. Je to spôsobené hlavne nedostačujúcov dokumentáciou enkóderov na~robote. Síce sme našli
+v~dokumentácii funkciu, ktorá by mala túto možnosť povoľovať. Čo sa ale stane pri~poslaní príkazu je to, že~kolesá sa začnú točiť rýchlosťou
+0,5 metra za sekundu.\newline
+
+\noindent \textbf{Command:~\ref{c8}} \newline
+\indent Príkaz na~zisťovanie polohy kolies nebol originálne naprogramovaný na~robote. Pridali sme ho za cieľom presného dostavia sa robota
+na~preddefinované miesto. Táto funkcionalita nefunguje správne rovnako ako v~predchádzajúcom príklade, keď si vypýtame polohu kolies od robota,
+dáta ktoré obdržme sú, že~jedno koleso je priamo nastavené na~hodnotu, ktorú sme si vyžiadali a~to druhé koleso vráti náhodnú hodnotu.
+Počas toho sa ale kolesá robota stále točia.\newline
+
+\noindent \textbf{RightWheelSpeed/LeftWheelSpeed} \newline
+\indent Nastavovanie rýchlosti pravého a~ľavého kolesa nie sú povinné parametre. Musíme ich zadávať len v~prípade posielania rýchlostí
+cez~príkaz s~číslom \ref{c3} alebo \ref{c4}.
