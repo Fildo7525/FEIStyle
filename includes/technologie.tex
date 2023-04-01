@@ -44,14 +44,15 @@ a~ďalších elektronických zariadeniach, ktoré potrebujú rýchlosť, stabili
 robotoch. Nad~operačným systémom Windows má niekoľko výhod.
 
 \begin{itemize}
-	\item \textbf{Open source} Linux je open source jadro pre~operačný systém, čo znamená, že~kód, ktorý tvorí jeho základ,
-		je k~dispozícii pre~všetkých zadarmo a~každý môže prispieť k~jeho vylepšeniu. Tento otvorený prístup umožňuje
-		programátorom prispôsobiť si Linux pre~svoje potreby a~vytvárať programy, ktoré sú optimálne pre ich prácu.
-		Na Linuxe sú založené aj operačné systémy reálneho času alebo software pre smart mobilné telefóny ako je
-		napríklad operačný systém Android.
+	\item \textbf{Open source} Linux je open source jadro pre~operačný systém, čo znamená, že~kód,\\
+		ktorý tvorí jeho základ, je k~dispozícii pre~všetkých zadarmo a~každý môže prispieť
+		k~jeho vylepšeniu. Tento otvorený prístup umožňuje programátorom prispôsobiť si Linux
+		pre~svoje potreby a~vytvárať programy, ktoré sú optimálne pre ich prácu. Na Linuxe
+		sú založené aj operačné systémy reálneho času alebo software pre smart mobilné telefóny
+		ako je napríklad operačný systém Android.
 
-	\item \textbf{Programovacie nástroje} Linux obsahuje mnoho vynikajúcich programovacích nástrojov, ktoré sú k~dispozícii zadarmo
-		a~sú široko používané programátormi. Napríklad k~dispozícii v~Linuxe sú (GCC) \acrlong{GCC} (Kolekcia GNU prekladačov)
+	\item \textbf{Programovacie nástroje} Linux obsahuje mnoho vynikajúcich programovacích nástrojov, ktoré sú k~dispozícii
+		zadarmo a~sú široko používané programátormi. Napríklad k~dispozícii v~Linuxe sú (GCC) \acrlong{GCC} (Kolekcia GNU prekladačov)
 		(GNU je skratka pre \acrlong{GNU}) a~GNU Debugger (GDB) sú vynikajúce nástroje pre C/C++ programátorov.
 
 	\item \textbf{Bezpečnosť} Linux má reputáciu bezpečnejšieho operačného systému v~porovnaní s operačným systémom Windows.
@@ -121,6 +122,8 @@ vlastnostiach a~funkcionalitách, ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 
 \noindent Komunikácia v~ROSe je zabezpečená cez~IPC (\acrlong{IPC}), TCP/IP UDP/IP komunikáciou pomocou troch zakladacích metód:
 \textbf{témy} (Topics), \textbf{služby} (Services) a~\textbf{akcie} (Actions).
+Všetky tieto metódy slúžia na posielanie správ na synchronizáciu vykonávania programu a komunikáciu jednotlivých častí programu.
+Na to aby sme ich vedeli správne využiť musíme poznať ich základnú implementáciu a funkcionalitu. Správanie týchto metód je nasledovné.
 
 \subsubsection{Témy}
 \label{sec:topic}
