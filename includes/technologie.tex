@@ -69,9 +69,14 @@ robotoch. Nad~operačným systémom Windows má niekoľko výhod.
 	\item \textbf{Podpora a~komunita} Linux má veľkú a~aktívnu komunitu programátorov, ktorá poskytuje podporu a~rieši problémy.
 		Vďaka tomu, že~Linux je open source, mnoho ľudí prispieva k~jeho vylepšeniu a~vytvára nové programy, čo znamená, že~je vždy
 		niečo nové na~objavovanie.
+
+	\item \textbf{Komplexnosť} Napriek všetkým týmto výhodám ma Linux aj svoje nevýhody. Najväčšou nevýhodou, ktorú je treba
+		spomenúť je komplexnosť operačného systému. Linux je komplexnejší ako operačný systém Windows, hlavne kvôli svojej
+		flexibilnosti. Tým, že si vieme nastaviť vlastné prostredie, typ systému správy súborov, programy na sťahovanie,
+		publikovanie a správy balíčkov.
 \end{itemize}
 
-\subsection{Programovaci jazyk a jeho porstredie}
+\subsection{Programovací jazyk a jeho prostredie}
 \label{sec:programovaci_jazyk}
 
 Medzi programovacími jazykmi, ktoré sme mohli použiť boli na vyber nasledovne: \textit{C++}, \textit{C}, \textit{Python},
@@ -117,7 +122,12 @@ s~tým, že~pod názvom ROS1 alebo ROS sa myslí ROS verzie 1. Pod názvom ROS2 
 budeme v~tomto dokumente označovať ROS verzie 1 ako ROS1 a~ROS verzie 2 ako ROS2. V~prípade, keď budme hovoriť o~spoločných
 vlastnostiach a~funkcionalitách, ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 
-\subsubsection{Základné pojmy}
+ROS je open source, čo znamená, že ide o softvér uvoľnený pod licenciou, kde má používateľ práva na použitie,
+štúdium, zmenu a redistribúciu. Mnohé open source licencie však určujú určité obmedzenia na tieto práva pre tento softvér,
+ale v podstate môžeme predpokladať tieto práva. Najbežnejšie licencie pre ROS2 softvérové balíčky sú Apache 2 a BSD,
+hoci vývojári majú slobodu používať aj iné. \cite{ROS2book} Využitia Robotického operačného systému v reálnom svete sa môžu
+objaviť v automobiloch, mobilných robotoch, droboch, manipulátoroch.
+
 \label{sec:zakladne_pojmy}
 
 \noindent Komunikácia v~ROSe je zabezpečená cez~IPC (\acrlong{IPC}), TCP/IP UDP/IP komunikáciou pomocou troch zakladacích metód:
