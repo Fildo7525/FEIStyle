@@ -141,7 +141,13 @@ Následne sme dopočítali polohu robota v Karteziánskej súradnicovej sústave
 \subsection{Zdieľanie polohy}
 \label{sec:zdielanie_polohy}
 
-Ďalšiu vec, ktorú je treba vysvetliť ku grafu Obr.~\ref{fig:flowchart} je zdieľanie polohy. Odometria po~každom prepočítaní polohy robota publikuje tuto
-informáciu na~tému \textit{/position} tato sprava je typu \textit{geometry\_msgs/msg/Vector3}. Obsahuje 3 hodnoty, ktoré sú x, y a~z.
-Súradnice reprezentujú aktuálnu polohu robota.
+Ďalšiu vec, ktorú je treba vysvetliť ku grafu Obr.~\ref{fig:flowchart} je zdieľanie polohy. Odometria
+po~každom prepočítaní polohy robota publikuje túto informáciu na~tému \textit{/odom} táto správa je typu
+\textit{geometry\_msgs/msg/Odometry}. Tento typ správy obsahuje štyri hlavné časti:
+\begin{itemize}
+	\item \textbf{hlavička} Hlavička obsahuje čas a identifikačný reťazec odosielajúceho rámca
+	\item \textbf{ID dcérskeho rámca} Identifikačný reťazec prímajúceho rámca
+	\item \textbf{rýchlosť} Lineárne a uhlové rýchlosti
+	\item \textbf{poloha} Polohu v priestore
+\end{itemize}
 
