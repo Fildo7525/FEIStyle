@@ -130,18 +130,6 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 je 1. Je to~ale dobrá možnosť na~rozšírenie kódu. Keď sa budú môcť pripojiť viacerí užívatelia, tak~sa bude musieť vyriešiť, koho príkaz
 bude mať akú prioritu. \newline
 
-\noindent \textbf{Command:~\ref{c4}} \newline
-\indent Tento príkaz je prázdny. My sme ho ale neskôr prepísali na~príkaz, cez~ktorý sa dá nastaviť žiadaná pozícia kolies robota (natočenie).
-Táto funkcionalita nie je v~takom stave ako sme si priali. Je to spôsobené hlavne nedostačujúcov dokumentáciou enkóderov na~robote. Síce sme našli
-v~dokumentácii funkciu, ktorá by mala túto možnosť povoľovať. Čo sa ale stane pri~poslaní príkazu je to, že~kolesá sa začnú točiť rýchlosťou
-0,5 metra za sekundu.\newline
-
-\noindent \textbf{Command:~\ref{c8}} \newline
-\indent Príkaz na~zisťovanie polohy kolies nebol originálne naprogramovaný na~robote. Pridali sme ho za cieľom presného dostavia sa robota
-na~preddefinované miesto. Táto funkcionalita nefunguje správne rovnako ako v~predchádzajúcom príklade, keď si vypýtame polohu kolies od robota,
-dáta ktoré obdržme sú, že~jedno koleso je priamo nastavené na~hodnotu, ktorú sme si vyžiadali a~to druhé koleso vráti náhodnú hodnotu.
-Počas toho sa ale kolesá robota stále točia.\newline
-
 \noindent \textbf{RightWheelSpeed/LeftWheelSpeed} \newline
 \indent Nastavovanie rýchlosti pravého a~ľavého kolesa nie sú povinné parametre. Musíme ich zadávať len v~prípade posielania rýchlostí
 cez~príkaz s~číslom \ref{c3} alebo \ref{c4}.
