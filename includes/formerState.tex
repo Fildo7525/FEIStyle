@@ -115,23 +115,13 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 				\item \label{c3} Príkaz nastavujúc rýchlosti kolies mobilného robota
 				\item \label{c4} Prázdny príkaz
 				\item \label{c5} Prázdny príkaz
-				\item \label{c6} Príkaz pýtajúci si aktuálnu rýchlosti pravého a~ľavého kolesa. Tento príkaz nebol sprave navrhnutý v~kóde
-					robota. Vracal nám žiadaná hodnotu namiesto aktuálnej. Museli sme ho prepísať.
+				\item \label{c6} Príkaz pýtajúci si aktuálne rýchlosti pravého a~ľavého kolesa.
 				\item \label{c7} Pripravenie motorov robota
 				\item \label{c8} Príkaz pýtajúci si aktuálnu pozíciu pravého a~ľavého kolesa.
 			\end{enumerate}
 		\item \textbf{RightWheelSpeed} -- Nastavenie rýchlosti pre~pravé koleso
 		\item \textbf{LeftWheelSpeed} -- Nastavenie rýchlosti pre~ľavé koleso
 	\end{itemize}
-
-	\noindent Z~tohto kusu kódu je jasné, že~sa majú posielať celé čísla a~na základe tohto vstupu sa bude robot hýbať. Čo sme zistili až
-	po skompilovaní a~spustení tímového projektu je, že~sa majú posielať desatinné čísla z~intervalu 0 až 1. Toto nebolo písané
-	v~dokumentácii, ktorá nám bola dodaná na~začiatku programu. Môžeme preto príklad prepísať na~reťazec, ktorý by fungoval
-
-	\label{jsonSpeedRequestGood}
-	\begin{lstlisting}
-			{"UserID":1,"Command":3,"RightWheelSpeed":0.50,"LeftWheelSpeed":0.50}
-	\end{lstlisting}
 
 \subsection{Vysvetlenie kľúčov reťazca}
 

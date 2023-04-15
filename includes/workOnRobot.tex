@@ -24,8 +24,21 @@ Tento príkaz najprv odstráni všetky balíčky, ktoré nie sú používané ž
 ktoré taktiež nie sú používané žiadnym balíčkom a nasilu odinštaluje. Po vykonaní tejto operácie sme ešte museli odstrániť všetky referencie
 na ROS1 v~systéme. Toto sme vykonali odstránením linkov na už neaktívne repozitáre, ktoré sa nachádzali v súbore \textit{/etc/apt/sources.list}.
 
-\subsection{Nesprávna funkcia robota}
-\label{subsec:wrongFunctionality}
+\subsection{Chyba v dokumentácii}
+\label{subsec:documentationIssue}
+
+V sekcii~\ref{sec:ovladanie} sme uviedli pôvodný stav ovládania robota pomocou správ typu JSON.
+Z~kódu~\ref{jsonSpeedRequestBad} je jasné, že~sa majú posielať celé čísla a~na základe tohto vstupu sa bude robot hýbať. Čo sme zistili až
+po skompilovaní a~spustení tímového projektu je, že~sa majú posielať desatinné čísla z~intervalu 0 až 1. Toto nebolo písané
+v~dokumentácii, ktorá nám bola dodaná na~začiatku programu. Môžeme preto príklad prepísať na~reťazec, ktorý by fungoval:
+
+	\label{jsonSpeedRequestGood}
+	\begin{lstlisting}
+			{"UserID":1,"Command":3,"RightWheelSpeed":0.50,"LeftWheelSpeed":0.50}
+	\end{lstlisting}
+
+\subsection{Nesprávna spätnú väzba}
+\label{subsec:wrongFeedback}
 
 Ako bolo spomenuté vyššie, pri~poslaní príkazu s~číslom~\ref{c6} nám robot vráti aktuálne rýchlosti kolies. Počas skúšania tejto funkcionality
 sme narazili na~problém. Keď sme sa robota spýtali na~jeho rýchlosti. Dostali sme reťazec, ktorý obsahoval náhodne veľké čísla. Tieto čísla sa
