@@ -12,25 +12,35 @@
 \subsection{Úvod do~čítania grafu}
 \label{sec:citanie_grafu}
 
-Na~obrázku Obr.~\ref{fig:flowchart} môžeme vidieť viacero objektov rôznych farieb. Objekty zobrazené červenou farbou sú uzly spracovávané
-a~vytvárané v~rámci ROS2. Každý tento objekt sa vykonáva v~osobitnom procese. Objekty zobrazené oranžovou farbou sú objekty, ktoré majú svoje
-vlastné vlákno. Tieto objekty boli vytvorené uzlom BlackMetal. Dátové štruktúry Queue, zobrazené bielou farbou sú vytvorene  tak~aby
-zabezpečovali bezchybnú komunikáciu medzi viacerými vláknami. Objekt so zelenou farbou je vstup do~programu. Je zadávaný užívateľom
-a~reprezentuje žiadanú rýchlosť robota. Modry objekt je výstupom programu. Je to téma, na~ktorý sa publikuje aktuálna pozícia robota.
-Robot samotný je zobrazený bielou farbou vo~forme malého obláčika. Prerušované čiary na~diagrame znázorňujú sieťovú komunikáciu programu
-a~robota. Červené dvojité čiary udávajú, ktoré objekty patria ROS-u. Nakoniec čierne plné čiary reprezentujú tok dát medzi objektami.
+Na~obrázku Obr.~\ref{fig:flowchart} môžeme vidieť viacero objektov rôznych farieb. Objekty zobrazené
+červenou farbou sú uzly spracovávané a~vytvárané v~rámci ROS2. Každý tento objekt sa vykonáva
+v~osobitnom procese. Objekty zobrazené oranžovou farbou sú objekty, ktoré majú svoje
+vlastné vlákno.
+Tieto objekty boli vytvorené uzlom BlackMetal. Dátové štruktúry Queue, zobrazené bielou farbou
+sú vytvorené tak, aby zabezpečovali bezchybnú komunikáciu a synchronizáciu medzi viacerými
+vláknami. Objekt so zelenou farbou je vstup do~programu. Je zadávaný užívateľom a~reprezentuje
+žiadanú rýchlosť robota. Modrý objekt je výstupom programu. Je to téma, na~ktorú sa publikuje
+aktuálna pozícia robota. Robot samotný je zobrazený bielou farbou vo~forme malého obláčika.
+Prerušované čiary na~diagrame znázorňujú sieťovú komunikáciu ovládača a~robota. Červené dvojité
+čiary udávajú, ktoré objekty patria ROS-u. Nakoniec čierne plné čiary reprezentujú tok dát medzi
+objektmi.
 
 \subsection{Uzly}
+\label{subsec:nodes}
 
-Na~obrázku Obr.~\ref{fig:flowchart} môžeme vidieť postup vykonávania programu na~ovládanie robota BlackMetal pomocou ROS2.
-Na~začiatku programu sa vytvoria 3 uzly. Prvý uzol \textbf{Position Publisher Node} je uzol, na~ktorý sa publikuje vypočítaná pozícia robota.
-Počíta sa na~základe obdržaných dát z~enkóderov robota. Uzol \textbf{Logger Node} slúži na~zaznamenávanie stavu robota \ref{sec:logovanie}.
-Posledný uzol \textbf{BlackMetal Node} ovláda robota na~základe zadaných dát užívateľom.
+Na~obrázku Obr.~\ref{fig:flowchart} môžeme vidieť postup vykonávania programu na~ovládanie
+robota BlackMetal pomocou ROS2. Na~začiatku programu sa vytvoria 3 uzly. Prvý uzol
+\textbf{Position Publisher} je uzol, na~ktorý sa publikuje vypočítaná pozícia robota.
+Tento uzol existuje v programe len na overenie publikovaných informácii a ich následné uchovávanie.
+Pozícia sa počíta sa na~základe obdržaných dát z~enkóderov robota. Uzol \textbf{Logger} slúži na~zaznamenávanie
+stavu robota~\ref{sec:logovanie}. Posledný uzol \textbf{BlackMetal} ovláda robota podľa 
+zadaných dát užívateľom.
 
 \subsection{Vstup}
+\label{subsec:input}
 
-Uzol \textit{BlackMetal Node} vytvorí príjemcu, ktorý počúva na~téme \textit{geometry\_msgs/msg/Twist}. Tento vstup je vo~forme príkazu
-zadaného v~príkazovom riadku. Vyzerá nasledovne:
+Uzol \textbf{BlackMetal} vytvorí príjemcu, ktorý počúva na~téme \textbf{/cmd\_vel} a príma správy typu
+\textit{geometry\_msgs/msg/Twist}. Tento vstup je vo~forme príkazu zadaného v~príkazovom riadku. Vyzerá nasledovne:
 
 \lstset{language=bash,
 	basicstyle=\ttfamily,
@@ -54,27 +64,79 @@ zadaného v~príkazovom riadku. Vyzerá nasledovne:
 			z: 0.0" -1
 \end{lstlisting}
 
-Tento \hyperref[requestCommand]{príkaz} publikuje jednu správu (\textit{-1}) o lineárnych a~uhlových rýchlostiach na~tému \textit{/cmd\_vel}
-Táto sprava je typu \textit{geometry\_msgs/mgs/Twist}. Je následne spracovaná a~uložená do~rady \textit{Queue}. Tato rada je prioritne založená.
-To znamená, že~požiadavka s nižším kódom ma vyššiu prioritu. Požiadavky a~ich kódy moceme vidieť v~sekcii \ref{sec:ovladanie}.
+Tento \hyperref[requestCommand]{príkaz} publikuje jednu správu (\textit{-1}) na~tému \textit{/cmd\_vel}.
+Obsahuje lineárne a~uhlové rýchlosti. Z tejto správy sa využijú dva údaje lineárna rýchlosť
+po osi \textit{x} a uhlová rýchlosť po osi \textit{z}. Ostatné lineárne rýchlosti neovplyvňujú
+chod robota rovnako ako ďalšie uhlové rýchlosti. Táto správa typu \textit{geometry\_msgs/mgs/Twist}
+je následne spracovaná a~uložená do~rady \textit{Queue}. Táto rada je prioritne založená.
+To znamená, že~požiadavka s nižším kódom ma vyššiu prioritu. Požiadavky a~ich kódy môžeme vidieť v~sekciách \ref{sec:ovladanie} a~\ref{subsec:extendRobotCommands}.
 
-\subsection{Komunikacia s robotom}
+\subsection{Komunikácia s robotom}
 \label{sec:robotComms}
 
-Ako je naznačené na~Obr.~\ref{fig:flowchart}, klient si vo~svojom vlastnom vlákne vytiahne prvú spravu z~rady a~pretransformuje ju do~formy JSON.
-Tento typ spravy môžeme vidieť v~\ref{sec:ovladanie}. Príkaz je poslaný robotu a~ten obratom dá vedieť, či danú požiadavku obdržal. Ak tato správa
-žiadala rýchlosti kolies, tak~robot ďalšou správou odpovie na~danú požiadavku. Typ tejto odpovede môžeme vidieť v~\ref{jsonWannabeSpeed}. V~tomto prípade
+Ako je naznačené na~Obr.~\ref{fig:flowchart}, klient si vo~svojom vlastnom vlákne vytiahne
+prvú správu z~rady a~pretransformuje ju do~formy JSON. Tento typ správy môžeme vidieť v~sekcii
+\ref{sec:ovladanie}. Príkaz je poslaný robotu a~ten obratom dá vedieť, či danú požiadavku obdržal.
+Ak obsah tejto správy žiadal o vrátenie rýchlostí kolies, tak~robot ďalšou správou odpovie
+na~danú požiadavku. Typ tejto odpovede môžeme vidieť v~\ref{jsonWannabeSpeed}. V~tomto prípade
 sa správa spracuje a~uloží sa do~ďalšej rady.
 
 \subsection{Odometria}
 \label{sec:odometria}
 
-Odometria, počítanie polohy na~základe rýchlosti kolies, sa vykonáva rovnako ako komunikácia s robotom v~separátnom vlákne. Tu je potreba si uvedomiť
-jednu skutočnosť. To je tá, že~keď posielame žiadosť na~nastavenie rýchlostí kolies robota, tak~robot si hodnoty v~žiadosti prepočíta a~dáta dá následne
-enkóderov. Keď si ale tieto rýchlosti vyžiadame z~enkóderov, tak~sa robot týchto dát nechytá a~my si ich musíme prepočíta na~metre za sekundu. Zároveň
-si tento objekt neustále pýta od robota rýchlosti kolies. Ako sme už spomenuli v~\ref{sec:robotComms}, tieto spravy majú nižšiu prioritu ako nastavenie
-rýchlosti kolies alebo bezpečnostné zastavenie robota. Preto sa môže stat, že~správy posielané robotu nebudú dodržiavať presne stanovenú frekvenciu v~čase
-keď mu bude užívateľ posielať príkazy.
+Odometria, počítanie polohy na~základe rýchlosti kolies, sa vykonáva rovnako ako komunikácia
+s~robotom, v~separátnom vlákne. Tu je potreba si uvedomiť jednu skutočnosť. To je tá, že~keď
+posielame žiadosť na~nastavenie rýchlostí kolies robota, tak~robot si hodnoty v~žiadosti prepočíta.
+Prepočítané dáta následne poskytne enkóderom. Keď si ale tieto rýchlosti vyžiadame z~enkóderov,
+tak~sa robot týchto dát nechytá a~my si ich musíme prepočíta na~metre za sekundu. Aby sme dostali
+rýchlosti kolies od robota, tak si ich musíme od neho vypýtať. Ako sme už spomenuli v~\ref{sec:robotComms},
+tieto správy majú nižšiu prioritu ako nastavenie rýchlosti kolies alebo bezpečnostné zastavenie
+robota. Preto sa môže stať, že~správy posielané robotu nebudú dodržiavať presne stanovenú frekvenciu
+v~čase keď mu bude užívateľ posielať príkazy. Toto nám až tak neprekáža. My sa síce pýtame od robota jeho rýchlosť každých 100 milisekúnd, ale v odometrii si zisťujeme aktuálny čas a zmenu času od poslednej odpovede.
+
+Po obdržaní rýchlosti robota v impulzoch za sekundu si tieto dáta kvôli zašumeniu preženieme cez filter a následne ich spracujeme. Spracovanie prebieha nasledovne:
+\begin{itemize}
+	\item Prepočítanie rýchlostí kolies robota z impulzov za sekundu na metre za sekundu,
+	\item Prepočítanie lineárnej a uhlovej rýchlosti robota na jeho ťažisko,
+	\item Zistenie aktuálnej zmeny času oproti predchádzajúcemu meraniu,
+	\item Zapísanie aktuálneho času, lineárnej a uhlovej rýchlosti do spravy,
+	\item Prepočítanie aktuálnej polohy z nameraných rýchlostí.
+\end{itemize}
+
+Pre cely počítania odometrie sme si odmerali polomer kolies a vzdialenosť stredov týchto kolies.
+\textit{Polomer kolies} (\textbf{R}) sme určili na \textbf{0,08m}. \textit{Polomer stredov kolies} \textbf{L} robota sme určili
+na \textbf{0,56m}. Z dokumentácie robota \cite{encoder} sme si zistili \textit{rozsah enkóderov} (\textbf{E})
+(\textbf{1024} impulzov na otočku)  Tieto údaje sme použili na prepočítanie impulzov za sekundu
+na metre za sekundu.
+\label{mat:vmps}
+\[
+	V_{mps} = \frac{2 \pi R}{E} v_{imp}
+\]
+
+Týmto spôsobom si vieme prepočítať rýchlosti pre pravé a ľavé koleso robota.
+V druhom bode sme si prepočítali lineárnu a uhlovú rýchlosť pomocou rýchlosti pravého a ľavého kolesa.
+\label{eq:vlin}
+\[
+	v = \frac{v_{r} + v_{l}}{2}
+\]
+\label{eq:vang}
+\[
+	\omega = \frac{v_{r} + v_{l}}{L}
+\]
+Po prepočítaní rýchlostí kolies sme si zistili aktuálne natočenie robota
+\label{eq:angZ}
+\[
+	\gamma = \gamma + \omega dt
+\]
+Následne sme dopočítali polohu robota v Karteziánskej súradnicovej sústave pomocou vzťahov:
+\label{eq:posX}
+\[
+	X = v cos(\gamma) dt
+\]
+\label{eq:posY}
+\[
+	Y = v sin(\gamma) dt
+\]
 
 \subsection{Zdieľanie polohy}
 \label{sec:zdielanie_polohy}
