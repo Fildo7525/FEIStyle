@@ -7,7 +7,7 @@ odvolávať na~dokumenty, stránky a~kód, ktorý napísali. Všetky tieto údaj
 \newline \texttt{\$(HOME)/Desktop/Blackmetal}~\cite{timovyProjekt}.
 
 Robot je v~tvare kvádra. Jeho šírka je 60cm a~je vyzdvihnutý nad zem o~1.5cm. Nachádza sa na~kolesách o~polomere 8cm. Jeho kostra, až na~oceľové pláty,
-ktoré držia robot, je spravená z~hliníku. Konkrétne z~hliníkových tyčí, ktoré sú pospájané plexisklovými plátmi. Jeho podobizeň vidíme na~nasledujúcom
+ktoré držia robot, je spravená z~hliníku. Konkrétne z~hliníkových tyčí, ktoré sú~pospájané plexisklovými plátmi. Jeho podobizeň vidíme na~nasledujúcom
 obrázku.
 
 \begin{figure}[!htbp]
@@ -19,12 +19,12 @@ obrázku.
 \end{figure}
 
 \noindent Na~obrázku ďalej vidíme olemovanie robota pásom s~LED-kami. Tie svietia nasledovným spôsobom. Keď sa robot nehýbe všetky LED-ky svietia
-na zeleno. Keď sa robot pohne do~nejakej strany, LED-ky znázornia jeho pohyb tým, že~svietia na~strane, do~ktorej sa robot hýbe. Keď nastane
+na~zeleno. Keď sa robot pohne do~nejakej strany, LED-ky znázornia jeho pohyb tým, že~svietia na~strane, do~ktorej sa robot hýbe. Keď nastane
 situácia, kedy počítač ovládajúci motory prestane komunikovať s~Arduinom, ktoré sa stará o~detekciu stavov robota tak~LED-ky začnú blikať
 červeno-modrými farbami.
 
-Ako bolo spomenuté LED-ky znázorňujú pohyb robota. Ten sa pohybuje za pomoci diferenciálneho podvozku s~dvoma podpornými všesmerovými kolesami.
-Motory robota sú pripojené na~meniče. Tie sú ovládané priamo príkazmi z~počítača.
+Ako bolo spomenuté LED-ky znázorňujú pohyb robota. Ten sa pohybuje za~pomoci diferenciálneho podvozku s~dvoma podpornými všesmerovými kolesami.
+Motory robota sú~pripojené na~meniče. Tie sú~ovládané priamo príkazmi z~počítača.
 
 Hardware robota sa skladá z:
 \begin{itemize}
@@ -35,16 +35,16 @@ Hardware robota sa skladá z:
 
 	\item Extension board MIOe-210~\cite{extensionModule}
 
-	\item Meniče MAXON EPOS 24/5 (s číslom 275512)~\cite{menic} \newline
-	 	Sú napájané jednosmerným napätím 11 - 24 V~a~5 A.
+	\item Meniče MAXON EPOS 24/5 (s~číslom 275512)~\cite{menic} \newline
+	 	Sú~napájané jednosmerným napätím 11 - 24 V~a~5 A.
 
-	\item Enkódery MAXON Encoder MR Type L (s číslom 225787)~\cite{encoder} \newline
+	\item Enkódery MAXON Encoder MR Type L (s~číslom 225787)~\cite{encoder} \newline
 		Rozlíšenie enkóderov je 1024 impulzov s~troma kanálmi.
 
-	\item Motory MAXON RE 40 (s číslom 148867)~\cite{motor} \newline
+	\item Motory MAXON RE 40 (s~číslom 148867)~\cite{motor} \newline
 		Motory s~výkonom 150W. Maximálna rýchlosť je 12 000 rpm a~efektivita 91\%.
 
-	\item Prevodovka MAXON Planetary Gearhead GP 42 C (s číslom 202120)~\cite{prevodovka} \newline
+	\item Prevodovka MAXON Planetary Gearhead GP 42 C (s~číslom 202120)~\cite{prevodovka} \newline
 		Redukcia prevodovky je 43:1. Jej účinnosť je 72\%.
 \end{itemize}
 
@@ -62,14 +62,14 @@ Hardware robota sa skladá z:
 	\label{fig:schemaRobota}
 \end{figure}
 
-\noindent Tieto počítače sú len reprezentácia servera. V~realite to môže byť jeden a~ten istý počítač.
+\noindent Tieto počítače sú~len reprezentácia servera. V~realite to~môže byť jeden a~ten istý počítač.
 
-\noindent Na obrázku Obr.~\ref{fig:schemaRobota} vidíme zapojenie jednotlivých častí robota. Čo sme nespomenuli a~je na~obrázku je XBox ovládač
-je to~kvôli tomu, že~tímový projekt bol zameraný na~ovládanie robota pomocou tohto ovládača. My ho ale použivať nebudeme.
+\noindent Na~obrázku Obr.~\ref{fig:schemaRobota} vidíme zapojenie jednotlivých častí robota. Čo sme nespomenuli a~je na~obrázku je XBox ovládač
+je to~kvôli tomu, že~tímový projekt bol zameraný na~ovládanie robota pomocou tohto ovládača. My ho ale~použivať nebudeme.
 
 \subsection{Komunikácia s~robotom}
 
-S robotom sa vieme spojiť pomocou dvoch portov. Jeden port je otvorený na~prijímanie požiadavok (requestov) a~ten druhý je na~monitorovanie
+S~robotom sa vieme spojiť pomocou dvoch portov. Jeden port je otvorený na~prijímanie požiadavok (requestov) a~ten druhý je na~monitorovanie
 stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí môžu len sledovať stav robota. Druhý port je na~prijímanie requestov
 \textit{665} a~je otvorený len pre~jedného užívateľa.
 
@@ -77,15 +77,15 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 \label{sec:logovanie}
 
 	Spomínaný port \textit{664} je otvorený jednému užívateľovi. Keď sa užívateľ pripojí začne dostávať nepretržite správy typu
-	\textit{JSON}~(\acrlong{JSON}), ktoré hlásia stav robota. Správy, ktoré dostávame sú nasledujúceho formátu
+	\textit{JSON}~(\acrlong{JSON}), ktoré hlásia stav robota. Správy, ktoré dostávame sú~nasledujúceho formátu
 
 	\begin{lstlisting}
 			{"state":1,"direction":1}
 	\end{lstlisting}
 
-	Hodnoty sa pri~stave (state) a~ani pri~smere (direction) nemenia. Sú to~stále jednotky. Pokým robota nezastavíme buď príkazom, stlačením
+	Hodnoty sa pri~stave (state) a~ani pri~smere (direction) nemenia. Sú~to~stále jednotky. Pokým robota nezastavíme buď príkazom, stlačením
 	tlačidla vypnutia alebo zablokovaním jedného z~kolies, tak~sa tieto správy budú posielať. Môžeme potom začať polemizovať o~tom či~by nebolo
-	lepšie už tieto správy využiť na~to~čo reálne spomenutý \textit{JSON} reťazec ukazuje. A~to udávať smer a~stav robota. Momentálne tieto správy
+	lepšie už~tieto správy využiť na~to~čo reálne spomenutý \textit{JSON} reťazec ukazuje. A~to~udávať smer a~stav robota. Momentálne tieto správy
 	slučia len na~to, aby sme vedeli, že~tento robot je aktívny a~vie primať a~spracúvať informácie.
 
 \subsubsection{Ovládanie}
@@ -127,9 +127,9 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 
 \noindent \textbf{UserID} \newline
 \indent Táto možnosť je v~momentálnom stave robota nevyužitá. Počet zariadení, ktoré sa môžu pripojiť na~port, cez~ktorý sa dá robot ovládať
-je 1. Je to~ale dobrá možnosť na~rozšírenie kódu. Keď sa budú môcť pripojiť viacerí užívatelia, tak~sa bude musieť vyriešiť, koho príkaz
+je 1. Je to~ale~dobrá možnosť na~rozšírenie kódu. Keď sa budú môcť pripojiť viacerí užívatelia, tak~sa bude musieť vyriešiť, koho príkaz
 bude mať akú prioritu. \newline
 
 \noindent \textbf{RightWheelSpeed/LeftWheelSpeed} \newline
-\indent Nastavovanie rýchlosti pravého a~ľavého kolesa nie sú povinné parametre. Musíme ich zadávať len v~prípade posielania rýchlostí
+\indent Nastavovanie rýchlosti pravého a~ľavého kolesa nie sú~povinné parametre. Musíme ich zadávať len v~prípade posielania rýchlostí
 cez~príkaz s~číslom \ref{c3} alebo \ref{c4}.
