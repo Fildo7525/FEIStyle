@@ -4,8 +4,8 @@
 Ako bolo spomenuté v~predchádzajúcej kapitole, rýchlosti kolies sa dajú získať z~enkóderov. Tieto dáta sa posielajú v~správe, ktorá pripomína JSON formát.
 Z~týchto vzoriek poslaných robotom nevieme priamo vypočítať polohu. Musíme si tieto dáta premeniť z~impulzov za~sekundu \(\frac{1}{s}\) na~metre
 za~sekundu \(\frac{m}{s}\). Tento prevod nebude jednoznačný, pretože každý enkódery posiela dáta inak zašumené. Preto~je potrebné zistiť, ako sa zmení
-rýchlosť pri~zmene impulzov za~sekundu. Tento prevod je možné získať z~merania, kde~po~nastavení rýchlostí zoberieme veľa dát z~enkóderov a~zistíme,
-ako sa zmení rýchlosť pri~zmene impulzov za~sekundu.
+rýchlosť pri~zmene impulzov za~sekundu. Tento prevod (sklon prelozenej linearnej regresie cez~namerane data) je možné získať z~merania, kde~po~nastavení
+rýchlostí zoberieme veľa dát z~enkóderov a~zistíme, ako sa zmení rýchlosť pri~zmene impulzov za~sekundu.
 
 Prvý nápad na~získanie čo najlepšej prevodovej charakteristiky bolo cez~všetky dáta položiť lineárnu regresiu. To~sa ukázalo ako zlé riešenie, lebo dáta,
 ktoré dostávame majú veľmi veľký rozptyl. Jednou z~nasledujúcich úvah bolo spraviť kĺzavý priemer. Toto riešenie malo tiež svoje chyby a~to~v~tom, že~zmeny
@@ -26,11 +26,15 @@ v~SI jednotkách nájdeme na~nasledovných grafoch.
 	\label{fig:rw_lw_nf}
 \end{figure}
 
-Ako prvú vec sme si vykreslili všetky \textbf{nazbierané dáta}. Tie sú~zobrazené \textbf{modrou} farbou. Cez~ne sme spravili \textbf{lineárnu regresiu}. Je zobrazená
-ako \textbf{červená} úsečka. Z~nazbieraných dát sme si nakoniec spravili priemer, aby sme videli, ako presne aproximuje nami vypočítaná lineárna regresia priemer
+Ako prvú vec sme si vykreslili všetky \textbf{nazbierané dáta}. Tie sú~zobrazené \textbf{modrou} farbou. Cez~ne
+sme spravili \textbf{lineárnu regresiu}. Je zobrazená ako \textbf{červená} úsečka. Z~nazbieraných dát sme si
+nakoniec spravili priemer, aby sme videli, ako presne aproximuje nami vypočítaná lineárna regresia priemer
 nazbieraných dát. \textbf{Priemery} jednotlivých rýchlostí sú~zobrazené ako \textbf{oranžové} body.
+Keď sme cez~tieto dáta polozili priamku lineárnej regresie dostali sme sklon prevodu ľavého enkóderu. Jeho
+hodnota je \textbf{1012,53636364}. Pre~pravý enkóder to~je hodnota \textbf{1053,67588345}. Tento parameter
+môžeme použiť v~predpočítavaní nastavenej rýchlosti robota.
 
-Môžeme si všimnúť, že~vypočítané priemery takmer presne ležia na~vypočítanej lineárnej regresii. Problémom je, ako už~bolo spomenuté, že~dáta,
+Môžeme si všimnúť, že~vypočítané priemery takmer presne ležia na~vypočítanej lineárnej aproximácie. Problémom je, ako už~bolo spomenuté, že~dáta,
 ktoré dostávame od~robota sú~veľmi zašumené. Preto~z~nich nevieme priamo počítať polohu robota. Na~zobrazenie veľkosti odchýlky sme spravili
 meranie. Nechali sme robot aby prešiel dráhu štvorca so~stranou dlhou 1 meter a~rýchlosťou 0,5 \(\frac{m}{s}\). Výsledok bol veľmi nepresný.
 Metrom sme si odmerali jeho \textit{x}-ovú a~\textit{y}-ovú súradnicu s~počiatkom v~bode, kde~sme na~robote spustili náš ovládač. Jeho skutočná
@@ -41,9 +45,12 @@ poloha bola v~bode~(-0,3m,~0m). Čo~nám ale~vypočítala odometriu je, že~sa r
 Implementovali sme si preto~dolnopriepustný kvadraticky filter. Fungovanie tohto filtra spočíva v~skombinovaní nového vstupného parametra a~starého parametra
 uloženého vo~filtri v~danom pomere. Tento pomer je daný parametrom \textbf{alpha} $\alpha$.
 
-$$ stavFiltra = \alpha * stavFiltra + (1 - \alpha) * nováVzorka $$
+\begin{equation}
+	stavFiltra = \alpha * stavFiltra + (1 - \alpha) * nováVzorka
+	\label{eq:stateOfFilter}
+\end{equation}
 
-Jeho parameter \(\alpha\) sme získali viacerými meraniami. Začali sme najsilnejším filtrom s~hodnotou $\alpha$ rovnou  0,9.
+Jeho parameter $\alpha$ sme získali viacerými meraniami. Začali sme najsilnejším filtrom s~hodnotou $\alpha$ rovnou  0,9.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -60,9 +67,11 @@ Jeho parameter \(\alpha\) sme získali viacerými meraniami. Začali sme najsiln
 Ako môžeme vidieť na~obrázkoch Obr.~\ref{fig:rw_lw_09250} a~Obr.~\ref{fig:rw_lw_nf} aplikácia filtra výrazne pomohla proti~šumu signálu.
 Problémom pri~silnom filtri je to, že~ak~na~začiatku merania dostaneme zlú hodnotu, tak~sa táto hodnota ťažko mení na~správnu. Tento
 efekt si môžeme všimnúť skoro pri~každej meranej rýchlosti. Najviditeľnejší dopad môžeme vidieť pri~pravom kolese
-na~Obr.~\ref{fig:rw_lw_09250} pri~rýchlosti -0,6$\frac{m}{s}$. Tento problém sme riešili postupným menením parametra filtru.
+na~Obr.~\ref{fig:rw_lw_09250} pri~rýchlosti -0,6 $\frac{m}{s}$. Tento problém sme riešili postupným menením parametra filtru.
 Aby sme predišli veľkému množstvu meraní, tak~sme použili metódy binárneho vyhľadávania. V~tomto prípade sme začali s~veľkou hodnotou
-a~postupne sme skákali do~stredu nášho intervalu. Preto~sme si ako ďalšiu hodnotu zvolili alphu $\alpha$ rovnú 0,7.
+a~postupne sme skákali do~stredu nášho intervalu. Pre~toto meranie nám vysie koeficient sklonu lineárnej aproximácie
+pre~ľavý enkóder \textbf{1028,04222094} a~pre~pravý nám vyšiel \textbf{1021,46905726} tento sklon. Kvôli vyššie spomenutým
+dôvodom sme si ako ďalšiu hodnotu zvolili alphu $\alpha$ rovnú 0,7.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -76,13 +85,14 @@ a~postupne sme skákali do~stredu nášho intervalu. Preto~sme si ako ďalšiu h
 	\label{fig:rw_lw_07250}
 \end{figure}
 
-Pri~použití hodnoty $\alpha$ rovnou 0,7 (Obr.~\ref{fig:rw_lw_07250}) sme zistili, že~sa hodnoty rýchlosti aj~pri~aplikácii
+Pri~použití koeficientu $\alpha$ s~hodnotou 0,7 (Obr.~\ref{fig:rw_lw_07250}) sme zistili, že~sa hodnoty rýchlosti aj~pri~aplikácii
 filtra výrazne menili. Ustálené hodnoty zobrazené oranžovou farbou sú~podobne ako pri~meraní s~filtrom s~alphou $\alpha$
-rovnou 0,9 mimo lineárnej regresie. Je to~zapríčinené iným dôvodom ako pri~silnejšom filtri. Pokým pri~silnejšom filtri
-sme dostali zlú začiatočnú hodnotu, tak~už~bolo zložité ju zmeniť. Pri~slabšom filtri, ak~dostávame rozdielne vstupné
-hodnoty tak~sa výstupná hodnota filtra ľahko mení. To~má za~dôsledok posun priemeru vstupných hodnôt. Tento efekt sa dá
-odstrániť zosilnením filtra, čiže zväčšením koeficientu alpha $\alpha$. Spravili sme preto~ďalšie meranie, kde~sme použili
-hodnotu $\alpha$ rovnou 0,75.
+rovnou 0,9 mimo lineárnej regresie. Tá má sklon pre~ľavý enkóder \textbf{1126,16252169} a~pre~pravý enkóder to~je
+\textbf{1048,61769809}. Neprekrytie priemeru a~aproximácie je zapríčinené iným dôvodom ako pri~silnejšom filtri. Pokým
+pri~silnejšom filtri sme dostali zlú začiatočnú hodnotu, tak~už~bolo zložité ju zmeniť. Pri~slabšom filtri, ak~dostávame
+rozdielne vstupné hodnoty tak~sa výstupná hodnota filtra ľahko mení. To~má za~dôsledok posun priemeru vstupných hodnôt.
+Tento efekt sa dá odstrániť zosilnením filtra, čiže zväčšením koeficientu alpha $\alpha$. Spravili sme preto~ďalšie meranie,
+kde~sme použili hodnotu $\alpha$ rovnou 0,75.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -98,8 +108,9 @@ hodnotu $\alpha$ rovnou 0,75.
 
 Obr.~\ref{fig:rw_lw_075250} zobrazuje graf výsledkov nameraných pri~aplikácii filtra s~koeficientom alpha o~veľkosti 0,75.
 V~tomto prípade sa priemerné hodnoty na~rozdiel od~filtrov s~koeficientami alpha 0,9 a~0,7 dostali takmer priamo na~úsečku
-lineárnej regresie prevodu z~impulzov za~sekundu na~metre za~sekundu. Použitie silnejšieho filtra síce pomohlo rýchlejšiemu
-ustáleniu hodnoty, ale~skúsili sme ešte silnejší filter s~hodnotou alpha $\alpha$ rovnou 0,8.
+lineárnej regresie prevodu z~impulzov za~sekundu na~metre za~sekundu. Pričom sklon aproximácie sa zmenil pre~ľavý
+enkóder na~hodnotu \textbf{1145,83253589} a~pre~pravý enkóder to~je \textbf{1060,25358852}. Použitie silnejšieho filtra
+síce pomohlo rýchlejšiemu ustáleniu hodnoty, ale~skúsili sme ešte silnejší filter s~hodnotou alpha $\alpha$ rovnou 0,8.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -115,7 +126,7 @@ ustáleniu hodnoty, ale~skúsili sme ešte silnejší filter s~hodnotou alpha $\
 
 Ako môžeme vidieť na~Obr.~\ref{fig:rw_lw_08250} ustálenie hodnôt je veľmi jednoznačné. Vybrali sme si preto~filter s~hodnotou
 koeficientu alpha $\alpha$ rovnou 0,8. Zatiaľ všetky dáta čo sme merali boli s~frekvenciou 4Hz (1 vzorka za~250 milisekúnd).
-Pre~presnejší výsledok sme túto frekvenciu ešte zvýšili. Z~testov robota sme vypozorovali, že~najfrekventovaniejsia frekvencia,
+Pre~presnejší výsledok sme túto frekvenciu ešte zvýšili. Z~testov robota sme vypozorovali, že~najfrekventovanejšia frekvencia,
 ktorú môže robot sprostredkovať je 10Hz (1 vzorka za~100 milisekúnd). Spravili sme si preto~test na~prevod rýchlosti ešte raz
 s~rovnakou hodnotou koeficientu alpha $\alpha$ rovnou 0,8, ale~s~frekvenciou 10Hz namiesto už~spomenutých 4Hz.
 
@@ -175,11 +186,16 @@ dráhu, ktorú robot prešiel bez aplikácie filtra.
 	\label{fig:stvorecBezFiltra}
 \end{figure}
 
-Ako druhý pokus sme zvolili najlepšiu hodnotu filtra s~koeficientom $\alpha$ rovným 0.8.
-Obrázok Obr.~\ref{fig:stvorecSFiltrom} reprezentuje dráhu, ktorú robot prešiel, keď sme
-na~prichádzajúce dáta aplikovali tento filter.
-
 \clearpage
+
+Aby sme videli ako ovplyvňuje filter s~nami navrhnutými parametrami tak~sme spravili ďalšie meranie s~filtrom
+s~najlepšími hodnotami. Druhý pokus sme zvolili najlepšiu hodnotu filtra s~koeficientom $\alpha$ rovným 0.8.
+Obrázok Obr.~\ref{fig:stvorecSFiltrom} reprezentuje dráhu, ktorú robot prešiel, keď sme na~prichádzajúce dáta
+aplikovali tento filter.
+
+Ako môžeme vidieť na~tomto grafe tak~síce filter zlepšil výsledok, ktorý sme dostali bez filtra, ale~stále tvar, ktorý
+je znázornení na~grafe nie je štvorec. Je to~spôsobené viacerými vplyvmi. Jeden z~nich môže byt nesprávne posielané
+údaje. Druhy vplyv môže byt nesprávne nakonfigurovaný filter. Tretí vplyv môže byt nesprávne nastavený robot.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -189,9 +205,10 @@ na~prichádzajúce dáta aplikovali tento filter.
 	\label{fig:stvorecSFiltrom}
 \end{figure}
 
-Tretí a~posledný pokus, ktoré sme spravili bolo so~silnejším filtrom ako sme sa rozhodli použiť. Ten obsahoval
-koeficient $\alpha$ s~hodnotou 0.9. Pri~takejto konfigurácii filtra sme dostali graf zobrazený na~obrázku
-Obr.~\ref{fig:stvorecSoSilnymFiltrom}. 
+Tretí a~posledný pokus, ktorý sme spravili bolo meranie so~silnejším filtrom ako sme sa rozhodli použiť. Ten
+obsahoval koeficient $\alpha$ s~hodnotou 0.9. Pri~takejto konfigurácii filtra sme dostali graf zobrazený
+na~obrázku Obr.~\ref{fig:stvorecSoSilnymFiltrom}. Toto zhoršenie spôsobilo zle zaradenie prijatých impulzov za~sekundu
+k~premeneným metrom za~sekundu (Obr.~\ref{fig:rw_lw_09250}).
 
 \begin{figure}[!htbp]
 	\begin{center}
