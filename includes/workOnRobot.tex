@@ -1,3 +1,5 @@
+% !TEX root = ../main.tex
+
 \section{Zmeny na~robote}
 
 \subsection{Pokazený systém}
@@ -175,5 +177,14 @@ keď robot stoji neobsahuje rušenie a~je zaručene 0.
 	\caption{Prechodová charakteristika rýchlosti kolies~\cite{timovyProjekt}. }
 	\label{fig:prechChar}
 \end{figure}
+
+\subsection{Zapínanie robota}
+\label{subsec:zapinanieRobota}
+
+Pri~každom zapnutí robota prechádza systém robota do~BIOS-u. V~tomto stave sa nedá s~robotom spraviť nič. Musíme preto
+napojiť monitor a~klávesnicu na~robot, prejsť cez~BIOS a~naštartovať operačný systém. Keď tento postup nespravíme, tak
+operačný systém na~robote nebude vedieť komunikovať s~Arduino doskou, ktorá ovláda robot. Tento problém sme skúmali
+podrobnejšie a~zistili sme, že tento problém je spôsobený samotným operačným systémom. Je to~teda chyba, ktorú my
+nevieme opraviť.
 
 \clearpage
