@@ -3,8 +3,8 @@
 
 Ako bolo spomenuté v~predchádzajúcej kapitole, rýchlosti kolies sa dajú získať z~enkóderov. Tieto dáta sa posielajú v~správe, ktorá pripomína JSON formát.
 Z~týchto vzoriek poslaných robotom nevieme priamo vypočítať polohu. Musíme si tieto dáta premeniť z~impulzov za~sekundu \(\frac{1}{s}\) na~metre
-za~sekundu \(\frac{m}{s}\). Tento prevod nebude jednoznačný, pretože každý enkódery posiela dáta inak zašumené. Preto~je potrebné zistiť, ako sa zmení
-rýchlosť pri~zmene impulzov za~sekundu. Tento prevod (sklon prelozenej linearnej regresie cez~namerane data) je možné získať z~merania, kde~po~nastavení
+za~sekundu \(\frac{m}{s}\). Tento prevod nebude jednoznačný, pretože každý z~enkóderov posiela dáta inak zašumené. Preto~je potrebné zistiť, ako sa zmení
+rýchlosť pri~zmene impulzov za~sekundu. Tento prevod (sklon prelozenej linearnej regresie cez~namerané data) je možné získať z~merania, kde~po~nastavení
 rýchlostí zoberieme veľa dát z~enkóderov a~zistíme, ako sa zmení rýchlosť pri~zmene impulzov za~sekundu.
 
 Prvý nápad na~získanie čo najlepšej prevodovej charakteristiky bolo cez~všetky dáta položiť lineárnu regresiu. To~sa ukázalo ako zlé riešenie, lebo dáta,
@@ -171,50 +171,60 @@ na~predpočítanie počiatočnej hodnoty. Výsledok tohto postupu vidíme na~nas
 
 Výsledky posledných meraní filtrov sme si vyskúšali na~znázornení prejdenej drahý v~tvare štvorca a~následne sme si
 zobrazili na~grafe túto trasu. Pre~porovnanie účinnosti filtra sme porovnali tri grafy. Prvý graf zobrazuje prejdenú
-dráhu počas toho ako je filter vypnutý. Druhy graf znázorňuje prejdenú dráhu s~aktívnym filtrom a~jeho hodnota je
+dráhu počas toho ako je filter vypnutý. Druhý graf znázorňuje prejdenú dráhu s~aktívnym filtrom a~jeho hodnota je
 najlepšia, ktorú sme namerali. Tretí graf reprezentuje dráhu prejdenú so~silnejším filtrom ako sme sa rozhodli použiť.
-
-Ako prvý pokus sme vypli filtrovanie prichádzajúcich dať. To~malo za~dôsledok, že~všetky skoky, ktoré môžeme vidieť
-napríklad na~obrázku Obr.~\ref{fig:rw_lw_nf} sa ukázali na~grafe. Obrázok Obr.~\ref{fig:stvorecBezFiltra} reprezentuje
-dráhu, ktorú robot prešiel bez aplikácie filtra.
 
 \begin{figure}[!htbp]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{img/stvorec_bez_filtra.png}
 	\end{center}
-	\caption{}
+	\caption{Zobrazenie pohybu robota z~odometrie bez použitia filtra.}
 	\label{fig:stvorecBezFiltra}
 \end{figure}
 
-\clearpage
+Ako prvý pokus sme vypli filtrovanie prichádzajúcich dát. To~malo za~dôsledok, že~všetky skoky, ktoré môžeme vidieť
+napríklad na~obrázku Obr.~\ref{fig:rw_lw_nf} sa ukázali na~grafe. Obrázok Obr.~\ref{fig:stvorecBezFiltra} reprezentuje
+dráhu, ktorú robot prešiel bez aplikácie filtra. Na~grafe môžeme vidieť zašumenie zbieraných dát z~robota. To sa
+zobrazuje najmä v~častiach, keď má robot isť rovno. V~prípade, že filter nepožívame, tak~rovne čiary sa premenia na~čiary
+s~natáčaním. To spôsobuje nepresné uvedenie aktuálnej polohy. Tieto nepresnosti sa prejavujú aj pri otáčaní robota.
+V prípade, že sa robot má otočiť o 90 stupňov, respektíve o $\frac{\pi}{2}$, tak robot toto otočenie reprezentuje iným
+uhlom.
 
 Aby sme videli ako ovplyvňuje filter s~nami navrhnutými parametrami tak~sme spravili ďalšie meranie s~filtrom
 s~najlepšími hodnotami. Druhý pokus sme zvolili najlepšiu hodnotu filtra s~koeficientom $\alpha$ rovným 0.8.
 Obrázok Obr.~\ref{fig:stvorecSFiltrom} reprezentuje dráhu, ktorú robot prešiel, keď sme na~prichádzajúce dáta
 aplikovali tento filter.
 
-Ako môžeme vidieť na~tomto grafe tak~síce filter zlepšil výsledok, ktorý sme dostali bez filtra, ale~stále tvar, ktorý
-je znázornení na~grafe nie je štvorec. Je to~spôsobené viacerými vplyvmi. Jeden z~nich môže byt nesprávne posielané
-údaje. Druhy vplyv môže byt nesprávne nakonfigurovaný filter. Tretí vplyv môže byt nesprávne nastavený robot.
-
 \begin{figure}[!htbp]
 	\begin{center}
-		\includegraphics[width=0.8\textwidth]{img/stvorec_s_filtrom.png}
+		\includegraphics[width=0.8\textwidth]{img/stvorec_s_filtrom_3.png}
 	\end{center}
-	\caption{}
+	\caption{Zobrazenie pohybu robota z~odometrie s~použitím najlepšieho filtra.}
 	\label{fig:stvorecSFiltrom}
 \end{figure}
 
+Ako môžeme vidieť na~tomto grafe tak~síce filter zlepšil výsledok, ktorý sme dostali bez filtra, ale~stále tvar, ktorý
+je znázornení na~grafe nie je štvorec. Môže to~byť spôsobené viacerými faktormi.
+
+\begin{itemize}
+	\item \textbf{Presmyk} Robot moze na mieste presmukovat. To ma za dosledok nepresne uvedenie polohy robota.
+	\item \textbf{Oneskorenie komunikacie} Dáta z ovládača príjmame vo while cykle so softwarovým oneskorením (100ms)
+		plus \cite{timovyProjekt}. Tym ze sa moze komunikacia oneskorit, tak to vnasa chybu do vypoctu aktualnej polohy
+		na zaklade rychlosti robota.
+\end{itemize}
+
+\clearpage
+
 Tretí a~posledný pokus, ktorý sme spravili bolo meranie so~silnejším filtrom ako sme sa rozhodli použiť. Ten
 obsahoval koeficient $\alpha$ s~hodnotou 0.9. Pri~takejto konfigurácii filtra sme dostali graf zobrazený
-na~obrázku Obr.~\ref{fig:stvorecSoSilnymFiltrom}. Toto zhoršenie spôsobilo zle zaradenie prijatých impulzov za~sekundu
+na~obrázku Obr.~\ref{fig:stvorecSoSilnymFiltrom}. Toto zhoršenie spôsobilo zlé zaradenie prijatých impulzov za~sekundu
 k~premeneným metrom za~sekundu (Obr.~\ref{fig:rw_lw_09250}).
 
 \begin{figure}[!htbp]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{img/stvorec_so_silnym_filtrom.png}
 	\end{center}
-	\caption{}
+	\caption{Zobrazenie pohybu robota z~odometrie s~použitím silnejšieho filtra.}
 	\label{fig:stvorecSoSilnymFiltrom}
 \end{figure}
 
