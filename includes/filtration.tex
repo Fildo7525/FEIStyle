@@ -158,8 +158,8 @@ Obyčajná implementácia filtra by nám spomalila zmenu vypočítanej rýchlost
 Tento problém sme opravili prestavením počiatočnej hodnoty filtra na~prvú hodnotu po~zmene rýchlosti. Toto riešenie sa
 ukázalo ako najlepšie so~skúšaných riešení.
 
-Toto riešenie má ale jeden problém. Ak~prvá prijatá hodnota po~zmene rýchlosti nie je v~blízkom okolí žiadanej
-hodnoty, tak pôsobením filtra bude trvať dlho pokým sa hodnoty vyprodukované filtrom dostanú na~správnu hodnotu.
+Toto riešenie má ale~jeden problém. Ak~prvá prijatá hodnota po~zmene rýchlosti nie je v~blízkom okolí žiadanej
+hodnoty, tak~pôsobením filtra bude trvať dlho pokým sa hodnoty vyprodukované filtrom dostanú na~správnu hodnotu.
 Tento problém vieme vyriešiť predpočítavaním hodnôt za~pomoci vypočítaných lineárnych aproximácii. Problém so~zlou
 počiatočnou hodnotou môžeme vidieť aj~na~posledom grafe Obr.~\ref{fig:rw_lw_08100}. Tento problém sme vyriešili
 predpočítavaním prvej hodnoty filtra po~zmene rýchlosti. Keďže sme už~mali koeficienty lineárnej regresie, tak~sme
@@ -179,8 +179,8 @@ ich využili na~predpočítanie počiatočnej hodnoty.
 	\label{fig:rw_lw_08100_3}
 \end{figure}
 
-Meranie so zmenou predpočítavania prvej hodnoty sme zopakovali viackrát aby sa ustálili hodnoty aproximácie.
-Po opakovanom experimente sa nám hodnoty sklonov lineárnych aproximácii ustálili na hodnotách:
+Meranie so~zmenou predpočítavania prvej hodnoty sme zopakovali viackrát aby sa ustálili hodnoty aproximácie.
+Po~opakovanom experimente sa nám hodnoty sklonov lineárnych aproximácii ustálili na~hodnotách:
 
 \begin{itemize}
 	\item Lávy enkóder: \textbf{1198.86}
@@ -194,10 +194,10 @@ Výsledok tohto postupu vidíme na~nasledujúcom grafe Obr.~\ref{fig:rw_lw_08100
 \subsection{Overenie meraní}
 \label{subsec:overenie_merani}
 
-Výsledky posledných meraní filtrov sme si vyskúšali na~znázornení prejdenej drahý v~tvare štvorca a~následne sme si
+Výsledky posledných meraní filtrov sme si vyskúšali na~znázornení prejdenej dráhy v~tvare štvorca a~následne sme si
 zobrazili na~grafe túto trasu. Pre~porovnanie účinnosti filtra sme porovnali tri grafy. Prvý graf zobrazuje prejdenú
 dráhu počas toho ako je filter vypnutý. Druhý graf znázorňuje prejdenú dráhu s~aktívnym filtrom a~jeho hodnota je
-najlepšia, ktorú sme namerali. Tretí graf reprezentuje dráhu prejdenú so~silnejším filtrom ako sme sa rozhodli použiť.
+najlepšia, ktorú sme namerali. Tretí graf reprezentuje dráhu prejdenú so~slabším filtrom ako sme sa rozhodli použiť.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -210,10 +210,10 @@ najlepšia, ktorú sme namerali. Tretí graf reprezentuje dráhu prejdenú so~si
 Ako prvý pokus sme vypli filtrovanie prichádzajúcich dát. To~malo za~dôsledok, že~všetky skoky, ktoré môžeme vidieť
 napríklad na~obrázku Obr.~\ref{fig:rw_lw_nf} sa ukázali na~grafe. Obrázok Obr.~\ref{fig:stvorecBezFiltra} reprezentuje
 dráhu, ktorú robot prešiel bez aplikácie filtra. Na~grafe môžeme vidieť zašumenie zbieraných dát z~robota. To~sa
-zobrazuje najmä v~častiach, keď má robot isť rovno. V~prípade, že~filter nepožívame, tak~rovne čiary sa premenia na~čiary
-s~natáčaním. To~spôsobuje nepresné uvedenie aktuálnej polohy. Tieto nepresnosti sa prejavujú aj~pri~otáčaní robota.
+zobrazuje najmä v~častiach, keď má robot isť rovno. V~prípade, že~filter nepožívame, tak~rovné čiary sa premenia
+na~krivky. To~spôsobuje nepresné uvedenie aktuálnej polohy. Tieto nepresnosti sa prejavujú aj~pri~otáčaní robota.
 V~prípade, že~sa robot má otočiť o~90 stupňov, respektíve o~$\frac{\pi}{2}$, tak~robot toto otočenie reprezentuje iným
-uhlom.
+uhlom, poprípade aj~posunutím.
 
 Aby sme videli ako ovplyvňuje filter s~nami navrhnutými parametrami tak~sme spravili ďalšie meranie s~filtrom
 s~najlepšími hodnotami. Druhý pokus sme zvolili najlepšiu hodnotu filtra s~koeficientom $\alpha$ rovným 0.8.
@@ -232,24 +232,32 @@ Ako môžeme vidieť na~tomto grafe tak~síce filter zlepšil výsledok, ktorý 
 je znázornení na~grafe nie je štvorec. Môže to~byť spôsobené viacerými faktormi.
 
 \begin{itemize}
-	\item \textbf{Prešmyk} Robot môže na~mieste prešmykovať. To~ma za~dôsledok nepresne uvedenie polohy robota.
-	\item \textbf{Oneskorenie komunikácie} Dáta z~ovládača prijmeme vo~while cykle so~softvérovým oneskorením (100ms)
-		plus \cite{timovyProjekt}. Tým, že sa môže komunikácia oneskoruje, tak~sa vnáša chyba do~výpočtu aktuálnej polohy
+	\item \textbf{Prešmyk} Robot môže na~mieste prešmykovať. To~má za~dôsledok nepresné uvedenie polohy robota.
+	\item \textbf{Oneskorenie komunikácie} Dáta z~ovládača prijímame vo~while cykle so~softvérovým oneskorením (100ms)
+		plus \cite{timovyProjekt}. Tým, že~sa komunikácia oneskoruje, tak~sa vnáša chyba do~výpočtu aktuálnej polohy
 		na~základe rýchlostí robota.
 \end{itemize}
 
 \clearpage
 
-Tretí a~posledný pokus, ktorý sme spravili bolo meranie so~silnejším filtrom ako sme sa rozhodli použiť. Ten
-obsahoval koeficient $\alpha$ s~hodnotou 0.9. Pri~takejto konfigurácii filtra sme dostali graf zobrazený
-na~obrázku Obr.~\ref{fig:stvorecSoSilnymFiltrom}. Toto zhoršenie spôsobilo zlé zaradenie prijatých impulzov za~sekundu
-k~premeneným metrom za~sekundu (Obr.~\ref{fig:rw_lw_09250}).
+Tretie a~posledné meranie, ktoré sme spravili bolo meranie so~slabším filtrom ako sme sa rozhodli použiť. Obsahovalo
+koeficient $\alpha$ s~hodnotou 0.7. Pri~takejto konfigurácii filtra sme dostali graf zobrazený na~obrázku
+Obr.~\ref{fig:stvorecSoSlabsimFiltrom}. Toto zhoršenie spôsobilo slabšie filtrovanie prichádzajúcich dát a~tým pádom aj
+zhoršenie presnosti určovania polohy robota.
 
 \begin{figure}[!htbp]
 	\begin{center}
-		\includegraphics[width=0.8\textwidth]{img/stvorec_so_silnym_filtrom.png}
+		\includegraphics[width=0.8\textwidth]{img/stvorec_so_slabym_filtrom.png}
 	\end{center}
-	\caption{Zobrazenie pohybu robota z~odometrie s~použitím silnejšieho filtra.}
-	\label{fig:stvorecSoSilnymFiltrom}
+	\caption{Zobrazenie pohybu robota z~odometrie s~použitím slabšieho filtra.}
+	\label{fig:stvorecSoSlabsimFiltrom}
 \end{figure}
+
+Ak~by sme použili silnejší filter dostali by sme lepši výsledok. V~tom prípade by sme ale~nemali relevantný výsledok
+vzhľadom na~robot. Filtrované dáta by boli až veľmi skreslené.
+
+Experimentmi sme sa dostali k~najvhodnejšiemu parametru alpha $\alpha$, ktorý sme využili ako vstup
+do~hodno priepustného filtra. Jeho implementáciu sme navrhli tak, aby sme vedeli zisti čo najpresnejšiu
+hodnotu aktuálnych rýchlostí robota. Využitie filtra nám pomohlo presnejšie určovať aktuálnu polohu robota.
+
 
