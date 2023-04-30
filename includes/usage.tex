@@ -1,0 +1,23 @@
+% !TEX root = ../main.tex
+
+\section{Využitie}
+\label{sec:vyuzitie}
+
+Robot, ktorý sme dostali na tento projekt bol povodne ovládateľný len pomocou JSON reťazcov. My sme na ňom museli spraviť
+par zmien aby sme vedeli počítať odometriu a tým pádom mali spätnú väzbu. Pri odometrii sme čelili pár prekážkam, ktoré
+sa nám podarilo z časti odstrániť. Skončili sme s ovládačom nenaprogramovaným v jazyku C++ v prostredí ROS2.
+
+Ďalšou otázkou môže byť ako sa tento ovaliac môže využiť? Odpoveď na túto otázku nie je jedna ale rovno viacero.
+Prostredie ROS2 nám otvára mnoho ďalších možnosti ako posielať príkazy na robot. Ich implementácia je nastokrát už
+dokončená a my môžeme tieto kódy len jednoducho pripojiť k programu. Možnosťami sú napríklad:
+
+\begin{itemize}
+	\item \textbf{Manuálne ovládanie} Ovládanie pomocou
+		\begin{itemize}
+			\item \textbf{klávesnice} použitie uzlu \textit{teleop\_twist\_keyboard}
+			\item \textbf{joystick} použitie uzlu \textit{teleop\_twist\_joy}
+			\item \textbf{príkazov} skripty poprípade priame zadávanie príkazov do konzoly
+		\end{itemize}
+	\item \textbf{Automatické ovládanie}
+\end{itemize}
+
