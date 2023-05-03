@@ -3,21 +3,40 @@
 \section{Využitie}
 \label{sec:vyuzitie}
 
-Robot, ktorý sme dostali na tento projekt bol povodne ovládateľný len pomocou JSON reťazcov. My sme na ňom museli spraviť
-par zmien aby sme vedeli počítať odometriu a tým pádom mali spätnú väzbu. Pri odometrii sme čelili pár prekážkam, ktoré
-sa nám podarilo z časti odstrániť. Skončili sme s ovládačom nenaprogramovaným v jazyku C++ v prostredí ROS2.
+Robot, ktorý sme dostali na~tento projekt bol povodne ovládateľný len pomocou JSON reťazcov. My sme na~ňom museli spraviť
+par zmien aby sme vedeli počítať odometriu a~tým pádom mali spätnú väzbu. Pri~odometrii sme čelili pár prekážkam, ktoré
+sa nám podarilo z~časti odstrániť. Skončili sme s~ovládačom nenaprogramovaným v~jazyku C++ v~prostredí ROS2.
 
-Ďalšou otázkou môže byť ako sa tento ovaliac môže využiť? Odpoveď na túto otázku nie je jedna ale rovno viacero.
-Prostredie ROS2 nám otvára mnoho ďalších možnosti ako posielať príkazy na robot. Ich implementácia je nastokrát už
-dokončená a my môžeme tieto kódy len jednoducho pripojiť k programu. Možnosťami sú napríklad:
+Ďalšou otázkou môže byť ako sa tento ovaliac môže využiť? Odpoveď na~túto otázku nie je jedna ale~rovno viacero.
+Prostredie ROS2 nám otvára mnoho ďalších možnosti ako posielať príkazy na~robot. Ich implementácia je nastokrát
+už~dokončená a~my môžeme tieto kódy len jednoducho pripojiť k~programu. Možnosťami sú~napríklad:
 
 \begin{itemize}
 	\item \textbf{Manuálne ovládanie} Ovládanie pomocou
 		\begin{itemize}
 			\item \textbf{klávesnice} použitie uzlu \textit{teleop\_twist\_keyboard}
 			\item \textbf{joystick} použitie uzlu \textit{teleop\_twist\_joy}
-			\item \textbf{príkazov} skripty poprípade priame zadávanie príkazov do konzoly
+			\item \textbf{príkazov} skripty poprípade priame zadávanie príkazov do~konzoly
 		\end{itemize}
 	\item \textbf{Automatické ovládanie}
 \end{itemize}
+
+\subsection{Joystick}
+\label{subsec:joystick}
+
+Joystick je ovládač obyčajne používaný pri~herných konzolách. My sme ho použili na~manuálne ovládanie robota. Ako bolo
+spomenuté vyššie (Kapitola~\ref{sec:vyuzitie}) joystick je možné použiť s~uzlom \textit{teleop\_twist\_joy}. Tento uzol
+sprostredkuje využitie hardware-u ovládača. Pohyby vykonané na~ovládači sa transformujú do~typu správy
+\textit{geometry\_msgs/Twist} a~publikujú sa priamo na~tému \textit{cmd\_vel}. Táto téma je priamo pripojená
+na~náš uzol \textit{BlackMetal} (Kapitola~\ref{subsec:nodes}). Prijatú správu nami vytvorený ovládač spracuje a~pošle
+ju robotu. Ovládač je možné spustiť s~viacerými tipmi ovládačov sú~to~\textit{atk3}, \textit{ps3-holonomic},
+\textit{ps3}, \textit{xbox}, \textit{xd3} \cite{teleopjoy}. Po~pripojení ovládača k~nášmu programu a~prepojení
+programu s~robotom sme mohli začať s~jeho ovládaním.
+
+Pri~používaní ovládača nastáva jeden problém a~to~je, že~pri~hocijakom pohybe joysitcku sa pošle požiadavka na~zmenu
+rýchlosti robota. To~spôsobuje zahltenie odosielacej rady. To~má za~dôsledok zlyhanie odometrie. Môže sa stať,
+že~odometria nezlyhá a~začne posielať príkazy robotu. Keďže je vstavané oneskorenie do~posielania správ robota,
+tak~na~poslanie každej správy z~odometrie potrebujeme 100 milisekúnd. Ak~pridáme do~toho ešte neustále posielanie správ
+z~joysitcku, tak sa môže stať, že~robot začne sekať. Ako vieme tento problém vyriešiť je zväčšiť interval posielania
+správ odometrie. To~bude mať za~dôsledok nepresnejšie určenie polohy.
 
