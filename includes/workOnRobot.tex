@@ -1,8 +1,8 @@
 % !TEX root = ../main.tex
 
-\section{Zmeny na~robote}
+\section{Zlepšenie stavu robota}
 
-\subsection{Pokazený systém}
+\subsection{Chyba v systéme}
 \label{subsec:brokenSystem}
 
 Prvýkrát, keď sme prišli k~robotu do~NCR (\acrlong{NCR}), tak~sme si určili ako prvú úlohu zálohovať systém. Ak~by sa teda stala nejaká chyba
@@ -29,7 +29,7 @@ na~ROS1 v~systéme. Toto sme vykonali odstránením prepojení na~už~neaktívne
 \subsection{Chyba v~dokumentácii}
 \label{subsec:documentationIssue}
 
-V~sekcii~\ref{sec:ovladanie} sme uviedli pôvodný stav ovládania robota pomocou správ typu JSON.
+V~kapitole~\ref{sec:ovladanie} sme uviedli pôvodný stav ovládania robota pomocou správ typu JSON.
 Z~kódu~\ref{jsonSpeedRequestBad} je jasné, že~sa majú posielať celé čísla a~na~základe tohto vstupu sa bude robot hýbať. Čo sme zistili až
 po~skompilovaní a~spustení tímového projektu je, že~sa majú posielať desatinné čísla z~intervalu 0 až 1. Toto nebolo písané
 v~dokumentácii, ktorá nám bola dodaná na~začiatku programu. Môžeme preto~príklad prepísať na~reťazec, ktorý by fungoval:

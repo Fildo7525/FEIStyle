@@ -1,7 +1,9 @@
 % !TEX root = ../main.tex
-\section{Pôvodný stav robota}
+\section{Analýza pôvodného stavu robota}
+\label{sec:formerState}
 
 \subsection{Robot a~jeho ovládanie}
+\label{subsec:robotAOvladanie}
 
 Robot, s~ktorým sme pracovali bol výsledkom tímového projektu viacerých študentov \newline z~roku 2019. Pri~vysvetľovaní a~opisovaní robota sa budeme
 odvolávať na~dokumenty, stránky a~kód, ktorý napísali. Všetky tieto údaje si sprístupnené na~mobilnom robote v~záložke
@@ -69,6 +71,7 @@ Hardware robota sa skladá z:
 je to~kvôli tomu, že~tímový projekt bol zameraný na~ovládanie robota pomocou tohto ovládača. My ho ale~použivať nebudeme.
 
 \subsection{Komunikácia s~robotom}
+\label{subsec:komunikacia}
 
 S~robotom sa vieme spojiť pomocou dvoch portov. Jeden port je otvorený na~prijímanie požiadavok (requestov) a~ten druhý je na~monitorovanie
 stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí môžu len sledovať stav robota. Druhý port je na~prijímanie requestov
@@ -95,7 +98,7 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 	Port \textit{665} je sprístupnený na~prijímanie a~odosielanie požiadavok a~ich odpovedí. Príkazy sa na~počítač posielajú cez~sieť z~externého
 	počítača vo~formáte \textbf{JSON}. Študenti, ktorí navrhovali systém posielania požiadavok (request) a~odpovedí (response) robili tieto správy
 	ručne. Preto~nastávajú situácie, kedy robot pošle správu, ktorá nespadá do~štandardu písania JSON textu. Z~tohto dôvodu sme nemohli použiť už
-	existujúci kód (parser), ktorý by nám zjednodušil prehľadávanie týchto správ. Podla dokumentácie sa robot mal ovládať správami typu~\cite{BMdoc}
+	existujúci kód (parser), ktorý by nám zjednodušil prehľadávanie týchto správ. Podľa dokumentácie sa robot mal ovládať správami typu~\cite{BMdoc}
 
 	\label{jsonSpeedRequestBad}
 	\begin{lstlisting}
@@ -123,6 +126,10 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 		\item \textbf{RightWheelSpeed} -- Nastavenie rýchlosti pre~pravé koleso
 		\item \textbf{LeftWheelSpeed} -- Nastavenie rýchlosti pre~ľavé koleso
 	\end{itemize}
+
+	Spracovanie týchto správ je spravená v samostatnom vlákne. Toto vlákno je vytvorene pomocou metódy \textbf{polling}.
+	Neustále dookola sa volá funkcia \textit{read} (čítaj). Táto funkcia je nastavená tak, aby nezablokovala vlastné vlákno.
+	Keď sa funkcia read vykonala, nezáleží na tom či skončila úspešne alebo nie, uspí sa vlákno prijímania správ na 100 milisekúnd.
 
 \subsection{Vysvetlenie kľúčov reťazca}
 
