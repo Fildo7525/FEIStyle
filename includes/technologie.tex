@@ -1,17 +1,20 @@
 % !TEX root = ../main.tex
-\section{Použité technológie}
+\section{Návrh implementácie riadenia}
 \label{sec:technologies}
 
 Našou úlohou v~tejto bakalárskej práci je naprogramovať a~otestovať nami vytvorený ovládač pre~mobilného robota.
 Na~vyber máme viacero technológii, ktoré môžeme použiť. Na~vytvorenie ovládača budeme potrebovať operačný systém
 na~nami používanom počítači, ktorý budeme použivať na~programovanie a~testovanie. Na~výber máme dve možnosti.
-Menovite to~sú~operačný systém Windows alebo operačný systém založený na~jadre Linux. Ďalšiu vec, ktorú budeme
-potrebovať je programovací jazyk, na~výber máme veľmi veľa možností a~to~hlavne C, C++, Python alebo Java.
-Keďže, zo~zadania vypláva, že~máme použiť Robotický operačný systém, tak~máme na~výber dve možnosti. Sú~to~Robotický
-operačný systém prvej verzie (ROS1) a~Robotický operačný systém druhej verzie (ROS2). Jazyky, ktoré sú~podporované
-týmto systémom sme už~spomenuli, jazyk ktorý je ešte podporovaný a~my sme si ho nespomenuli je programovací jazyk Matlab.
-Samozrejme na~implementáciu a~otestovanie potrebujeme samotného robota. Pred tým ako začneme preberať spomenutý
-ovládač a~robota, ktorého budeme riadiť, tak~si predstavíme technológie, ktoré budeme používať pri~vytváraní ovládača.
+Menovite to~sú~operačný systém \textit{Windows} alebo operačný systém \textit{Ubuntu}, ktorý je založený na~jadre Linux.
+Ďalšiu vec, ktorú budeme potrebovať je programovací jazyk, na~výber máme z~veľmi veľa možností a~to~hlavne \textit{C},
+\textit{C++}, \textit{Python} alebo \textit{Java}. Keďže, zo~zadania vypláva, že~máme použiť Robotický operačný systém,
+tak~máme na~výber dve možnosti. Sú~to~Robotický operačný systém prvej verzie (\textit{ROS1}) a~Robotický operačný systém
+druhej verzie (\textit{ROS2}). Jazyky, ktoré sú~podporované týmto systémom sme už~spomenuli, jazyk ktorý je ešte
+podporovaný a~my sme si ho nespomenuli je programovací jazyk \textit{Matlab}. Na~vytvorenie ovládača môžeme využiť
+aj~už~naprogramované baličky. Jednou z~možností je \textit{ros\_control} pre~Robotický operačný systém prvej verzie
+a~\textit{ros2\_control} pre~Robotický operačný systém druhej verzie. Samozrejme na~implementáciu a~otestovanie
+potrebujeme samotného robota. Pred tým ako začneme preberať spomenutý ovládač a~robota, ktorého budeme riadiť,
+tak~si predstavíme technológie, ktoré budeme používať pri~vytváraní ovládača.
 
 \subsection{Operačný systém}
 \label{sec:operating_system}
@@ -38,7 +41,7 @@ ako už~v~spomenutom Linuxe.
 Ubuntu je stabilný a~bezpečný operačný systém, ktorý je založený na~Linuxe. Väčšina ľudí hovorí o~Linuxe ako o~operačnom systéme. Pravdou
 to~ale~nie je. Linux je totižto len \textbf{kernel} (jadro) operačného systému. Kernel je hlavný program, ktorý sa stará o~správu hardvéru,
 riadenie procesov a~správu pamäte. Zároveň poskytuje možnosť operačnému systému komunikovať s~hardvérom a~poskytuje jednotlivým programom
-prístup k~hardvéru a~jeho častiam.
+prístup k~hardvéru a~jeho častiam~\cite{chatgpt}.
 
 Linux je používaný skoro vo~všetkých mobilných zariadeniach, serveroch, cloudoch (dátové servery, na~ktoré sa pripájame cez~internet)
 a~ďalších elektronických zariadeniach, ktoré potrebujú rýchlosť, stabilitu a~bezpečnosť. Je taktiež používaný vo~všetkých mobilných
@@ -84,35 +87,37 @@ Medzi programovacími jazykmi, ktoré sme mohli použiť boli na~vyber nasledovn
 \textit{Matlab}, \textit{Java}.
 
 \begin{itemize}
-	\item \textbf{C a~C ++}: C a~C ++ sú~hlavné jazyky používané pri~vývoji ROS2 aplikácií. Sú~to~výkonné a~efektívne jazyky,
+	\item \textbf{C a~C ++}: C a~C ++ sú~hlavné jazyky používané pri~vývoji ROS aplikácií. Sú~to~výkonné a~efektívne jazyky,
 		ktoré možno použiť na~nízko úrovňové programovanie, ako sú~riadiace slučky, ovládače a~systémové programovanie.
-		C ++ je najčastejšie používaný jazyk v~ROS2.
+		C++ je najčastejšie používaný jazyk v~ROS2.
 
-	\item \textbf{Java}: Java je ďalší jazyk, ktorý sa môže použiť na~implementáciu aplikácií v~ROS2. Je menej bežne
-		používaný ako jazyk C++, ale~má výhodu, a~to~takú, že~je prenositeľný jazyk, ktorý môže byť spustený na~akejkoľvek
-		platforme, ktorá podporuje JVM (\acrlong{JVM}). Java je vhodná pre~vývoj vysoko úrovňových komponentov robotického
-		systému, ako sú~GUI užívateľské rozhrania (z~anglického \acrlong{GUI}) a~sieťová komunikácia.
+	\item \textbf{Java}: Java je ďalší jazyk, ktorý sa môže použiť na~implementáciu aplikácií v~Robotickom operačnom
+		systéme. Je menej bežné používaný ako jazyk C++, ale~má výhodu, a~to~takú, že~je prenositeľný jazyk, ktorý môže
+		byť spustený na~akejkoľvek platforme, ktorá podporuje JVM (Virtuálny stroj podporujúci Javu) (\acrlong{JVM}).
+		Java je vhodná pre~vývoj vysoko úrovňových komponentov robotického systému, ako sú~GUI užívateľské rozhrania
+		(z~anglického \acrlong{GUI}) a~sieťová komunikácia.
 
 	\item \textbf{Python}: Python je populárny jazyk pre~vývoj ROS2 kvôli svojej čitateľnosti a~jednoduchosti použitia.
 		Je vhodný pre~vývoj vysoko úrovňových komponentov robotického systému, ako sú~algoritmy na~rozhodovanie,
 		spracovanie dát a~vizualizácia.
 
-	\item \textbf{Matlab}: Matlab je vysoko úrovňový programovací jazyk a~prostredie používané vo~vedeckom prostredi
-		(scientific computing), analýze dát a~vizualizácii. Je to~výkonný jazyk pre~numerické výpočty a~často sa používa
-		na~simulovanie a~testovanie algoritmov pre~roboty. Avšak, nie je bežne používaný v~ROS2 vývoji. Na~implementáciu
-		tohto rozhrania je spraveny modul \textit{ROS Toolbox}.
+	\item \textbf{Matlab}: Matlab je vysoko úrovňový programovací jazyk a~prostredie používané vo~vedeckom prostredí,
+		analýze dát a~vizualizácii. Je to~výkonný jazyk pre~numerické výpočty a~často sa používa na~simulovanie
+		a~testovanie algoritmov pre~roboty. Avšak, nie je bežne používaný v~ROS2 vývoji. Na~použivanie tohto rozhrania
+		je spravený modul \textit{ROS Toolbox}, ktorý zabezpečuje jednoduchú implementáciu uzlov a~ich komunikácie.
 
-	\item \textbf{Výkon}: C a~C++ poskytujú najlepší výkon pre~ROS2 aplikácie kvôli ich nízkoúrovňovej povaze a~priamemu
-		prístupu k~pamäti. Python a~Java sú~pomalšie ako C a~C ++ kvôli ich interpretácii a~nadhlaví virtuálneho stroja.
+	\item \textbf{Výkon}: C a~C++ poskytujú najlepší výkon pre~ROS aplikácie kvôli ich nízkoúrovňovej implementácii a~priamemu
+		prístupu k~pamäti. Python, Matlab a~Java sú~pomalšie ako C a~C ++ kvôli ich interpretácii.
 
 	\item \textbf{Čas vývoja}: Python a~Java sa vyvíjajú rýchlejšie ako C a~C ++ kvôli ich jednoduchosti a~jednoduchosti
 		použitia. Matlab môže byť tiež rýchlejší pri~vývoji pre~určité úlohy vďaka svojim zabudovaným knižniciam a~nástrojom.
 
-	\item \textbf{Kompatibilita}: Všetky uvedené jazyky môžu byť použité s~ROS2, ale~môž
+	\item \textbf{Kompatibilita}: Všetky uvedené jazyky môžu byť použité s~Robotickým operačnom systémom a~môžu
+		komunikovať s~robotom pomocou TCP/IP komunikácie.
 \end{itemize}
 
 Na~základe vyššie spomenutých rozdielov sme sa rozhodli použiť programovací jazyk \textit{C++}. Toto rozhodnutie sme spravili
-hlavne kvôli jeho podpore, výkonu a~podpore v~komunite.
+hlavne kvôli jeho možnostiam v~implementácii tried, výkonu a~podpore v~komunite.
 
 \subsection{ROS}
 \label{sec:ros}
@@ -126,12 +131,13 @@ vlastnostiach a~funkcionalitách, ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 ROS je open source, čo znamená, že~ide o~softvér uvoľnený pod licenciou, kde~má používateľ práva na~použitie,
 štúdium, zmenu a~redistribúciu. Mnohé open source licencie však určujú určité obmedzenia na~tieto práva pre~tento softvér,
 ale~v~podstate môžeme predpokladať tieto práva. Najbežnejšie licencie pre~ROS2 softvérové balíčky sú~Apache 2 a~BSD,
-hoci vývojári majú slobodu používať aj~iné. \cite{ROS2book} Využitia Robotického operačného systému v~reálnom svete sa môžu
-objaviť v~automobiloch, mobilných robotoch, droboch, manipulátoroch.
+hoci vývojári majú slobodu používať aj~iné \cite{ROS2book}. Využitia Robotického operačného systému v~reálnom svete sa môžu
+objaviť v~automobiloch, mobilných robotoch, dronoch alebo manipulátoroch.
 
+\subsubsection{Základné pojmy}
 \label{sec:zakladne_pojmy}
 
-\noindent Komunikácia v~ROSe je zabezpečená cez~IPC (\acrlong{IPC}), TCP/IP UDP/IP komunikáciou pomocou troch zakladacích metód:
+Komunikácia v~ROSe je zabezpečená cez~IPC (\acrlong{IPC}), TCP/IP a~UDP/IP komunikáciou pomocou troch zakladacích metód:
 \textbf{témy} (Topics), \textbf{služby} (Services) a~\textbf{akcie} (Actions).
 Všetky tieto metódy slúžia na~posielanie správ na~synchronizáciu vykonávania programu a~komunikáciu jednotlivých častí programu.
 Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implementáciu a~funkcionalitu. Správanie týchto metód je nasledovné.
@@ -139,10 +145,12 @@ Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implem
 \subsubsection{Témy}
 \label{sec:topic}
 
-	\textbf {Témy} sú~sprostredkované pomocou IPC - Medzi procesová komunikácia z~anglického \acrlong{IPC}. Je to~najjednoduchší spôsob
-	komunikácie. Vieme si ich prirovnať k~UDP/IP protokolu, s~tým že~neprebiehajú cez~sieť. Definujeme si jedného poskytovateľa (publishers)
-	a~jedného alebo viacerých príjemcov (subscribers). Medzi týmito dvoma alebo viacerými účastníkmi sa následne posielajú správy (messages),
-	ktoré sme si dopredu definovali.
+	\textbf {Témy} sú~sprostredkované pomocou IPC - Medzi procesová komunikácia z~anglického \acrlong{IPC}. Je
+	to~najjednoduchší spôsob komunikácie. Vieme si ich prirovnať k~UDP/IP protokolu, s~tým že~neprebiehajú cez~sieť.
+	Definujeme si jedného poskytovateľa (publishers) a~jedného alebo viacerých príjemcov (subscribers). Medzi týmito
+	dvoma alebo viacerými účastníkmi sa následne posielajú správy (messages), ktoré sme si dopredu definovali.
+	Parametre a~obsah týchto sprav je definovaný priamo v~téme. Témy si vieme sami vyloviť. V~prípade, že~chceme
+	vytvoriť novú tému, musíme si vytvoriť nový balíček, v~ktorom si vytvoríme súbor s~príponou \textit{.msg}.
 
 	\begin{figure}[h]
 		\centering
@@ -151,7 +159,6 @@ Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implem
 		\label{fig:topics}
 	\end{figure}
 
-\newpage
 \subsubsection{Služby}
 \label{sec:services}
 
@@ -203,10 +210,11 @@ Od~doby, kedy vznikol prešiel mnohými verziami a~úpravami. Jeho neoddeliteľn
 komunikácia medzi uzlami, podpora viacerých programovacích jazykov ako sú~C, C++ alebo Python a~vytváranie balíčkov dostupných širokej
 verejnosti.
 
-Štrukturalizovanie základov ROS1 je spravené monoliticky čo najstabilnejším spôsobom. Na~počiatku musí byť spustený hlavný program (roscore),
-ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená prostredníctvom prepojenia uzlov cez~LAN/WLAN
-alebo IPC komunikáciu. Ak~sú~uzly spustené na~iných zariadeniach, tak~sa využíva len komunikácia cez~sieť. Roscore ďalej poskytuje parametre
-jednotlivým uzlom z~parametrového servera. Jeho najdôležitejšou úlohou je zabezpečenie komunikácie uzlov v~programe.
+Štrukturalizovanie základov ROS1 je spravené monoliticky. Tvorcovia pritom dbali na to, aby tento systém vytvorili čo najstabilnejším spôsobom.
+Na~počiatku musí byť spustený hlavný program (roscore), ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená
+prostredníctvom prepojenia uzlov cez~LAN/WLAN alebo IPC komunikáciu. Ak~sú~uzly spustené na~iných zariadeniach, tak~sa využíva len komunikácia
+cez~sieť. Roscore ďalej poskytuje parametre jednotlivým uzlom z~parametrového servera. Jeho najdôležitejšou úlohou je zabezpečenie
+komunikácie uzlov v~programe.
 
 Aj~napriek mnohým výhodám má ROS1 aj~nedostatky, ktoré sa ťahajú už~od~jeho počiatkov. Sú~to~napríklad:
 

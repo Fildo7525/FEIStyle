@@ -5,12 +5,13 @@
 \subsection{Robot a~jeho ovládanie}
 \label{subsec:robotAOvladanie}
 
-Robot, s~ktorým sme pracovali bol výsledkom tímového projektu viacerých študentov \newline z~roku 2019. Pri~vysvetľovaní a~opisovaní robota sa budeme
-odvolávať na~dokumenty, stránky a~kód, ktorý napísali. Všetky tieto údaje si sprístupnené na~mobilnom robote v~záložke
-\newline \texttt{\$(HOME)/Desktop/Blackmetal}~\cite{timovyProjekt}.
+Robot, s~ktorým sme pracovali bol výsledkom tímového projektu viacerých študentov \newline z~roku 2019. Pri~vysvetľovaní
+a~opisovaní robota sa budeme odvolávať na~dokumenty, stránky a~kód, ktorý napísali. Všetky tieto údaje sú sprístupnené
+na~mobilnom robote v~záložke \newline \texttt{\$(HOME)/Desktop/Blackmetal}~\cite{timovyProjekt}.
 
-Robot je v~tvare kvádra. Jeho šírka je 60cm a~je vyzdvihnutý nad zem o~1.5cm. Nachádza sa na~kolesách o~polomere 8cm. Jeho kostra, až na~oceľové pláty,
-ktoré držia robot, je spravená z~hliníku. Konkrétne z~hliníkových tyčí, ktoré sú~pospájané plexisklovými plátmi. Jeho podobizeň vidíme na~nasledujúcom
+Robot je v~tvare kvádra. Jeho šírka je 60cm a~je vyzdvihnutý nad zem o~1.5cm. Nachádza sa na~kolesách o~polomere 8cm.
+Jeho kostra sa skladá z dvoch oceľových plátov, ktoré tvoria dno a strechu robota. Steny robota sú spravené z~hliníku.
+Konkrétne z~hliníkových tyčí, ktoré sú~pospájané plexisklovými plátmi. Jeho podobizeň vidíme na~nasledujúcom
 obrázku.
 
 \begin{figure}[!htbp]
@@ -21,7 +22,7 @@ obrázku.
 	\label{fig:robot}
 \end{figure}
 
-\noindent Na~obrázku ďalej vidíme olemovanie robota pásom s~LED-kami. Tie svietia nasledovným spôsobom. Keď sa robot nehýbe všetky LED-ky svietia
+Na~obrázku ďalej vidíme olemovanie robota pásom s~LED-kami. Tie svietia nasledovným spôsobom. Keď sa robot nehýbe všetky LED-ky svietia
 na~zeleno. Keď sa robot pohne do~nejakej strany, LED-ky znázornia jeho pohyb tým, že~svietia na~strane, do~ktorej sa robot hýbe. Keď nastane
 situácia, kedy počítač ovládajúci motory prestane komunikovať s~Arduinom, ktoré sa stará o~detekciu stavov robota tak~LED-ky začnú blikať
 červeno-modrými farbami.
@@ -34,12 +35,12 @@ Hardware robota sa skladá z:
 	\item kontrolnej dosky Arduino Uno,
 
 	\item Počítača ADVANTECH MIO-5272~\cite{robotPc} \newline
-		Počítač obsahuje operačný systém Ubuntu 16.04.
+		Počítač obsahuje operačný systém založený na jadre Linux Ubuntu 16.04.
 
 	\item Extension board MIOe-210~\cite{extensionModule}
 
 	\item Meniče MAXON EPOS 24/5 (s~číslom 275512)~\cite{menic} \newline
-	 	Sú~napájané jednosmerným napätím 11 - 24 V~a~5 A.
+	 	Meniče sú~napájané jednosmerným napätím 11 - 24 V~a~5 A.
 
 	\item Enkódery MAXON Encoder MR Type L (s~číslom 225787)~\cite{encoder} \newline
 		Rozlíšenie enkóderov je 1024 impulzov s~troma kanálmi.
@@ -65,40 +66,46 @@ Hardware robota sa skladá z:
 	\label{fig:schemaRobota}
 \end{figure}
 
-\noindent Tieto počítače sú~len reprezentácia servera. V~realite to~môže byť jeden a~ten istý počítač.
+\noindent Tieto počítače sú~len reprezentáciou dvoch klientov pripájajúcich sa na dva separátne porty na robote.
+V~realite to~môže byť jeden a~ten istý počítač.
 
-\noindent Na~obrázku Obr.~\ref{fig:schemaRobota} vidíme zapojenie jednotlivých častí robota. Čo sme nespomenuli a~je na~obrázku je XBox ovládač
-je to~kvôli tomu, že~tímový projekt bol zameraný na~ovládanie robota pomocou tohto ovládača. My ho ale~použivať nebudeme.
+Na~obrázku Obr.~\ref{fig:schemaRobota} vidíme zapojenie jednotlivých častí robota. Čo sme nespomenuli a~nachádza
+sa na~obrázku je XBox ovládač je to~kvôli tomu, že~tímový projekt bol zameraný na~ovládanie robota pomocou tohto
+ovládača. My ho ale~použivať nebudeme.
 
 \subsection{Komunikácia s~robotom}
 \label{subsec:komunikacia}
 
-S~robotom sa vieme spojiť pomocou dvoch portov. Jeden port je otvorený na~prijímanie požiadavok (requestov) a~ten druhý je na~monitorovanie
-stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí môžu len sledovať stav robota. Druhý port je na~prijímanie requestov
-\textit{665} a~je otvorený len pre~jedného užívateľa.
+S~robotom sa vieme spojiť pomocou dvoch portov. Jeden port je otvorený na~prijímanie požiadavok (requestov) a~ten
+druhý je na~monitorovanie stavu robota. Port \textit{664} je otvorený pre~jedného užívateľ, ktorý môže len sledovať
+stav robota. Druhý port je na~prijímanie požiadavok \textit{665} a~je taktiež otvorený len pre~jedného užívateľa.
 
 \subsubsection{Logovanie}
 \label{sec:logovanie}
 
-	Spomínaný port \textit{664} je otvorený jednému užívateľovi. Keď sa užívateľ pripojí začne dostávať nepretržite správy typu
-	\textit{JSON}~(\acrlong{JSON}), ktoré hlásia stav robota. Správy, ktoré dostávame sú~nasledujúceho formátu
+	Spomínaný port \textit{664} je otvorený jednému užívateľovi. Keď sa užívateľ pripojí začne dostávať nepretržite
+	správy typu \textit{JSON}~(\acrlong{JSON}), ktoré hlásia stav robota. Správy, ktoré dostávame sú~nasledujúceho
+	formátu
 
 	\begin{lstlisting}
 			{"state":1,"direction":1}
 	\end{lstlisting}
 
-	Hodnoty sa pri~stave (state) a~ani pri~smere (direction) nemenia. Sú~to~stále jednotky. Pokým robota nezastavíme buď príkazom, stlačením
-	tlačidla vypnutia alebo zablokovaním jedného z~kolies, tak~sa tieto správy budú posielať. Môžeme potom začať polemizovať o~tom či~by nebolo
-	lepšie už~tieto správy využiť na~to~čo reálne spomenutý \textit{JSON} reťazec ukazuje. A~to~udávať smer a~stav robota. Momentálne tieto správy
-	slučia len na~to, aby sme vedeli, že~tento robot je aktívny a~vie primať a~spracúvať informácie.
+	Hodnoty sa pri~stave (state) a~ani pri~smere (direction) nemenia. Sú~to~stále jednotky. Pokým robota nezastavíme
+	buď príkazom, alebo stlačením tlačidla vypnutia alebo zablokovaním jedného z~kolies, tak~sa tieto správy budú
+	posielať.
+	% Môžeme potom začať polemizovať o~tom či~by nebolo lepšie už~tieto správy využiť na~to~čo reálne
+	% spomenutý \textit{JSON} reťazec ukazuje. A~to~udávať smer a~stav robota. Momentálne tieto správy slučia len na~to,
+	% aby sme vedeli, že~tento robot je aktívny a~vie primať a~spracúvať informácie.
 
 \subsubsection{Ovládanie}
 \label{sec:ovladanie}
 
 	Port \textit{665} je sprístupnený na~prijímanie a~odosielanie požiadavok a~ich odpovedí. Príkazy sa na~počítač posielajú cez~sieť z~externého
-	počítača vo~formáte \textbf{JSON}. Študenti, ktorí navrhovali systém posielania požiadavok (request) a~odpovedí (response) robili tieto správy
-	ručne. Preto~nastávajú situácie, kedy robot pošle správu, ktorá nespadá do~štandardu písania JSON textu. Z~tohto dôvodu sme nemohli použiť už
-	existujúci kód (parser), ktorý by nám zjednodušil prehľadávanie týchto správ. Podľa dokumentácie sa robot mal ovládať správami typu~\cite{BMdoc}
+	počítača vo~formáte \textbf{JSON}. Podľa dokumentácie~\cite{BMdoc} sa robot mal ovládať správami nasledujúceho typu:
+	% Študenti, ktorí navrhovali systém posielania požiadavok (request) a~odpovedí (response) robili tieto správy
+	% ručne. Preto~nastávajú situácie, kedy robot pošle správu, ktorá nespadá do~štandardu písania JSON textu. Z~tohto dôvodu sme nemohli použiť už
+	% existujúci kód (parser), ktorý by nám zjednodušil prehľadávanie týchto správ.
 
 	\label{jsonSpeedRequestBad}
 	\begin{lstlisting}
@@ -127,7 +134,7 @@ stavu robota. Port \textit{664} je otvorený pre~tisíc užívateľov, ktorí m�
 		\item \textbf{LeftWheelSpeed} -- Nastavenie rýchlosti pre~ľavé koleso
 	\end{itemize}
 
-	Spracovanie týchto správ je spravená v samostatnom vlákne. Toto vlákno je vytvorene pomocou metódy \textbf{polling}.
+	Spracovanie týchto správ je spravená v samostatnom vlákne. Toto vlákno je vytvorené pomocou metódy \textbf{polling}.
 	Neustále dookola sa volá funkcia \textit{read} (čítaj). Táto funkcia je nastavená tak, aby nezablokovala vlastné vlákno.
 	Keď sa funkcia read vykonala, nezáleží na tom či skončila úspešne alebo nie, uspí sa vlákno prijímania správ na 100 milisekúnd.
 
@@ -139,5 +146,5 @@ je 1. Je to~ale~dobrá možnosť na~rozšírenie kódu. Keď sa budú môcť pri
 bude mať akú prioritu. \newline
 
 \noindent \textbf{RightWheelSpeed/LeftWheelSpeed} \newline
-\indent Nastavovanie rýchlosti pravého a~ľavého kolesa nie sú~povinné parametre. Musíme ich zadávať len v~prípade posielania rýchlostí
-cez~príkaz s~číslom \ref{c3} alebo \ref{c4}.
+\indent Nastavovanie rýchlostí pravého a~ľavého kolesa nie je povinné. Musíme ich zadávať len v~prípade posielania rýchlostí
+cez~príkaz s~číslom \ref{c3}.
