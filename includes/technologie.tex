@@ -204,6 +204,7 @@ vytiahnuť pomocou API, \acrlong{API}, (Aplikačné Programovacie Rozhranie) v~R
 \end{figure}
 
 \subsection{ROS1}
+\label{subsec:ros1}
 
 ROS bol prvýkrát vydaný v~roku 2007. Ide o~softvér, ktorý sa začal vyvíjať so~zámerom zjednodušiť programovanie a~ovládanie robotov.
 Od~doby, kedy vznikol prešiel mnohými verziami a~úpravami. Jeho neoddeliteľnou súčasťou sú~štrukturovanie programu do~uzlov (nodov),
@@ -231,6 +232,7 @@ prvej verzie. V~roku 2025 sa skončí podpora poslednej distribúcie ROS1 menom 
 v~ROS2.
 
 \subsection{ROS2}
+\label{subsec:ros2}
 
 Ako už~bolo spomenuté zámerom vývoja ROS2 bolo zlepšenie funkcionality a~bezpečnosti systému. Jeden z~dôsledkov tohto vývoja je, že~ROS2
 nie je spätne kompatibilný. Podstata toho, ako sú~zoskupované uzly a~ako spolu komunikujú je diametrálne odlišná od~ROS1. Z~tohto dôvodu
@@ -331,4 +333,9 @@ celý projekt bol písaný v~programovacom jazyku C++ tak~sa aj~tieto zmeny budu
 	aj~tejto oblasti kódu. V~druhej verzii ROS-u si vieme zadefinovať typ vykonávania programu separátne pre~každý uzol a~vieme si tento typ
 	zadefinovať aj~sami~\cite{ROS2design}.
 
+\subsection{Ros control}
+\label{subsec:roscontrol}
+
+Roc\_control je balik naprogramovany v prostredi ROS1 aj ROS2. Tym, ze sme si vybrali ROS2 ako prostredie pre nase riesenie,
+tak by sme pouzili balik ros2\_control.
 
