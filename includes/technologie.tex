@@ -168,7 +168,6 @@ Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implem
 
 \subsubsection{Akcie}
 \label{sec:actions}
-	\label{s_action}
 	\textbf {Akcie} sú~taktiež sprostredkované TCP/IP protokolom. Sú~najzložitejším spôsobom komunikácie. Tento spôsob bol pridaný do~ROS1
 	až neskôr. V~druhej verzii ROSu je tento typ komunikácie medzi troma základnými formami komunikácie uzlov. Sú~založené na~službách
 	a~prebiehajú asynchrónne~\cite{ROS2book}. Máju 3 stavy viď Obr.~\ref{fig:action}. Najprv pošle klient serveru, akú akciu má vykonať,
@@ -288,7 +287,7 @@ celý projekt bol písaný v~programovacom jazyku C++ tak~sa aj~tieto zmeny budu
 	DDS (Služba distribúcie údajov) je protokol strednej vrstvy (middleware) implementovaný nad UDP~\cite{ROS2book}. Na~implementáciu tohto protokolu
 	je použitý protokol z~IoT (internet veci) (\acrlong{IoT}) sféry. Je to~protokol MQTT. DDS je používaný v~ROS2 na~komunikáciu medzi uzlami. Je
 	to~systém správ publikovania (publish) / odoberania (subscribe), ktorý umožňuje uzlom komunikovať medzi sebou bez toho, aby poznali identitu
-	ostatných uzlov. Druh komunikácie je v~ROS2 rozšírený ešte o~akcie viď~\ref{s_action}.
+	ostatných uzlov. Druh komunikácie je v~ROS2 rozšírený ešte o~akcie viď kapitolu~\ref{sec:actions}.
 
 \subsubsection{Parametre}
 
