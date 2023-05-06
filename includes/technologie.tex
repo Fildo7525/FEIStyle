@@ -2,26 +2,26 @@
 \section{Návrh implementácie riadenia}
 \label{sec:technologies}
 
-Našou úlohou v~tejto bakalárskej práci je naprogramovať a~otestovať nami vytvorený ovládač pre~mobilného robota.
-Na~vyber máme viacero technológii, ktoré môžeme použiť. Na~vytvorenie ovládača budeme potrebovať operačný systém
-na~nami používanom počítači, ktorý budeme použivať na~programovanie a~testovanie. Na~výber máme dve možnosti.
-Menovite to~sú~operačný systém \textit{Windows} alebo operačný systém \textit{Ubuntu}, ktorý je založený na~jadre Linux.
-Ďalšiu vec, ktorú budeme potrebovať je programovací jazyk, na~výber máme z~veľmi veľa možností a~to~hlavne \textit{C},
-\textit{C++}, \textit{Python} alebo \textit{Java}. Keďže, zo~zadania vypláva, že~máme použiť Robotický operačný systém,
-tak~máme na~výber dve možnosti. Sú~to~Robotický operačný systém prvej verzie (\textit{ROS1}) a~Robotický operačný systém
-druhej verzie (\textit{ROS2}). Jazyky, ktoré sú~podporované týmto systémom sme už~spomenuli, jazyk ktorý je ešte
-podporovaný a~my sme si ho nespomenuli je programovací jazyk \textit{Matlab}. Na~vytvorenie ovládača môžeme využiť
-aj~už~naprogramované baličky. Jednou z~možností je \textit{ros\_control} pre~Robotický operačný systém prvej verzie
-a~\textit{ros2\_control} pre~Robotický operačný systém druhej verzie. Samozrejme na~implementáciu a~otestovanie
-potrebujeme samotného robota. Pred tým ako začneme preberať spomenutý ovládač a~robota, ktorého budeme riadiť,
-tak~si predstavíme technológie, ktoré budeme používať pri~vytváraní ovládača.
+Našou úlohou v~tejto bakalárskej práci je naprogramovať a~otestovať nami vytvorený ovládač pre~mobilného
+robota. Na~vyber máme viacero technológii, ktoré môžeme použiť. Na~vytvorenie ovládača budeme potrebovať
+operačný systém na~počítači, ktorý budeme použivať na~programovanie a~testovanie. Na~výber máme dve možnosti.
+Menovite to~sú~operačný systém \textit{Windows} alebo operačný systém \textit{Ubuntu}, ktorý je založený
+na~jadre Linux. Ďalšiu vec, ktorú budeme potrebovať je programovací jazyk. Na~výber máme z~veľmi veľa
+možností a~to~hlavne \textit{C}, \textit{C++}, \textit{Python}, \textit{Java} alebo \textit{Matlab}.
+Keďže, zo~zadania vypláva, že~máme použiť Robotický operačný systém, tak~máme na~výber dve možnosti.
+Sú~to~Robotický operačný systém prvej verzie (\textit{ROS1}) a~Robotický operačný systém druhej verzie
+(\textit{ROS2}). Na~vytvorenie ovládača môžeme využiť aj~už~naprogramované baličky. Jednou z~možností
+je \textit{ros\_control} pre~Robotický operačný systém prvej verzie a~\textit{ros2\_control} pre~Robotický
+operačný systém druhej verzie. Samozrejme na~implementáciu a~otestovanie potrebujeme samotného robota.
+Pred tým ako začneme preberať spomenutý ovládač a~robota, ktorého budeme riadiť, tak~si predstavíme
+technológie, ktoré budeme používať pri~vytváraní ovládača.
 
 \subsection{Operačný systém}
 \label{sec:operating_system}
 
 Na~začiatku našej práce sme sa museli rozhodnúť, či~budeme písať program na~náš ovládač v~operačnom systéme Windows 11 alebo
 v~operačnom systéme Ubuntu, ktorý je založený na~jadre Linux. Ako programátori sme už~dlhšie pracovali s~operačným systémom
-Ubuntu a~poznáme aj~jeho výhody a~nevýhody. To~isté platí aj~pre~operačný systém Windows. Toto sú~fakty, ktoré sme zvažovali
+Ubuntu a~poznáme aj~jeho výhody, aj~nevýhody. To~isté platí aj~pre~operačný systém Windows. Toto sú~fakty, ktoré sme zvažovali
 pri~výbere operačného systému, ktorý sme používali počas celej bakalárskej práce.
 
 \subsubsection{Windows}
@@ -60,25 +60,31 @@ robotoch. Nad~operačným systémom Windows má niekoľko výhod.
 		(GNU je skratka pre~\acrlong{GNU}) a~GNU Debugger (GDB) sú~vynikajúce nástroje pre~C/C++ programátorov.
 
 	\item \textbf{Bezpečnosť} Linux má reputáciu bezpečnejšieho operačného systému v~porovnaní s~operačným systémom Windows.
-		V~Linuxe je ťažšie infikovať sa škodlivými programami ako sú~vírusy alebo maliari, pretože programy majú obmedzené
-		oprávnenia a~systém je navrhnutý tak, aby bol odolný voči útokom.
+		V~Linuxe je ťažšie infikovať sa škodlivými programami ako je~vírus alebo malware, pretože programy majú obmedzené
+		oprávnenie a~prístup k~ďalším súborom. Systém je navrhnutý tak, aby bol odolný voči útokom.
 
 	\item \textbf{Stabilita} Linux má tendenciu byť stabilnejší než Windows, pretože nie je závislý na~ovládačoch a~softvéri
 		od~tretích strán. Linux poskytuje jednotný prístup k~správe a~aktualizácii softvéru. Pri~vylepšovaní systému nie je
-		za~potreby reštartovať počítač.
+		za~potreby reštartovať počítač alebo server čo má za~dôsledok zvýšenie spoľahlivosti zariadenia.
 
 	\item \textbf{Flexibilita} Linux je veľmi flexibilný operačný systém, ktorý umožňuje programátorom prispôsobiť si svoje pracovné
-		prostredie a~používať programy, ktoré najlepšie vyhovujú ich potrebám.
+		prostredie a~používať programy, ktoré najlepšie vyhovujú ich potrebám. Linux dovoľuje upraviť samotné jadro
+		operačného systému a~vybrať si z~neho len tie časti, ktoré užívateľ potrebuje. Tie, ktoré nepotrebuje sa
+		v~systéme nenachádzajú. Týmto spôsobom sa zvyšuje rýchlosť systému a~zabezpečuje sa jeho bezpečnosť.
 
-	\item \textbf{Podpora a~komunita} Linux má veľkú a~aktívnu komunitu programátorov, ktorá poskytuje podporu a~rieši problémy.
-		Vďaka tomu, že~Linux je open source, mnoho ľudí prispieva k~jeho vylepšeniu a~vytvára nové programy, čo znamená, že~je vždy
+	\item \textbf{Podpora a~komunita} Linux má veľkú a~aktívnu komunitu. Ta obsahuje ako aj~programatorov tak~aj
+		netechnicky založených ľudí. Táto komunita poskytuje podporu a~rieši problémy. Vďaka tomu, že~Linux je
+		open source, mnoho ľudí prispieva k~jeho vylepšeniu a~vytvára nové programy, čo znamená, že~je vždy
 		niečo nové na~objavovanie.
 
-	\item \textbf{Komplexnosť} Napriek všetkým týmto výhodám ma Linux aj~svoje nevýhody. Najväčšou nevýhodou, ktorú je treba
+	\item \textbf{Komplexnosť} Napriek všetkým týmto výhodám má Linux aj~svoje nevýhody. Najväčšou nevýhodou, ktorú je treba
 		spomenúť je komplexnosť operačného systému. Linux je komplexnejší ako operačný systém Windows, hlavne kvôli svojej
 		flexibilnosti. Tým, že~si vieme nastaviť vlastné prostredie, typ systému správy súborov, programy na~sťahovanie,
-		publikovanie a~správy balíčkov.
+		publikovanie a~správy balíčkov. Ľudia, ktorí nevedia tento systém opraviť, často siahajú po~preinštalovaní
+		systému.
 \end{itemize}
+
+\noindent Vďaka svojim výhodám sme sa rozhodli použiť operačný systém Ubuntu verzie 22.04.
 
 \subsection{Programovací jazyk a~jeho prostredie}
 \label{sec:programovaci_jazyk}
@@ -211,7 +217,7 @@ Od~doby, kedy vznikol prešiel mnohými verziami a~úpravami. Jeho neoddeliteľn
 komunikácia medzi uzlami, podpora viacerých programovacích jazykov ako sú~C, C++ alebo Python a~vytváranie balíčkov dostupných širokej
 verejnosti.
 
-Štrukturalizovanie základov ROS1 je spravené monoliticky. Tvorcovia pritom dbali na to, aby tento systém vytvorili čo najstabilnejším spôsobom.
+Štrukturalizovanie základov ROS1 je spravené monoliticky. Tvorcovia pritom dbali na~to, aby tento systém vytvorili čo najstabilnejším spôsobom.
 Na~počiatku musí byť spustený hlavný program (roscore), ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená
 prostredníctvom prepojenia uzlov cez~LAN/WLAN alebo IPC komunikáciu. Ak~sú~uzly spustené na~iných zariadeniach, tak~sa využíva len komunikácia
 cez~sieť. Roscore ďalej poskytuje parametre jednotlivým uzlom z~parametrového servera. Jeho najdôležitejšou úlohou je zabezpečenie
@@ -336,6 +342,6 @@ celý projekt bol písaný v~programovacom jazyku C++ tak~sa aj~tieto zmeny budu
 \subsection{Ros control}
 \label{subsec:roscontrol}
 
-Roc\_control je balik naprogramovany v prostredi ROS1 aj ROS2. Tym, ze sme si vybrali ROS2 ako prostredie pre nase riesenie,
-tak by sme pouzili balik ros2\_control.
+Roc\_control je balik naprogramovany v~prostredi ROS1 aj~ROS2. Tym, ze sme si vybrali ROS2 ako prostredie pre~nase riesenie,
+tak~by sme pouzili balik ros2\_control.
 
