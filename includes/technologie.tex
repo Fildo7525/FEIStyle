@@ -90,8 +90,8 @@ robotoch. Nad~operačným systémom Windows má niekoľko výhod.
 \label{sec:programovaci_jazyk}
 
 Medzi programovacie jazy, ktoré by sme mohli použiť patria: \textit{C++}, \textit{C}, \textit{Python},
-\textit{Matlab}, \textit{Java}. Aby sme sa rozhodli, ktorý jazyk použijeme pri vytváraní ovládača, tak sme si spísali
-ich výhody a nevýhody.
+\textit{Matlab}, \textit{Java}. Aby sme sa rozhodli, ktorý jazyk použijeme pri~vytváraní ovládača, tak~sme si spísali
+ich výhody a~nevýhody.
 
 \begin{itemize}
 	\item \textbf{C a~C ++}: C a~C ++ sú~hlavné jazyky používané pri~vývoji ROS aplikácií. Sú~to~výkonné a~efektívne jazyky,
@@ -127,10 +127,10 @@ ich výhody a nevýhody.
 Na~základe vyššie spomenutých rozdielov sme sa rozhodli použiť programovací jazyk \textit{C++}. Toto rozhodnutie sme spravili
 hlavne kvôli jeho možnostiam v~implementácii tried, výkonu a~podpore v~komunite.
 
-\subsection{ROS}
+\subsection{Robotický operačný systém}
 \label{sec:ros}
 
-Robotický operačný systém (\acrlong{ROS}) je súbor voľne dostupných softvérových knižníc a~nástrojov, ktoré vytvárajú
+Robotický operačný systém (ROS) (\acrlong{ROS}) je súbor voľne dostupných softvérových knižníc a~nástrojov, ktoré vytvárajú
 vhodné podmienky pre~programátorov na~písanie aplikácií pre~mnohé druhy robotov. ROS má dve verzie. Vo~všeobecnosti sa stretneme
 s~tým, že~pod názvom ROS1 alebo ROS sa myslí ROS verzie 1. Pod názvom ROS2 sa myslí ROS verzie 2. Aby nenastali nejasnosti
 budeme v~tomto dokumente označovať ROS verzie 1 ako ROS1 a~ROS verzie 2 ako ROS2. V~prípade, keď budme hovoriť o~spoločných
@@ -153,28 +153,34 @@ Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implem
 \subsubsection{Témy}
 \label{sec:topic}
 
-	\textbf {Témy} sú~sprostredkované pomocou IPC - Medzi procesová komunikácia z~anglického \acrlong{IPC}. Je
-	to~najjednoduchší spôsob komunikácie. Vieme si ich prirovnať k~UDP/IP protokolu, s~tým že~neprebiehajú cez~sieť.
-	Definujeme si jedného poskytovateľa (publishers) a~jedného alebo viacerých príjemcov (subscribers). Medzi týmito
-	dvoma alebo viacerými účastníkmi sa následne posielajú správy (messages), ktoré sme si dopredu definovali.
-	Parametre a~obsah týchto sprav je definovaný priamo v~téme. Témy si vieme sami vyloviť. V~prípade, že~chceme
-	vytvoriť novú tému, musíme si vytvoriť nový balíček, v~ktorom si vytvoríme súbor s~príponou \textit{.msg}.
+	\textbf {Témy} sú~sprostredkované pomocou IPC, medzi procesová komunikácia z~anglického \acrlong{IPC},
+	alebo TCP/IP komunikácie . Je to~najjednoduchší spôsob komunikácie. Komunikáciu cez~témy si vieme prirovnať k~UDP/IP
+	protokolu, s~tým že~nemusia prebiehať cez~sieť. Definujeme si jedného poskytovateľa (publishers) a~jedného
+	alebo viacerých príjemcov (subscribers). Medzi týmito dvoma alebo viacerými účastníkmi sa následne
+	posielajú správy (messages), ktoré sme si dopredu definovali. Parametre a~obsah týchto správ je
+	definovaný priamo v~téme. Nové témy si vieme sami vytvoriť. V~prípade, že~chceme vytvoriť novú tému, musíme
+	si vytvoriť nový balíček, v~ktorom si spravíme súbor s~príponou \textit{.msg}.
 
-	\begin{figure}[h]
+	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=8cm]{img/topicsExplanation.png}
 		\caption{Vizualizácia témy v~ROSe~\cite{RosDoc}}
 		\label{fig:topics}
 	\end{figure}
 
+\clearpage
+
 \subsubsection{Služby}
 \label{sec:services}
 
 	\textbf {Služby} sú~sprostredkované pomocou TCP/IP protokolu. Poskytujú nám rovnaký spôsob komunikácie ako témy, až na~to, že~sa správy
 	medzi servisom a~klientom posielajú cez~LAN (\acrlong{LAN}). Tieto správy sa posielajú oboma smermi. Služby sa využívajú pri~komunikácii
-	medzi viacerými zariadeniami.
+	medzi viacerými zariadeniami. Jedno zariadenie posiela požiadavku (request) a~druhe zariadenie túto požiadavku prime
+	a~spracuje. Po~spracovaní pošle naspäť odpoveď (response). Odpoveď môže obsahovať jednoduchú potvrdenie, alebo inú
+	komplexnejšiu štruktúru. Nové služby si vieme sami vytvoriť. V~prípade, že~chceme vytvoriť novú službu, musíme
+	si vytvoriť nový balíček, v~ktorom si spravíme súbor s~príponou \textit{.srv}.
 
-	\begin{figure}[h]
+	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=8cm]{img/serviceExplanation.png}
 		\caption{Vizualizácia služby v~ROSe~\cite{RosDoc}}
@@ -183,13 +189,20 @@ Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implem
 
 \subsubsection{Akcie}
 \label{sec:actions}
-	\textbf {Akcie} sú~taktiež sprostredkované TCP/IP protokolom. Sú~najzložitejším spôsobom komunikácie. Tento spôsob bol pridaný do~ROS1
-	až neskôr. V~druhej verzii ROSu je tento typ komunikácie medzi troma základnými formami komunikácie uzlov. Sú~založené na~službách
-	a~prebiehajú asynchrónne~\cite{ROS2book}. Máju 3 stavy viď Obr.~\ref{fig:action}. Najprv pošle klient serveru, akú akciu má vykonať,
-	server mu potvrdí, že~túto požiadavku dostal. Server začne následne vykonávať danú akciu a~posielať klientovi priebežné správy o~priebehu
-	vykonávania žiadanej úlohy. Keď server skončí, pošle klientovi výsledok akcie a~klient mu obratom potvrdí obdržanie výsledku.
+	\textbf {Akcie} sú~taktiež sprostredkované TCP/IP protokolom. Sú~najzložitejším spôsobom
+	komunikácie. Tento spôsob bol pridaný do~ROS1 až neskôr. V~druhej verzii ROSu je tento
+	typ komunikácie medzi troma základnými formami komunikácie uzlov. Sú~založené na~službách
+	a~prebiehajú asynchrónne~\cite{ROS2book}. Máju 3 stavy viď Obr.~\ref{fig:action}.
+	Najprv pošle klient serveru, akú akciu má vykonať, server mu potvrdí, že~túto požiadavku
+	dostal. Server začne následne vykonávať danú akciu a~posielať klientovi priebežné správy
+	o~priebehu vykonávania žiadanej úlohy. Keď server skončí, pošle klientovi výsledok akcie
+	a~klient mu obratom potvrdí obdržanie výsledku. Nové akcie si vieme sami vytvoriť.
+	V~prípade, že~chceme vytvoriť novú akciu, musíme si vytvoriť nový balíček, v~ktorom
+	si spravíme súbor s~príponou \textit{.action}.
 
-	\begin{figure}[h]
+\clearpage
+
+	\begin{figure}[!htbp]
 		\centering
 		\includegraphics[width=8cm]{img/actionExplanation.png}
 		\caption{Vizualizácia akcie v~ROSe~\cite{RosDoc}}
@@ -199,33 +212,32 @@ Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implem
 \subsubsection{Parametre}
 \label{sec:parametre}
 
-\textbf{Parametre} sú~spôsob, ako môže komunikovať užívateľ so~základnými nastaveniami uzlov bez~potreby zmenenia kódu a~jeho
-následnej kompilácie, čo pri~väčších projektoch môže zabrať aj~trištvrte hodiny. Konfigurácie sa definujú v~\textit{yaml} konfiguračnom
-súbore. V~ňom si môžeme zadefinovať mená jednotlivých parametrov a~ich základné hodnoty. Tie si programátor vie v~programe
-vytiahnuť pomocou API, \acrlong{API}, (Aplikačné Programovacie Rozhranie) v~ROSe.
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=15cm]{img/strukturaRos1Ros2.png}
-	\caption{Porovnanie štruktúr ROS1 a~ROS2~\cite{comparison}}
-	\label{fig:struktury}
-\end{figure}
+\textbf{Parametre} sú~spôsob, ako môže komunikovať užívateľ so~základnými nastaveniami uzlov
+bez~potreby zmenenia kódu a~jeho následnej kompilácie, čo pri~väčších projektoch môže zabrať
+aj~trištvrte hodiny. Konfigurácie sa definujú v~\textit{yaml} konfiguračnom súbore. V~ňom si
+môžeme zadefinovať mená jednotlivých parametrov a~ich základné hodnoty. Tie si programátor
+vie v~programe vytiahnuť pomocou API, \acrlong{API}, (Aplikačné Programovacie Rozhranie) v~ROSe.
 
 \subsection{ROS1}
 \label{subsec:ros1}
 
-ROS bol prvýkrát vydaný v~roku 2007. Ide o~softvér, ktorý sa začal vyvíjať so~zámerom zjednodušiť programovanie a~ovládanie robotov.
-Od~doby, kedy vznikol prešiel mnohými verziami a~úpravami. Jeho neoddeliteľnou súčasťou sú~štrukturovanie programu do~uzlov (nodov),
-komunikácia medzi uzlami, podpora viacerých programovacích jazykov ako sú~C, C++ alebo Python a~vytváranie balíčkov dostupných širokej
-verejnosti.
+ROS bol prvýkrát vydaný v~roku 2007. Jeho tvorcovia \textit{Keenan Wyrobek} and \textit{Eric Berger} zo Stanford
+univerzity zacali ROS ako osobny projekt za ucelom odstranenia procesu znovuobjavovania kolesa~\cite{rosHistory}.
+Ide o~softvér, ktorý sa začal vyvíjať so~zámerom zjednodušiť a~zjednotiť programovanie a~ovládanie robotov.
+Od~doby, kedy vznikol prešiel mnohými verziami a~úpravami. Jeho neoddeliteľnou súčasťou sú~štrukturovanie programu
+do~uzlov (nodov), komunikácia medzi uzlami, podpora viacerých programovacích jazykov ako sú~C, C++ alebo Python
+a~vytváranie balíčkov dostupných širokej verejnosti.
 
-Štrukturalizovanie základov ROS1 je spravené monoliticky. Tvorcovia pritom dbali na~to, aby tento systém vytvorili čo najstabilnejším spôsobom.
-Na~počiatku musí byť spustený hlavný program (roscore), ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená
-prostredníctvom prepojenia uzlov cez~LAN/WLAN alebo IPC komunikáciu. Ak~sú~uzly spustené na~iných zariadeniach, tak~sa využíva len komunikácia
-cez~sieť. Roscore ďalej poskytuje parametre jednotlivým uzlom z~parametrového servera. Jeho najdôležitejšou úlohou je zabezpečenie
-komunikácie uzlov v~programe.
+Štrukturalizovanie základov ROS1 je spravené monoliticky. Tvorcovia pritom dbali na~to, aby tento
+systém vytvorili čo najstabilnejším spôsobom. Na~počiatku musí byť spustený hlavný program (roscore),
+ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami je zabezpečená prostredníctvom
+prepojenia uzlov cez~LAN/WLAN alebo IPC komunikáciu. Ak~sú~uzly spustené na~iných zariadeniach,
+tak~sa využíva len komunikácia cez~sieť. Roscore ďalej poskytuje parametre jednotlivým uzlom
+z~parametrového servera. Jeho najdôležitejšou úlohou je zabezpečenie komunikácie uzlov v~programe.
 
-Aj~napriek mnohým výhodám má ROS1 aj~nedostatky, ktoré sa ťahajú už~od~jeho počiatkov. Sú~to~napríklad:
+\clearpage
+
+Aj~napriek mnohým výhodám má ROS1 nedostatky, ktoré sa ťahajú už~od~jeho počiatkov. Sú~to~napríklad:
 
 \begin{itemize}
 	\item Nepostačujúca distribuovanosť systému. Všetky uzly sa spoliehajú na~funkčnosť roscore-u,
@@ -276,6 +288,13 @@ ktorý časom zanikne. V~čase písania tejto práce pribudli na~stránke dokume
 verzie ROSu.
 
 \subsection{Rozdiely}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=15cm]{img/strukturaRos1Ros2.png}
+	\caption{Porovnanie štruktúr ROS1 a~ROS2~\cite{comparison}}
+	\label{fig:struktury}
+\end{figure}
 
 Čo je určite dobrou správou pre~všetkých programátorov, ktorí robili v~prvej verzii a~sú~zvyknutí na~jej štandardy a~funkcionalitu. Tak~títo
 sa nemajú čoho obávať. Prechod z~ROS1 na~ROS2 je dosť priamočiary. Čo sa zmenilo je spôsob písania kódu, ale~koncepty ostali všetky rovnaké.
