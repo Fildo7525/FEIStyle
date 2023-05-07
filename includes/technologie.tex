@@ -254,21 +254,30 @@ v~ROS2.
 \subsection{ROS2}
 \label{subsec:ros2}
 
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=15cm]{img/strukturaRos1Ros2.png}
+	\caption{Porovnanie štruktúr ROS1 a~ROS2~\cite{comparison}}
+	\label{fig:struktury}
+\end{figure}
+
 Ako už~bolo spomenuté zámerom vývoja ROS2 bolo zlepšenie funkcionality a~bezpečnosti systému. Jeden z~dôsledkov tohto vývoja je, že~ROS2
-nie je spätne kompatibilný. Podstata toho, ako sú~zoskupované uzly a~ako spolu komunikujú je diametrálne odlišná od~ROS1. Z~tohto dôvodu
+nie je spätne kompatibilný software. Podstata toho, ako sú~zoskupované uzly a~ako spolu komunikujú je diametrálne odlišná od~ROS1. Z~tohto dôvodu
 bol vyvinutý takzvaný rosbridge, ktorý zabezpečuje kompatibilitu medzi verziami. Nie je to~ale~trvalé riešenie. Odporúčané je nástroj
 využívať a~počas toho prepisovať kód z~verzie 1 do~verzie 2. Komunikácia prebieha v~ROS2 rovnakým spôsobom ako v~ROS1. Pomocou tém
 \ref{sec:topic}, služieb \ref{sec:services} a~akcií \ref{sec:actions}.
 
 Táto podobnosť končí na~najvyššej vrstve. Ako sme videli na~Obr.~\ref{fig:struktury}. Štruktúra ROS2 je rozdelená do~viacerých vrstiev.
-Najdôležitejšie je pre~nás vedieť, že~komunikácia je spracovávaná modelom DDS (Služba distribúcie údajov) z~anglického (\acrlong{DDS}). Tento
-model zlepšuje výkon, stabilitu a~bezpečnosť modelu oproti ROS1. Je založený na~TCP/IP a~UDP/IP protokole. Z~obrázku Obr.~\ref{fig:struktury}
+Najdôležitejšie je pre~nás vedieť, že~komunikácia je spracovávaná modelom DDS (Služba distribúcie údajov) z~anglického
+(\acrlong{DDS}). DDS obsahuje podobne dizajnov vzory ale poskytuje väčšiu ovládateľnosť komunikácie systémov, zatiaľ
+čo odstraňuje všetky vrstvy, ktoré zabraňujú debugovaniu~\cite{ElectronicDesign}. Tento model zároveň zlepšuje výkon,
+stabilitu a~bezpečnosť modelu oproti ROS1. Je založený na~TCP/IP a~UDP/IP protokole. Z~obrázku Obr.~\ref{fig:struktury}
 vyčítame aj~lepšie rozloženie modulov. To~zabezpečuje jednoduchšie prispôsobovanie systému pre~nové funkcionality. Podpora operačných systémov
 sa v~ROS2 rozšírila aj~o~Windows, Mac OS či~RTOS (Operačné systémy reálneho času) z~anglického \acrlong{RTOS}. Operačné systémy nie sú~jediné
 rozšírenie ohľadom kompatibility. S~ROS2 je možné programovať už~aj~v~Jave či~Matlabe. Tvorcovia mysleli aj~na~programátorov a~pridali rozšírené
 možnosti testovania, debugovania či~nasadzovania programu do~reálneho využitia.
 
-Testovanie prebieha pomocou použivanie Google testov. Debugovania je možné uskutočniť pomocou debuggera gnu-gdb. Pri~spustení programu
+Testovanie prebieha pomocou použitia Google testov. Debugovanie je možné uskutočniť pomocou debuggera gnu-gdb. Pri~spustení programu
 cez~spúšťací súbor (launch file) je potrebné pridať príkaz na~spustenie spomenutého debugovacieho programu.
 
 ROS2 má necentralizovanú štruktúru, a~preto~pri~spúšťaní programov už~nie je potrebné mať spustený roscore. Ak~teda spadne jeden uzol všetky
@@ -288,13 +297,6 @@ ktorý časom zanikne. V~čase písania tejto práce pribudli na~stránke dokume
 verzie ROSu.
 
 \subsection{Rozdiely}
-
-\begin{figure}[!htbp]
-	\centering
-	\includegraphics[width=15cm]{img/strukturaRos1Ros2.png}
-	\caption{Porovnanie štruktúr ROS1 a~ROS2~\cite{comparison}}
-	\label{fig:struktury}
-\end{figure}
 
 Čo je určite dobrou správou pre~všetkých programátorov, ktorí robili v~prvej verzii a~sú~zvyknutí na~jej štandardy a~funkcionalitu. Tak~títo
 sa nemajú čoho obávať. Prechod z~ROS1 na~ROS2 je dosť priamočiary. Čo sa zmenilo je spôsob písania kódu, ale~koncepty ostali všetky rovnaké.
