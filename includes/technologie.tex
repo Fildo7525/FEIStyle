@@ -221,8 +221,8 @@ vie v~programe vytiahnuť pomocou API, \acrlong{API}, (Aplikačné Programovacie
 \subsection{ROS1}
 \label{subsec:ros1}
 
-ROS bol prvýkrát vydaný v~roku 2007. Jeho tvorcovia \textit{Keenan Wyrobek} and \textit{Eric Berger} zo Stanford
-univerzity zacali ROS ako osobny projekt za ucelom odstranenia procesu znovuobjavovania kolesa~\cite{rosHistory}.
+ROS bol prvýkrát vydaný v~roku 2007. Jeho tvorcovia \textit{Keenan Wyrobek} and \textit{Eric Berger} zo~Stanford
+univerzity zacali ROS ako osobny projekt za~ucelom odstranenia procesu znovuobjavovania kolesa~\cite{rosHistory}.
 Ide o~softvér, ktorý sa začal vyvíjať so~zámerom zjednodušiť a~zjednotiť programovanie a~ovládanie robotov.
 Od~doby, kedy vznikol prešiel mnohými verziami a~úpravami. Jeho neoddeliteľnou súčasťou sú~štrukturovanie programu
 do~uzlov (nodov), komunikácia medzi uzlami, podpora viacerých programovacích jazykov ako sú~C, C++ alebo Python
@@ -269,7 +269,7 @@ využívať a~počas toho prepisovať kód z~verzie 1 do~verzie 2. Komunikácia 
 
 Táto podobnosť končí na~najvyššej vrstve. Ako sme videli na~Obr.~\ref{fig:struktury}. Štruktúra ROS2 je rozdelená do~viacerých vrstiev.
 Najdôležitejšie je pre~nás vedieť, že~komunikácia je spracovávaná modelom DDS (Služba distribúcie údajov) z~anglického
-(\acrlong{DDS}). DDS obsahuje podobne dizajnov vzory ale poskytuje väčšiu ovládateľnosť komunikácie systémov, zatiaľ
+(\acrlong{DDS}). DDS obsahuje podobné dizajnové vzory ale~poskytuje väčšiu ovládateľnosť komunikácie systémov, zatiaľ
 čo odstraňuje všetky vrstvy, ktoré zabraňujú debugovaniu~\cite{ElectronicDesign}. Tento model zároveň zlepšuje výkon,
 stabilitu a~bezpečnosť modelu oproti ROS1. Je založený na~TCP/IP a~UDP/IP protokole. Z~obrázku Obr.~\ref{fig:struktury}
 vyčítame aj~lepšie rozloženie modulov. To~zabezpečuje jednoduchšie prispôsobovanie systému pre~nové funkcionality. Podpora operačných systémov
@@ -283,7 +283,7 @@ cez~spúšťací súbor (launch file) je potrebné pridať príkaz na~spustenie 
 ROS2 má necentralizovanú štruktúru, a~preto~pri~spúšťaní programov už~nie je potrebné mať spustený roscore. Ak~teda spadne jeden uzol všetky
 ostatné uzly budú fungovať naďalej. V~ROS1 sme vedeli ovplyvniť počet uchovaných správ komunikácie pokým nepretiekol zásobník, ktorý ich uchovával
 na~neskoršie použitie. V~ROS2 vieme implementovať túto schopnosť použitím takzvanej \textit{QoS} triedy (kvalita komunikácie), z~anglického \acrlong{QoS}.
-Pomocou tejto triedy vieme aj~zmeniť kvalitu komunikácie. Vieme si zadefinovať, či~by sme radšej stratili niektoré správy, ale~dostali by~sme
+Pomocou tejto triedy vieme zmeniť kvalitu komunikácie. Vieme si zadefinovať, či~by sme radšej stratili niektoré správy, ale~dostali by~sme
 všetky rýchlo. Alebo aby sa zabezpečilo, že~dostaneme všetky správy, ktoré boli vyslané, aj~keby to~trvalo dlhšie. Dokonca si vieme zadefinovať
 maximálny čas, ktorý budeme čakať na~ďalšiu správu.
 
@@ -323,10 +323,13 @@ celý projekt bol písaný v~programovacom jazyku C++ tak~sa aj~tieto zmeny budu
 
 \subsubsection{Komunikácia}
 
-	DDS (Služba distribúcie údajov) je protokol strednej vrstvy (middleware) implementovaný nad UDP~\cite{ROS2book}. Na~implementáciu tohto protokolu
-	je použitý protokol z~IoT (internet veci) (\acrlong{IoT}) sféry. Je to~protokol MQTT. DDS je používaný v~ROS2 na~komunikáciu medzi uzlami. Je
-	to~systém správ publikovania (publish) / odoberania (subscribe), ktorý umožňuje uzlom komunikovať medzi sebou bez toho, aby poznali identitu
-	ostatných uzlov. Druh komunikácie je v~ROS2 rozšírený ešte o~akcie viď kapitolu~\ref{sec:actions}.
+	DDS (Služba distribúcie údajov) je protokol strednej vrstvy (middleware) implementovaný nad
+	UDP~\cite{ROS2book}.Tento protokol je použitý v~IoT (internet veci) (\acrlong{IoT}) sfére.
+	Využíva sa napríklad v~oblastiach ako sú~telekomunikácie, vizualizácia, automatizácia, alebo
+	zdravotníctvo~\cite{siteTrend}. DDS je používaný v~ROS2 na~komunikáciu medzi uzlami.
+	Je to~systém správ publikovania (publish) / odoberania (subscribe), ktorý umožňuje uzlom
+	komunikovať medzi sebou bez toho, aby poznali identitu ostatných uzlov. Druh komunikácie
+	je v~ROS2 rozšírený ešte o~akcie viď kapitolu~\ref{sec:actions}.
 
 \subsubsection{Parametre}
 
@@ -365,6 +368,52 @@ celý projekt bol písaný v~programovacom jazyku C++ tak~sa aj~tieto zmeny budu
 \subsection{Ros control}
 \label{subsec:roscontrol}
 
-Roc\_control je balik naprogramovany v~prostredi ROS1 aj~ROS2. Tym, ze sme si vybrali ROS2 ako prostredie pre~nase riesenie,
-tak~by sme pouzili balik ros2\_control.
+Roc\_control je balík naprogramovaný v~prostredí ROS1 aj~ROS2. Tým, že~sme si vybrali ROS2 ako prostredie pre~naše riešenie,
+tak~by sme použili balík ros2\_control. Obrazok \ref{fig:components_architecture} zobrazuje architektúru balíka ros2\_control.
+
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=0.95\textwidth]{./img/components_architecture.png}
+	\end{center}
+	\caption{Diagram zobrazujúci vnútornú implementáciu balíka ros2\_control~\cite{roscontrol}.}
+	\label{fig:components_architecture}
+\end{figure}
+
+Delegátor snímačov \textbf{Controller Manager} (CM) prepája snímače a~abstrakciu hardvéru balíka ros2\_control. Slúži
+taktiež ako vstupný bod pre~užívateľov ROS služieb~\cite{roscontrol}.
+Delegátor snímačov na~jednej strane ovláda snímače a~rozhrania, ktoré potrebujú. Na~druhej strane má pristúp k~hardvérovým
+komponentom, t.j. ich rozhraniam. Delegátor snímačov spája požadované a~poskytované rozhrania, poskytuje pristúp ovládačom
+k~hardvéru, keď ho potrebujú alebo hlási chybu, ak~existuje konflikt prístupu~\cite{roscontrol}.
+
+Delegátor zdrojov \textbf{Resource Manager} (RM) spravuje fyzický hardvér a~ich ovládače (hardvérové komponenty)
+pre~balík ros2\_control~\cite{roscontrol}. V~tejto triede je možnosť definovať takzvané \textit{callbacky}
+(ukazovatele na~funkcie, ktoré môže užívateľ definovať) \textit{read()} a~\textit{write()}, ktoré zabezpečujú
+komunikáciu hardvérových komponentov~\cite{roscontrol}.
+
+Hardvérové komponenty \textbf{hardware components} (HC) sú~triedy, ktoré realizujú komunikáciu s~fyzickým hardvérom
+a~jeho reprezentáciou v~balíku ros2\_control~\cite{roscontrol}.
+
+\clearpage
+
+V~tomto balíku sú~definované tri základné typy komponentov:
+
+\begin{itemize}
+	\item \textbf{Systém} Komplexný (multi-DOF (\acrlong{DOF}) (z~anglického veľa stupňov voľnosti)) robotický hardvér ako industriálny
+		robot. Hlavný rozdiel medzi akčným členom a~možnosťou použitia komplexného prechodu aký potrebujeme pri
+		Robotickým ramene ruky. Komponent poskytuje čítanie a~zápis do~hardvéru. Používa sa v~len prípade jednej
+		logickej komunikácie kanálov hardvéru (napríklad KUKA-RSI)~\cite{roscontrol}.
+	\item \textbf{Senzor} Robotický hardvér prizvaný na~zaznamenanie okolitého prostredia. Senzor ako komponent je
+		príbuzný s~kĺbom (napríklad prekladač) alebo rameno (napríklad snímač sily a~krútiaceho momentu). Tento
+		komponent ma len schopnosť čítania vlastnosti~\cite{roscontrol}.
+	\item \textbf{Akčný člen} Jednoduchý (1 DOF) robotický hardvér ako motor, chlopňa alebo podobný člen.
+		Akčný člen implementuje len jeden kĺb. Tento komponent má schopnosť čítať aj~zapisovať vlastnosti. Čítanie nie
+		je požadované ak~nie je uskutočniteľné (napríklad DC ovládač motora s~Arduino doskou). Tento akčný člen môže byť
+		tiež použitý s~viac stupňovými kĺbmi voľnosti robota ak~jeho hardvér umožňuje tento dizajn (napríklad
+		CAN-komunikácia s~každým motorom nezávisle)~\cite{roscontrol}.
+\end{itemize}
+
+Aj~napriek všetkým týmto výhodám nemôžeme tento softvér použiť. Je to~kvôli tomu, že~na~robote sa systém ROS nenachádza
+a~nemá preto~pristúp k~jednotlivým častiam hardvéru. Ak~by tento systém na~robote bol implementovaný mohli by sme použiť
+funkciu \textbf{Delegátora zdrojov} na~cicanie a~zapisovanie dát do~jednotlivých komponentov. Mrime si preto~vytvoriť
+vlastný systém na~čítanie, spracovanie a~ovládanie robota.
 
