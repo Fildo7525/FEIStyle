@@ -1,5 +1,25 @@
 % !TEX root = ../main.tex
-Táto bakalárska práca popisuje ako naprogramovať ovládač pre mobilného robota pomocou druhej verzie Robotického Operačného Systému (ROS2).
-Ovládač obsahuje funkcie ROS2 napr. uzly, parametre, služby a témy. Hlavným cieľom tohto projektu je vytvoriť rozhranie tak, aby
-bolo možné ovládať robota pomocou jednoduchých príkazov cez ROS.
 
+Robotizácia sa v~dnešnej dobe viac a~viac rozširuje k~bežným ľuďom a~do~ich príbytkov. Cieľom všetkých vedcov
+a~inžinierov je vytvoriť roboty, ktoré budu schopné pomáhať ľuďom vo~vykonávaní každodenných činností. Tým,
+že~lúdia žijú v~domoch a~bytoch o~rôznych veľkostiach, tak~je potrebné vytvoriť roboty, ktoré sa budu vedieť
+pohybovať v~užších ale~aj~otvorených priestoroch. Keď sa pozrieme na~dnešné ľudom prístupné mobilné roboty,
+tak~majú väčšinou diferenciálne podvozky, ktoré sú~schopné pohybovať sa po~rovine, na~ktorej sa nenachádzajú veľké
+prekážky. To~sú~hlavne parkety, dlaždice alebo koberce. Tento trend sa dlhšiu dobu nezmení a~bude sa len posúvať
+vpred.
+
+V~súčasnej dobe je pri~vytváraní softvéru pre~robota využívaný Robotický Operačný Systém (ROS) prvej verzie. Takzvaný
+ROS1. Tento systém aktuálne prechádza zo~staršej už~spomenutej verzie ROS1 na~novšiu ROS2. Tá dáva programátorom viac
+možností ako spraviť systém užitočnejší a~prístupnejší pre~každodenného užívateľa.
+
+Na~základe tohto trendu bol vytvorený projekt na~sprístupnenie ovládania mobilného robota do~prostredia Robotického
+operačného systému druhej verzie. Toto sprístupnenie ovládania robota otvára dvere mnohým ďalším nápadom a~projektom.
+Vytvorenie tohto rozhrania poskytuje možnosť implementácie rozhrania pre~ovládanie robota pomocou hlasu, gestami alebo
+autonómnymi algoritmami.
+
+Na~to~aby sme vedeli využiť všetky tieto výhody, tak~je potrebné mať ovládač, ktorý bude vytvárať rozhranie medzi
+robotickým operačným systémom a~komunikačným rozhrania robota. V~tejto práci sa budeme venovať implementácii viacerých
+uzlov, ktoré budu spracovávať informácie poslané robotickým operačným systémom na~tému /cmd\_vel. Tieto správy spracujeme
+do~formátu JSON s~tým, že~prepočítame vstupné lineárne a~uhlové rýchlosti zo~správy tejto témy na~rýchlosti ľavého
+a~pravého kolesa diferenciálneho podvozku. Zároveň budeme počítať odometriu robota a~publikovať ju na~tému /odom.
+V~tejto sprave uvedieme aktuálne údaje o~rýchlosti, smere a~polohe robota.
