@@ -1,8 +1,19 @@
 % !TEX root = ../main.tex
 
-V prvej časti bakalárskej prace bolo našou úlohou zoznámiť sa s robotom a neimplementovať ovládač na neho pomocou ROSu.
-V stave v akom sme ho dostali sme museli opraviť niektoré softvérové chyby na robote. Tie sa týkali hlavne komunikácie s robotom.
-V tejto práci sme sa dostali do stavu, kedy vieme robotu poslať, akou rýchlosťou sa majú hýbať jednotlive kolesa a on nám dáva spätnú väzbu,
-že akou rýchlosťou naozaj ide. To ale ešte nefunguje, tak ako má kvôli zašumenému signálu. V druhej časti bakalárskej prace by sme chceli opraviť
-alebo aspoň zredukovať toto zašumenie. Poprípade nájsť iný spôsob na kontrolovanie pozície robota v priestore.
+Hlavným cieľom bakalárskej prace bolo vytvorenie ovládača pre mobilného robota v prostredí ROS2. Hlavni úlohu
+ovládača tvoril uzol, ktorý zabezpečoval prijímanie a spracovanie dát od užívateľa. Jeho ďalšou úlohou bolo vytvorenie
+klienta a odometrie. Klient zaisťoval výmenu požiadavok a odpovedi so serverom, ktorý sa nachádzal na robote. Odometria
+na druhú stranu zabezpečovala spracovanie prijatých sprav od robota a ich následnú publikáciu na tému /odom. Pre
+validáciu presnosti odometrie sme spravili s robotom test ako presne vypočíta dráhu štvorca, ktorú prejde robot.
+Ovládač je možné použiť na ovládanie robota pomocou preddefinovaných uzlov alebo pomocou vlastného uzla, ktorý
+bude publikovať spravy na tému /cmd\_vel. Vytvorený ovládač sme otestovali s uzlom \textit{teleop\_twist\_joy}.
+
+Pri prijímaní dát z robota sme zistili, že enkódery posielajú Zašumený signál. Tento problém sme vyriešili implementáciu
+kvadratického dolno-priepustného filtra. Dolno-priepustný filter zabezpečil stabilitu dát, z ktorých sme následne počítali
+aktuálnu polohu robota.
+
+Nami navrhnutý ovládač je len jednou z možností ako navrhnúť tento ovládač. My sme boli obmedzení tým, že na robote,
+ktorý sme ovládali sa nenachádzal robotický operačný systém. Ak by sa na robote tento systém nachádzal, tak by sme mohli
+použiť už existujúci balíček \textit{ros2\_control}. Ten bol navrhnutý a naprogramovaný skúsenejšími programátormi.
+Jeho efektivita pri ovládaní robota by bola preto lepšia ako pri našom ovládači.
 
