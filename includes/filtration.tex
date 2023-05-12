@@ -209,11 +209,11 @@ najlepšia, ktorú sme namerali. Tretí graf reprezentuje dráhu prejdenú so~sl
 
 Ako prvý pokus sme vypli filtrovanie prichádzajúcich dát. To~malo za~dôsledok, že~všetky skoky, ktoré môžeme vidieť
 napríklad na~obrázku Obr.~\ref{fig:rw_lw_nf} sa ukázali na~grafe. Obrázok Obr.~\ref{fig:stvorecBezFiltra} reprezentuje
-dráhu, ktorú robot prešiel bez aplikácie filtra. Na~grafe môžeme vidieť zašumenie zbieraných dát z~robota. To~sa
+dráhu, ktorú robot prešiel bez aplikácie filtra. Na~grafe môžeme vidieť zašumenie nazbieraných dát z~robota. To~sa
 zobrazuje najmä v~častiach, keď má robot isť rovno. V~prípade, že~filter nepožívame, tak~rovné čiary sa premenia
 na~krivky. To~spôsobuje nepresné uvedenie aktuálnej polohy. Tieto nepresnosti sa prejavujú aj~pri~otáčaní robota.
-V~prípade, že~sa robot má otočiť o~90 stupňov, respektíve o~$\frac{\pi}{2}$, tak~robot toto otočenie reprezentuje iným
-uhlom, poprípade aj~posunutím.
+V~prípade, že~sa robot má otočiť o~90 stupňov, respektíve o~$\frac{\pi}{2}$ radiánu, tak~robot toto otočenie
+reprezentuje iným uhlom, poprípade aj~posunutím.
 
 Aby sme videli ako ovplyvňuje filter s~nami navrhnutými parametrami tak~sme spravili ďalšie meranie s~filtrom
 s~najlepšími hodnotami. Druhý pokus sme zvolili najlepšiu hodnotu filtra s~koeficientom $\alpha$ rovným 0.8.
@@ -232,7 +232,7 @@ Ako môžeme vidieť na~tomto grafe tak~síce filter zlepšil výsledok, ktorý 
 je znázornení na~grafe nie je štvorec. Môže to~byť spôsobené viacerými faktormi.
 
 \begin{itemize}
-	\item \textbf{Prešmyk} Robot môže na~mieste prešmykovať. To~má za~dôsledok nepresné uvedenie polohy robota.
+	\item \textbf{Prešmyk} Robot prešmykuje pri~zrýchľovaní. To~má za~dôsledok nepresné uvedenie polohy robota.
 	\item \textbf{Oneskorenie komunikácie} Dáta z~ovládača prijímame vo~while cykle so~softvérovým oneskorením (100ms)
 		plus \cite{timovyProjekt}. Tým, že~sa komunikácia oneskoruje, tak~sa vnáša chyba do~výpočtu aktuálnej polohy
 		na~základe rýchlostí robota.
