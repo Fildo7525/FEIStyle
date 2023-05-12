@@ -1,5 +1,12 @@
 % !TEX root = ../main.tex
-Mobilný robot vykonáva také pohyby aké mu zadáme. Preto aby tento spôsob bol čo najefektívnejší, musí byť čitateľný dobre tak ako pre robot tak aj pre užívateľa.
-Našou úlohou je vytvoriť také prostredie na ovládanie robota, tak aby bol kód efektívny a jednoduchý. Tým pádom bude čitateľný pre ľudí aj robota. Rozhodli sme
-sa pre ROS druhej verzie. To prečo a ako sme spravili jednotlive časti sa dočítate ďalej.
+V tejto bakalárskej práci sa zaoberáme riadením mobilného robota v prostredí ROS2. Robot, ktorý budeme využívať
+je vybavený diferenciálnym podvozkom a dvoma opornými všesmerovými kolesami. Obsahuje dva enkódery pre pravé
+a ľavé koleso, ktoré merajú rýchlosti otáčania kolies v impulzoch za sekundu. Jeho ovládanie a komunikácia
+s ním prebieha cez TCP/IP spojenie. Pri komunikácii s robotom sa posielajú spravy v štruktúre JSON.
 
+Výsledným cieľom tejto bakalárskej práce je vytvoriť ovládač robota, ktorý bude sprístupňovať ovládanie robota
+v prostredí ROS2. V prvej kapitole sa venujeme analýze pôvodného stavu robota a jeho komunikačnému rozhraniu.
+V druhej kapitole popisujeme návrh implementácie ovládača robota v prostredí ROS2. Tretiu kapitolu sme venovali
+popísaniu zlepšení, ktoré sme vykonali na robote. Štvrtá kapitola sa venuje samotnej implementácii ovládača robota.
+V predposlednej kapitole opisujeme ako sme prekonali problémy, ktoré vznikli pri komunikácii s robotom. V poslednej
+kapitole opisujeme viacero využití ovládača robota v prostredí ROS2.

@@ -1,5 +1,15 @@
 % !TEX root = ../main.tex
-The mobile robot performs such movements as we give it. Therefore, for this method to be as effective as possible, it must be readable both
-for the robot and for the user. The major task is to create such an environment for controlling the robot, so that the code is efficient and simple.
-Thus, it will be readable by both humans and robots. We decided for ROS2. You can read more about why and how we made the individual parts in the next sections.
+This bachelor's thesis deals with the control of a mobile robot in the ROS2 environment. The robot we will
+be working with is equipped with a differential chassis and two support omnidirectional wheels. It contains
+two encoders for the right and left wheel, which measure the wheel velocities in pulses per second.
+The control and communication interface with the robot is implemented via TCP/IP connection. Messages
+in JSON structure are sent when communicating with the robot.
 
+The ultimate goal of this bachelor's thesis is to create a robot controller that will provide access
+to robot control in the ROS2 environment. In the first chapter, we analyse the original state
+of the robot and its communication interface. The second chapter describes the design of the robot
+controller implementation in the ROS2 environment. We devoted the third chapter to describing
+the improvements we made to the robot. The fourth chapter focuses on the actual implementation
+of the robot controller. In the penultimate chapter, we describe how we overcame issues that arose
+during communication with the robot. In the last chapter, we describe several uses of the robot
+controller in the ROS2 environment.
