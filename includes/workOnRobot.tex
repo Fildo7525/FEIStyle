@@ -39,6 +39,17 @@ v~dokumentácii, ktorá nám bola dodaná na~začiatku programu. Môžeme preto~
 			{"UserID":1,"Command":3,"RightWheelSpeed":0.50,"LeftWheelSpeed":0.50}
 	\end{lstlisting}
 
+\subsection{Oneskorenie komunikácie}
+\label{subsec:communicationDelay}
+
+Pri blízkom pohľade na kód robota sme odhalili závažnú chybu. Vo vlákne, ktoré zabezpečuje prijímanie správ sa nachádza
+cyklus, ktorý prijíma dáta z TCP/IP spojenia a bezpečne ich zapisuje do zdielanej štruktúry. Prijímanie správ je realizované
+pomocou funkcie \textit{recv} z knižnice \textit{sys/socket.h}. Táto funkcia je za normálach podmienok blokujúca, to znamená,
+že vlákno, ktoré ju volá, sa zablokuje, až pokým nemá k dispozícii dáta na čítanie. Na robote je toto blokovanie
+vypnutý s tým že po každom zavolaní tejto funkcie sa čaká \textit{100 milisekúnd}. Tento problém je ľahko opraviteľný.
+Čo sme spravili bolo, že sme odstránili funkciu \textit{usleep}, ktorá zabezpečovala čakanie. Vo funkcii \textit{recv}
+sme ďalej vymazali makro \textit{MSG\_DONTWAIT}, ktoré spôsobuje, že sa funkcia \textit{recv} nezablokovala.
+
 \subsection{Rozšírenie príkazov robota}
 \label{subsec:extendRobotCommands}
 
@@ -62,6 +73,8 @@ Počas toho sa ale~kolesá robota stále točia.\\
 Tento postup sa ukázal ako neuskutočniteľný, lebo príkazom~\ref{c8} sme z~jedného enkódery
 získavali informácie priamo nastavenej polohy a~z~druhého enkódera sme dodržiavali čisto náhodné dáta.
 Z~tohto dôvodu sme sa rozhodli využívať spätnú väzbu, ktorá obsahuje rýchlosti robota.
+
+\clearpage
 
 \subsection{Nesprávna spätná väzba}
 \label{subsec:wrongFeedback}
