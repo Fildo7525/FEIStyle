@@ -238,6 +238,28 @@ je znázornení na~grafe nie je štvorec. Môže to~byť spôsobené viacerými 
 		na~základe rýchlostí robota.
 \end{itemize}
 
+Pre~porovnanie odmeraných výsledkov odometrie a~reálneho prejdenia dráhy robotom sme odmerali vzdialenosť robota
+od~začiatočnej po~konečnú pozíciu robota. Obrázky zobrazujúce toto meranie môžeme vidieť
+na~Obr.~\ref{fig:stvorec_meranie_X} a~Obr.~\ref{fig:stvorec_meranie_Y}.
+Odometria odmerala koniec trasy na~bod \textbf{[0.52; 0.30]}, kde~prvá hodnota zobrazuje súradnicu na~osi X a~druhá hodnota
+zobrazuje súradnicu na~osi Y. Obe hodnoty boli merané v~metroch. Odmerané hodnoty metrom sme vyčíslili na~\textbf{[0.52; 0.34]}.
+
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=\textwidth]{img/robot_stop_measured_X.jpg}
+	\end{center}
+	\caption{Odmeranie koncovej pozície robota na~osi X po~prejdení štvorcovej dráhy.}
+	\label{fig:stvorec_meranie_X}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\begin{center}
+		\includegraphics[width=\textwidth]{img/robot_stop_measured_Y.jpg}
+	\end{center}
+	\caption{Odmeranie koncovej pozície robota na~osi Y po~prejdení štvorcovej dráhy.}
+	\label{fig:stvorec_meranie_Y}
+\end{figure}
+
 \clearpage
 
 Tretie a~posledné meranie, ktoré sme spravili bolo meranie so~slabším filtrom ako sme sa rozhodli použiť. Obsahovalo
@@ -254,7 +276,7 @@ zhoršenie presnosti určovania polohy robota.
 \end{figure}
 
 Ak~by sme použili silnejší filter dostali by sme lepši výsledok. V~tom prípade by sme ale~nemali relevantný výsledok
-vzhľadom na~robot. Filtrované dáta by boli až veľmi skreslené.
+vzhľadom na~robot. Filtrované dáta by boli až veľmi skreslené žiadanou hodnotou.
 
 Experimentmi sme sa dostali k~najvhodnejšiemu parametru alpha $\alpha$, ktorý sme využili ako vstup
 do~hodno priepustného filtra. Jeho implementáciu sme navrhli tak, aby sme vedeli zisti čo najpresnejšiu
