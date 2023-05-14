@@ -2,12 +2,12 @@
 \section{Analýza pôvodného stavu robota}
 \label{sec:formerState}
 
-\subsection{Robot a~jeho ovládanie}
-\label{subsec:robotAOvladanie}
-
-Robot, s~ktorým sme pracovali bol výsledkom tímového projektu viacerých študentov \newline z~roku 2019. Pri~vysvetľovaní
+Robot, s~ktorým sme pracovali bol výsledkom tímového projektu viacerých študentov z~roku 2019. Pri~vysvetľovaní
 a~opisovaní robota sa budeme odvolávať na~dokumenty, stránky a~kód, ktorý napísali. Všetky tieto údaje sú~sprístupnené
 na~mobilnom robote v~záložke \newline \texttt{\$(HOME)/Desktop/Blackmetal}~\cite{timovyProjekt}.
+
+\subsection{Robot a~jeho ovládanie}
+\label{subsec:robotAOvladanie}
 
 Robot je v~tvare kvádra. Jeho šírka je 60cm a~je vyzdvihnutý nad zem o~1.5cm. Nachádza sa na~kolesách o~polomere 8cm.
 Jeho kostra sa skladá z~dvoch oceľových plátov, ktoré tvoria dno a~strechu robota. Steny robota sú~spravené z~hliníku.
@@ -33,9 +33,9 @@ tak~LED-ky začnú blikať červeno-modrými farbami.
 Ako bolo spomenuté LED-ky znázorňujú pohyb robota. Ten sa pohybuje za~pomoci diferenciálneho podvozku s~dvoma
 podpornými všesmerovými kolesami. Motory robota sú~pripojené na~meniče. Tie sú~ovládané priamo príkazmi z~počítača.\\
 
-\noindent Hardware robota sa skladá z:
+\noindent Hardvér robota sa skladá z:
 \begin{itemize}
-	\item kontrolnej dosky Arduino Uno,
+	\item Riadiacej dosky Arduino Uno,
 
 	\item Počítača ADVANTECH MIO-5272 \newline
 		Počítač obsahuje operačný systém založený na~jadre Linux Ubuntu 16.04~\cite{robotPc}.
@@ -57,12 +57,13 @@ podpornými všesmerovými kolesami. Motory robota sú~pripojené na~meniče. Ti
 
 \noindent Ovládanie robota je zabezpečené externými počítačmi
 \begin{itemize}
-	\item Control PC (Kontrolný počítač) -- Počítač posielajúci príkazy na~robot cez~TCP/IP protokol.
-	\item Logging PC (Logovací počítač) -- Počítač prijímajúci stav robota cez~TCP/IP protokol.
+	\item Control PC (Riadiaci klient) -- Klient posielajúci príkazy na~robot cez~TCP/IP protokol.
+	\item Logging PC (Logovací klient) -- Klient prijímajúci stav robota cez~TCP/IP protokol.
 \end{itemize}
 
-\noindent Tieto počítače sú~len reprezentáciou dvoch klientov pripájajúcich sa na~dva separátne porty na~robote.
-V~realite to~môže byť jeden a~ten istý počítač.
+\noindent Títo klienti sú~len reprezentáciou dvoch klientov pripájajúcich sa na~dva separátne porty na~robote.
+V~realite to~môže byť jeden a~ten istý počítač. Na~obrázku Obr.~\ref{fig:schemaRobota} vidíme komunikačnú schému
+jednotlivých častí robota.
 
 \clearpage
 
@@ -70,20 +71,17 @@ V~realite to~môže byť jeden a~ten istý počítač.
 	\begin{center}
 		\includegraphics[width=9cm]{img/schemaRobota.png}
 	\end{center}
-	\caption{Schéma zapojenia jednotlivých častí na~robote}
+	\caption{Schéma zapojenia jednotlivých častí na~robote \cite{timovyProjekt}}
 	\label{fig:schemaRobota}
 \end{figure}
-
-Na~obrázku Obr.~\ref{fig:schemaRobota} vidíme zapojenie jednotlivých častí robota. Čo sme nespomenuli a~nachádza
-sa na~obrázku je XBox ovládač je to~kvôli tomu, že~tímový projekt bol zameraný na~ovládanie robota pomocou tohto
-ovládača na~počítači s~operačným systémom Windows. My tento ovládač použivať nebudeme.
 
 \subsection{Komunikácia s~robotom}
 \label{subsec:komunikacia}
 
-S~robotom sa vieme spojiť pomocou dvoch portov. Jeden port je otvorený na~prijímanie požiadavok (requestov) a~ten
-druhý je na~monitorovanie stavu robota. Port \textit{664} je otvorený pre~jedného užívateľ, ktorý môže len sledovať
-stav robota. Druhý port je na~prijímanie požiadavok \textit{665} a~je taktiež otvorený len pre~jedného užívateľa.
+S~robotom sa vieme spojiť pomocou dvoch portov. Jeden port je otvorený na~prijímanie požiadavok (v~anglickej
+literatúre zaužívaný pojem request) a~ten druhý je na~monitorovanie stavu robota. Port \textit{664} je otvorený
+pre~jedného užívateľ, ktorý môže len sledovať stav robota. Druhý port je na~prijímanie požiadavok \textit{665}
+a~je taktiež otvorený len pre~jedného užívateľa.
 
 \subsubsection{Logovanie}
 \label{sec:logovanie}
@@ -101,14 +99,14 @@ stav robota. Druhý port je na~prijímanie požiadavok \textit{665} a~je taktie�
 	posielať. Ak~nejaká z~týchto udalostí nastane, server prestane posielať tieto správy.
 
 	Môžeme potom začať polemizovať o~tom či~by nebolo lepšie už~tieto správy využiť na~to~čo reálne
-	spomenutý \textit{JSON} reťazec ukazuje. A~to~udávať smer a~stav robota. Momentálne tieto správy slučia len na~to,
+	spomenutý \textit{JSON} reťazec ukazuje. A~to~udávať smer a~stav robota. Momentálne tieto správy slúžia len na~to,
 	aby sme vedeli, že~tento robot je aktívny a~vie primať a~spracúvať informácie.
 
 \subsubsection{Ovládanie}
 \label{sec:ovladanie}
 
 	Port \textit{665} je sprístupnený na~prijímanie a~odosielanie požiadavok a~ich odpovedí. Príkazy sa na~počítač posielajú cez~sieť z~externého
-	počítača vo~formáte \textbf{JSON}. Podľa dokumentácie~\cite{BMdoc} sa robot mal ovládať správami nasledujúceho typu:
+	počítača vo~formáte \textbf{JSON}. Podľa dokumentácie~\cite{BMdoc} sa robot má ovládať správami nasledujúceho typu:
 
 	\label{jsonSpeedRequestBad}
 	\begin{lstlisting}
@@ -117,8 +115,22 @@ stav robota. Druhý port je na~prijímanie požiadavok \textit{665} a~je taktie�
 
 	\noindent Význam jednotlivých parametrov:
 	\begin{itemize}
-		\item \textbf{UserID} -- Znázorňuje ID užívateľa, ktorý je pripojený na~robot. Predvolená hodnota je 1.
-		\item \textbf{Command} --  Číselná hodnota znázorňujúca príkaz, ktorý ma robot vykonať
+		\item \textbf{UserID}
+			\begin{itemize}
+				\item Znázorňuje ID užívateľa, ktorý je pripojený na~robot. Predvolená hodnota je 1.
+				\item Táto možnosť je v~momentálnom stave robota nevyužitá. Počet zariadení, ktoré sa môžu pripojiť na~port,
+			   cez~ktorý sa dá robot ovládať je 1. Je to~ale~dobrá možnosť na~rozšírenie kódu. Keď sa budú môcť pripojiť
+			   viacerí užívatelia, tak~sa bude musieť vyriešiť, koho príkaz bude mať akú prioritu.
+			\end{itemize}
+
+		\item \textbf{Command}
+			\begin{itemize}
+				\item Číselná hodnota znázorňujúca príkaz, ktorý ma robot vykonať
+				\item Hodnota tohto kľúča určuje, aký príkaz sa pošle robotu na~vykonanie. Dva príkazy nie sú~implementované,
+				a~teda robot má možnosť na~rozšírenie svojej funkcionality.
+			\end{itemize}
+
+			Príkazy, ktoré vie robot spracovať sú:
 			\begin{enumerate}
 				\setcounter{enumi}{-1}
 				\item \label{c0} Prázdny príkaz slúžiaci na~overenie spojenia
@@ -129,10 +141,13 @@ stav robota. Druhý port je na~prijímanie požiadavok \textit{665} a~je taktie�
 				\item \label{c5} Prázdny príkaz
 				\item \label{c6} Príkaz pýtajúci si aktuálne rýchlosti pravého a~ľavého kolesa.
 				\item \label{c7} Pripravenie motorov robota
-				\item \label{c8} Príkaz pýtajúci si aktuálnu pozíciu pravého a~ľavého kolesa.
+				\item \label{c8}
+					Príkaz pýtajúci si aktuálnu pozíciu pravého a~ľavého kolesa.
 			\end{enumerate}
-		\item \textbf{RightWheelSpeed} -- Nastavenie rýchlosti pre~pravé koleso
-		\item \textbf{LeftWheelSpeed} -- Nastavenie rýchlosti pre~ľavé koleso
+		\item \textbf{RightWheelSpeed} -- Nastavenie rýchlosti pre~pravé koleso. Tento parameter je povinný len
+			pre~príkaz \ref{c3}.
+		\item \textbf{LeftWheelSpeed} -- Nastavenie rýchlosti pre~ľavé koleso. Tento parameter je povinný len
+			pre~príkaz \ref{c3}.
 	\end{itemize}
 
 	Spracovanie týchto správ je spravená v~samostatnom vlákne. Toto vlákno je vytvorené pomocou metódy \textbf{polling}.
@@ -141,20 +156,6 @@ stav robota. Druhý port je na~prijímanie požiadavok \textit{665} a~je taktie�
 
 	Študenti, ktorí navrhovali systém posielania požiadavok (request) a~odpovedí (response) robili tieto správy
 	ručne. Preto~nastávajú situácie, kedy robot pošle správu, ktorá nezodpovedá štandardu písania textu v~JSON
-	štandarde. Z~tohto dôvodu sme nemohli použiť už~existujúci kód na~analyzu tohto typu textu (parser), ktorý
+	štandarde. Z~tohto dôvodu sme nemohli použiť už~existujúci kód na~analýzu tohto typu textu (parser), ktorý
 	by nám zjednodušil prehľadávanie týchto správ.
 
-\subsection{Vysvetlenie kľúčov reťazca}
-
-\noindent \textbf{UserID} \newline
-\indent Táto možnosť je v~momentálnom stave robota nevyužitá. Počet zariadení, ktoré sa môžu pripojiť na~port,
-cez~ktorý sa dá robot ovládať je 1. Je to~ale~dobrá možnosť na~rozšírenie kódu. Keď sa budú môcť pripojiť
-viacerí užívatelia, tak~sa bude musieť vyriešiť, koho príkaz bude mať akú prioritu. \newline
-
-\noindent \textbf{Command} \newline
-\indent Hodnota tohto kľúča určuje, aký príkaz sa pošle robotu na~vykonanie. Dva príkazy nie sú~implementované,
-a~teda robot má možnosť na~rozšírenie svojej funkcionality. \newline
-
-\noindent \textbf{RightWheelSpeed/LeftWheelSpeed} \newline
-\indent Nastavovanie rýchlostí pravého a~ľavého kolesa nie je povinné pri väčšine príkazov. Musíme ich zadávať
-len v~prípade posielania rýchlostí cez~príkaz s~číslom \ref{c3}.
