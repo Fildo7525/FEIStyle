@@ -8,8 +8,8 @@ tak~majú väčšinou diferenciálne podvozky, ktoré sú~schopné pohybovať sa
 prekážky. To~sú~hlavne parkety, dlaždice alebo koberce. Tento trend sa dlhšiu dobu nezmení a~bude sa len posúvať
 vpred.
 
-V~súčasnej dobe je pri~vytváraní softvéru pre~robota využívaný Robotický Operačný Systém (ROS) prvej verzie. Takzvaný
-ROS1. Tento systém aktuálne prechádza zo~staršej už~spomenutej verzie ROS1 na~novšiu ROS2. Tá dáva programátorom viac
+V~súčasnej dobe je pri~vytváraní softvéru pre~robota často využívaný Robotický Operačný Systém (ROS1) prvej verzie.
+Tento systém aktuálne prechádza zo~staršej už~spomenutej verzie ROS1 na~novšiu ROS2. Tá dáva programátorom viac
 možností ako spraviť systém užitočnejší a~prístupnejší pre~každodenného užívateľa.
 
 Na~základe tohto trendu bol vytvorený projekt na~sprístupnenie ovládania mobilného robota do~prostredia Robotického
@@ -18,8 +18,8 @@ Vytvorenie tohto rozhrania poskytuje možnosť implementácie rozhrania pre~ovl�
 autonómnymi algoritmami.
 
 Na~to~aby sme vedeli využiť všetky tieto výhody, tak~je potrebné mať ovládač, ktorý bude vytvárať rozhranie medzi
-robotickým operačným systémom a~komunikačným rozhrania robota. V~tejto práci sa budeme venovať implementácii viacerých
-uzlov, ktoré budu spracovávať informácie poslané robotickým operačným systémom na~tému /cmd\_vel. Tieto správy spracujeme
+robotickým operačným systémom a~komunikačným rozhraním robota. V~tejto práci sa budeme venovať implementácii viacerých
+procesov, ktoré budu spracovávať informácie poslané robotickým operačným systémom. Tieto správy spracujeme
 do~formátu JSON s~tým, že~prepočítame vstupné lineárne a~uhlové rýchlosti zo~správy tejto témy na~rýchlosti ľavého
-a~pravého kolesa diferenciálneho podvozku. Zároveň budeme počítať odometriu robota a~publikovať ju na~tému /odom.
-V~tejto sprave uvedieme aktuálne údaje o~rýchlosti, smere a~polohe robota.
+a~pravého kolesa diferenciálneho podvozku. Zároveň výstupom bude vypočítaná odometria robota, ktorá obsahuje údaje
+o~rýchlosti, smere a~polohe robota.
