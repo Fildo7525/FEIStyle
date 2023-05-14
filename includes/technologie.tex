@@ -3,12 +3,13 @@
 \label{sec:technologies}
 
 Našou úlohou v~tejto bakalárskej práci je naprogramovať a~otestovať nami vytvorený ovládač pre~mobilného
-robota. Na~vyber máme viacero technológii, ktoré môžeme použiť. Na~vytvorenie ovládača budeme potrebovať
-operačný systém na~počítači, ktorý budeme použivať na~programovanie a~testovanie. Na~výber máme dve možnosti.
-Menovite to~sú~operačný systém \textit{Windows} alebo operačný systém \textit{Ubuntu}, ktorý je založený
-na~jadre Linux. Ďalšiu vec, ktorú budeme potrebovať je programovací jazyk. Na~výber máme z~veľmi veľa
-možností a~to~hlavne \textit{C}, \textit{C++}, \textit{Python}, \textit{Java} alebo \textit{Matlab}.
-Keďže, zo~zadania vypláva, že~máme použiť Robotický operačný systém, tak~máme na~výber dve možnosti.
+robota. Na~výber máme viacero technológii, ktoré môžeme použiť. Na~vytvorenie ovládača budeme potrebovať
+operačný systém na~počítači, ktorý budeme použivať na~programovanie a~testovanie. Uvažovali sme nad~dvoma.
+Sú~to~operačný systém \textit{Windows} alebo operačný systém \textit{Ubuntu}, ktorý je založený
+na~jadre Linux. Ďalšiu vec, ktorú budeme potrebovať je programovací jazyk. Existuje veľa programovacích jazykov,
+v~ktorých toto zadanie vieme naprogramovať a~to~hlavne \textit{C}, \textit{C++}, \textit{Python},
+\textit{Java} alebo \textit{Matlab}.
+Keďže, zo~zadania vypláva, že~máme použiť Robotický operačný systém, tak~si môžeme vybrať z~doch možností.
 Sú~to~Robotický operačný systém prvej verzie (\textit{ROS1}) a~Robotický operačný systém druhej verzie
 (\textit{ROS2}). Na~vytvorenie ovládača môžeme využiť aj~už~naprogramované baličky. Jednou z~možností
 je \textit{ros\_control} pre~Robotický operačný systém prvej verzie a~\textit{ros2\_control} pre~Robotický
@@ -28,12 +29,12 @@ pri~výbere operačného systému, ktorý sme používali počas celej bakalárs
 \label{sec:windows}
 
 Windows je najpoužívanejším operačným systémom na~počítače na~svete. Je to~hlavne preto, že~je jednoduchý na~používanie
-pre~netechnicky založených užívateľov. Windows ale~nie je bezpečným operačným systémom a~taktiež aj~jeho stabilita a~rýchlosť
+pre~menej techniky zdatných užívateľov. Windows ale~nie je bezpečným operačným systémom a~taktiež aj~jeho stabilita a~rýchlosť
 nie sú~na~najvyššej úrovni. Tento operačný systém používajú lúdia hlavne na~voľnočasové aktivity ako je hranie hier
-alebo v~práci ako napríklad v~kanceláriách na~úpravu tabuliek. Pre~nás ako programátorov tento operačný systém nie je
-výhodný. Nastavovanie prostredia pre~programovanie je v~tomto operačnom systéme oveľa náročnejšie ako v~operačnom systéme
-s~Linuxovým jadrom. Podpora prekladačov programov (z~anglického compiler) je v~tomto operačnom systéme oveľa horšia
-ako už~v~spomenutom Linuxe.
+alebo v~práci ako napríklad v~kanceláriách na~úpravu tabuliek. Od~zavedenia ROS sú~robotickí vývojári nútení používať
+Linuxové počítače, pretože ROS bol primárne zameraný na~operačný systém Ubuntu.~\cite{ros_windows_ubuntu} Preto~pre~nás ako
+robotníckych programátorov tento operačný systém nie je výhodný. Nastavovanie prostredia pre~programovanie je v~tomto
+operačnom systéme oveľa náročnejšie ako v~operačnom systéme s~Linuxovým jadrom.
 
 \subsubsection{Ubuntu}
 \label{sec:ubuntu}
@@ -44,7 +45,7 @@ riadenie procesov a~správu pamäte. Zároveň poskytuje možnosť operačnému 
 prístup k~hardvéru a~jeho častiam~\cite{chatgpt}.
 
 Linux je používaný skoro vo~všetkých mobilných zariadeniach, serveroch, cloudoch (dátové servery, na~ktoré sa pripájame cez~internet)
-a~ďalších elektronických zariadeniach, ktoré potrebujú rýchlosť, stabilitu a~bezpečnosť. Je taktiež používaný vo~všetkých mobilných
+a~ďalších elektronických zariadeniach, ktoré potrebujú rýchlosť, stabilitu a~bezpečnosť. Je taktiež často používaný v~mobilných
 robotoch. Nad~operačným systémom Windows má niekoľko výhod.
 
 \begin{itemize}
@@ -59,11 +60,12 @@ robotoch. Nad~operačným systémom Windows má niekoľko výhod.
 		zadarmo a~sú~široko používané programátormi. Napríklad k~dispozícii v~Linuxe sú~(GCC) \acrlong{GCC} (Kolekcia GNU prekladačov)
 		(GNU je skratka pre~\acrlong{GNU}) a~GNU Debugger (GDB) sú~vynikajúce nástroje pre~C/C++ programátorov.
 
-	\item \textbf{Bezpečnosť} Linux má reputáciu bezpečnejšieho operačného systému v~porovnaní s~operačným systémom Windows.
-		V~Linuxe je ťažšie infikovať sa škodlivými programami ako je~vírus alebo malware, pretože programy majú obmedzené
+	\item \textbf{Bezpečnosť} Systémy s~jadrom Linux sú~len zriedkavo nakazené škodlivými programami, to~robí z~operačných
+		systémov založených na~Linuxe veľmi bezpečnými operačnými systémami.\cite{linuxSecurity}
+		V~Linuxe je ťažšie infikovať sa škodlivými programami, pretože programy majú obmedzené
 		oprávnenie a~prístup k~ďalším súborom. Systém je navrhnutý tak, aby bol odolný voči útokom.
 
-	\item \textbf{Stabilita} Linux má tendenciu byť stabilnejší než Windows, pretože nie je závislý na~ovládačoch a~softvéri
+	\item \textbf{Stabilita} Linux má tendenciu byť stabilnejší ako Windows, pretože nie je závislý na~ovládačoch a~softvéri
 		od~tretích strán. Linux poskytuje jednotný prístup k~správe a~aktualizácii softvéru. Pri~vylepšovaní systému nie je
 		za~potreby reštartovať počítač alebo server čo má za~dôsledok zvýšenie spoľahlivosti zariadenia.
 
@@ -73,7 +75,7 @@ robotoch. Nad~operačným systémom Windows má niekoľko výhod.
 		v~systéme nenachádzajú. Týmto spôsobom sa zvyšuje rýchlosť systému a~zabezpečuje sa jeho bezpečnosť.
 
 	\item \textbf{Podpora a~komunita} Linux má veľkú a~aktívnu komunitu. Ta obsahuje ako aj~programatorov tak~aj
-		netechnicky založených ľudí. Táto komunita poskytuje podporu a~rieši problémy. Vďaka tomu, že~Linux je
+		menej technicky zdatných ľudí. Táto komunita poskytuje podporu a~rieši problémy. Vďaka tomu, že~Linux je
 		open source, mnoho ľudí prispieva k~jeho vylepšeniu a~vytvára nové programy, čo znamená, že~je vždy
 		niečo nové na~objavovanie.
 
@@ -133,7 +135,7 @@ hlavne kvôli jeho možnostiam v~implementácii tried, výkonu a~podpore v~komun
 Robotický operačný systém (ROS) (\acrlong{ROS}) je súbor voľne dostupných softvérových knižníc a~nástrojov, ktoré vytvárajú
 vhodné podmienky pre~programátorov na~písanie aplikácií pre~mnohé druhy robotov. ROS má dve verzie. Vo~všeobecnosti sa stretneme
 s~tým, že~pod názvom ROS1 alebo ROS sa myslí ROS verzie 1. Pod názvom ROS2 sa myslí ROS verzie 2. Aby nenastali nejasnosti
-budeme v~tomto dokumente označovať ROS verzie 1 ako ROS1 a~ROS verzie 2 ako ROS2. V~prípade, keď budme hovoriť o~spoločných
+budeme v~tomto dokumente označovať ROS verzie 1 ako ROS1 a~ROS verzie 2 ako ROS2. V~prípade, keď budeme hovoriť o~spoločných
 vlastnostiach a~funkcionalitách, ROS1 a~ROS2 budeme označovať dokopy ako ROS.
 
 ROS je open source, čo znamená, že~ide o~softvér uvoľnený pod licenciou, kde~má používateľ práva na~použitie,
@@ -154,12 +156,11 @@ Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implem
 \label{sec:topic}
 
 	\textbf {Témy} sú~sprostredkované pomocou IPC, medzi procesová komunikácia z~anglického \acrlong{IPC},
-	alebo TCP/IP komunikácie . Je to~najjednoduchší spôsob komunikácie. Komunikáciu cez~témy si vieme prirovnať k~UDP/IP
-	protokolu, s~tým že~nemusia prebiehať cez~sieť. Definujeme si jedného poskytovateľa (publishers) a~jedného
-	alebo viacerých príjemcov (subscribers). Medzi týmito dvoma alebo viacerými účastníkmi sa následne
-	posielajú správy (messages), ktoré sme si dopredu definovali. Parametre a~obsah týchto správ je
-	definovaný priamo v~téme. Nové témy si vieme sami vytvoriť. V~prípade, že~chceme vytvoriť novú tému, musíme
-	si vytvoriť nový balíček, v~ktorom si spravíme súbor s~príponou \textit{.msg}.
+	alebo UDP/IP komunikácie. Je to~najjednoduchší spôsob komunikácie. Komunikácia pomocou tém prebieha následovne.
+	Definujeme si jedného poskytovateľa (publishers) a~jedného alebo viacerých príjemcov (subscribers). Medzi týmito
+	dvoma alebo viacerými účastníkmi sa následne posielajú správy (messages), ktoré sme si dopredu definovali.
+	Parametre a~obsah týchto správ je definovaný priamo v~téme. Nové témy si vieme sami vytvoriť. V~prípade,
+	že~chceme vytvoriť novú tému, musíme si vytvoriť nový balíček, v~ktorom si spravíme súbor s~príponou \textit{.msg}.
 
 	\begin{figure}[!htbp]
 		\centering
@@ -175,7 +176,7 @@ Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implem
 
 	\textbf {Služby} sú~sprostredkované pomocou TCP/IP protokolu. Poskytujú nám rovnaký spôsob komunikácie ako témy, až na~to, že~sa správy
 	medzi servisom a~klientom posielajú cez~LAN (\acrlong{LAN}). Tieto správy sa posielajú oboma smermi. Služby sa využívajú pri~komunikácii
-	medzi viacerými zariadeniami. Jedno zariadenie posiela požiadavku (request) a~druhe zariadenie túto požiadavku prime
+	medzi viacerými zariadeniami. Jedno zariadenie posiela požiadavku (request) a~druhe zariadenie túto požiadavku prijme
 	a~spracuje. Po~spracovaní pošle naspäť odpoveď (response). Odpoveď môže obsahovať jednoduchú potvrdenie, alebo inú
 	komplexnejšiu štruktúru. Nové služby si vieme sami vytvoriť. V~prípade, že~chceme vytvoriť novú službu, musíme
 	si vytvoriť nový balíček, v~ktorom si spravíme súbor s~príponou \textit{.srv}.
@@ -190,7 +191,7 @@ Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implem
 \subsubsection{Akcie}
 \label{sec:actions}
 	\textbf {Akcie} sú~taktiež sprostredkované TCP/IP protokolom. Sú~najzložitejším spôsobom
-	komunikácie. Tento spôsob bol pridaný do~ROS1 až neskôr. V~druhej verzii ROSu je tento
+	komunikácie. Tento spôsob bol pridaný do~ROS1 až neskôr. V~ROS@ je tento
 	typ komunikácie medzi troma základnými formami komunikácie uzlov. Sú~založené na~službách
 	a~prebiehajú asynchrónne~\cite{ROS2book}. Máju 3 stavy viď Obr.~\ref{fig:action}.
 	Najprv pošle klient serveru, akú akciu má vykonať, server mu potvrdí, že~túto požiadavku
@@ -214,7 +215,7 @@ Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implem
 
 \textbf{Parametre} sú~spôsob, ako môže komunikovať užívateľ so~základnými nastaveniami uzlov
 bez~potreby zmenenia kódu a~jeho následnej kompilácie, čo pri~väčších projektoch môže zabrať
-aj~trištvrte hodiny. Konfigurácie sa definujú v~\textit{yaml} konfiguračnom súbore. V~ňom si
+veľmi dlho. Konfigurácie sa definujú v~\textit{yaml} konfiguračnom súbore. V~ňom si
 môžeme zadefinovať mená jednotlivých parametrov a~ich základné hodnoty. Tie si programátor
 vie v~programe vytiahnuť pomocou API, \acrlong{API}, (Aplikačné Programovacie Rozhranie) v~ROSe.
 
@@ -222,7 +223,7 @@ vie v~programe vytiahnuť pomocou API, \acrlong{API}, (Aplikačné Programovacie
 \label{subsec:ros1}
 
 ROS bol prvýkrát vydaný v~roku 2007. Jeho tvorcovia \textit{Keenan Wyrobek} and \textit{Eric Berger} zo~Stanford
-univerzity zacali ROS ako osobny projekt za~ucelom odstranenia procesu znovuobjavovania kolesa~\cite{rosHistory}.
+univerzity začali ROS ako osobný projekt za~účelom odstránenia procesu znovuobjavovania kolesa~\cite{rosHistory}.
 Ide o~softvér, ktorý sa začal vyvíjať so~zámerom zjednodušiť a~zjednotiť programovanie a~ovládanie robotov.
 Od~doby, kedy vznikol prešiel mnohými verziami a~úpravami. Jeho neoddeliteľnou súčasťou sú~štrukturovanie programu
 do~uzlov (nodov), komunikácia medzi uzlami, podpora viacerých programovacích jazykov ako sú~C, C++ alebo Python
@@ -234,6 +235,9 @@ ktorý zabezpečuje vytváranie jednotlivých uzlov. Komunikácia medzi uzlami j
 prepojenia uzlov cez~LAN/WLAN alebo IPC komunikáciu. Ak~sú~uzly spustené na~iných zariadeniach,
 tak~sa využíva len komunikácia cez~sieť. Roscore ďalej poskytuje parametre jednotlivým uzlom
 z~parametrového servera. Jeho najdôležitejšou úlohou je zabezpečenie komunikácie uzlov v~programe.
+
+Testovanie prebieha pomocou použitia Google testov. Debugovanie je možné uskutočniť pomocou debuggera gnu-gdb. Pri~spustení programu
+cez~spúšťací súbor (launch file) je potrebné pridať príkaz na~spustenie spomenutého debugovacieho programu.
 
 \clearpage
 
@@ -247,7 +251,7 @@ Aj~napriek mnohým výhodám má ROS1 nedostatky, ktoré sa ťahajú už~od~jeho
 	\item Možnosť užívateľa predefinovať základne prvky ROS-u.
 \end{itemize}
 
-Kvôli takýmto problémom a~nedostatkom sa začala vyvíjať nová verzia ROSu, ROS2. Tá mala vyriešiť tieto problémy a~zlepšiť funkcionalitu
+Kvôli takýmto problémom a~nedostatkom sa začala vyvíjať nová verzia ROS2. Tá mala vyriešiť tieto problémy a~zlepšiť funkcionalitu
 prvej verzie. V~roku 2025 sa skončí podpora poslednej distribúcie ROS1 menom \textit{Noetic}. Preto~je odporúčané začínať nové projekty
 v~ROS2.
 
@@ -277,8 +281,7 @@ sa v~ROS2 rozšírila aj~o~Windows, Mac OS či~RTOS (Operačné systémy reálne
 rozšírenie ohľadom kompatibility. S~ROS2 je možné programovať už~aj~v~Jave či~Matlabe. Tvorcovia mysleli aj~na~programátorov a~pridali rozšírené
 možnosti testovania, debugovania či~nasadzovania programu do~reálneho využitia.
 
-Testovanie prebieha pomocou použitia Google testov. Debugovanie je možné uskutočniť pomocou debuggera gnu-gdb. Pri~spustení programu
-cez~spúšťací súbor (launch file) je potrebné pridať príkaz na~spustenie spomenutého debugovacieho programu.
+Testovanie programu prebieha rovnako ako v~ROS1. Jediný rozdiel je v~jazyku v~ako sa nastavia jednotlive rozšírenia.
 
 ROS2 má necentralizovanú štruktúru, a~preto~pri~spúšťaní programov už~nie je potrebné mať spustený roscore. Ak~teda spadne jeden uzol všetky
 ostatné uzly budú fungovať naďalej. V~ROS1 sme vedeli ovplyvniť počet uchovaných správ komunikácie pokým nepretiekol zásobník, ktorý ich uchovával
@@ -296,7 +299,7 @@ Pridaním veľkého počtu funkcionalít začal vznikať problém pre~začiatoč
 ktorý časom zanikne. V~čase písania tejto práce pribudli na~stránke dokumentácie minimálne 2 strany popisujúce pokročilejšie Funkcionality druhej
 verzie ROSu.
 
-\subsection{Rozdiely}
+\subsection{Rozdiely medzi ROS1 a~ROS2}
 
 Čo je určite dobrou správou pre~všetkých programátorov, ktorí robili v~prvej verzii a~sú~zvyknutí na~jej štandardy a~funkcionalitu. Tak~títo
 sa nemajú čoho obávať. Prechod z~ROS1 na~ROS2 je dosť priamočiary. Čo sa zmenilo je spôsob písania kódu, ale~koncepty ostali všetky rovnaké.
@@ -317,9 +320,10 @@ celý projekt bol písaný v~programovacom jazyku C++ tak~sa aj~tieto zmeny budu
 \subsubsection{Inicializácia uzla}
 
 	Tak~isto ako v~prvej verzii aj~v~druhej verzii musíme definovať uzol (node). Rozdiel je v~tom, že~prvá verzia obsahovala NodeHandle (Ovládač uzla)
-	a~druhá verzia obsahuje priamo Node (Uzol). V~druhej verzii je zaužívaným štandardom túto nodu predediť a~použiť polymorfizmus pri~objekte,
-	ktorý bude existovať počas celej doby vykonávania programu. Pri~prvej verzii tomu tak~nebolo. Tam sme museli vytvoriť už~spomenutý NodeHandle.
-	Ten sa nemusel využiť ako base trieda a~nemusel ani~existovať počas celého behu programu.
+	a~druhá verzia obsahuje priamo Node (Uzol). V~druhej verzii je zaužívaným štandardom tento uzol odvodiť od~základnej
+	triedy Node použitím polymorfizmu, ktorý bude existovať počas celej doby vykonávania programu. Pri~prvej verzii tomu
+	tak~nebolo. Tam sme museli vytvoriť už~spomenutý NodeHandle. Ten sa nemusel využiť ako základná trieda a~nemusel
+	ani~existovať počas celého behu programu.
 
 \subsubsection{Komunikácia}
 
@@ -351,12 +355,12 @@ celý projekt bol písaný v~programovacom jazyku C++ tak~sa aj~tieto zmeny budu
 \subsubsection{Kompilácia}
 
 	Zmenou verzii sa zmenil aj~spôsob kompilácie programu. ROS1 bol kompilovaný pomocou \texttt{catkin} build systému. Catkin je založený
-	na~programe \texttt{cmake}. Jeho nastavenie dependencií je konfigurované pomocou súboru \texttt{package.xml}. ROS2 prešiel na~viac
-	nastaviteľný systém \texttt{Colcon}. Tento systém je na~rozdiel od~catkin-u založený na~Python-e a~jeho dependencie sa nastavujú pomocou
+	na~programe \texttt{cmake}. Jeho nastavenie závislostí je konfigurované pomocou súboru \texttt{package.xml}. ROS2 prešiel na~viac
+	nastaviteľný systém \texttt{Colcon}. Tento systém je na~rozdiel od~catkin-u založený na~Python-e a~jeho závislosti sa nastavujú pomocou
 	\texttt{setup.py} súboru. V~prípade colcon-u si môžeme definovať spôsob kompilácie to~znamená, že~môžeme nastaviť, ako sa budú spracovávať
-	dependencie. Ponúkané možnosti sú~\texttt{catkin\_make}, \texttt{catkin\_make\_isolated}, \texttt{catkin\_tools} a~\texttt{ament\_cmake}.
+	závislosti. Ponúkané možnosti sú~\texttt{catkin\_make}, \texttt{catkin\_make\_isolated}, \texttt{catkin\_tools} a~\texttt{ament\_cmake}.
 	Jednou s~najviac používaných možností je \texttt{ament\_cmake}. Je založený na~programe \texttt{cmake} a~spolupracuje so~systémom \texttt{colcon}.
-	Z~tohto dôvodu mu vieme definovať dependencie pomocou xml súboru ako tomu bolo v~ROS1 pričom možnosť definície pomocou Python skriptu ostáva.
+	Z~tohto dôvodu mu vieme definovať závislosti pomocou xml súboru ako tomu bolo v~ROS1 pričom možnosť definície pomocou Python skriptu ostáva.
 	Je to~jeden zo~spôsobov, ako zmenšiť rozdiel medzi ROS1 a~ROS2.
 
 \subsubsection{Vlákna}
@@ -390,7 +394,7 @@ pre~balík ros2\_control~\cite{roscontrol}. V~tejto triede je možnosť definova
 (ukazovatele na~funkcie, ktoré môže užívateľ definovať) \textit{read()} a~\textit{write()}, ktoré zabezpečujú
 komunikáciu hardvérových komponentov~\cite{roscontrol}.
 
-Hardvérové komponenty \textbf{hardware components} (HC) sú~triedy, ktoré realizujú komunikáciu s~fyzickým hardvérom
+Hardvérové komponenty \textbf{Hardware components} (HC) sú~triedy, ktoré realizujú komunikáciu s~fyzickým hardvérom
 a~jeho reprezentáciou v~balíku ros2\_control~\cite{roscontrol}.
 
 \clearpage
@@ -399,8 +403,8 @@ V~tomto balíku sú~definované tri základné typy komponentov:
 
 \begin{itemize}
 	\item \textbf{Systém} Komplexný (multi-DOF (\acrlong{DOF}) (z~anglického veľa stupňov voľnosti)) robotický hardvér ako industriálny
-		robot. Hlavný rozdiel medzi akčným členom a~možnosťou použitia komplexného prechodu aký potrebujeme pri
-		Robotickým ramene ruky. Komponent poskytuje čítanie a~zápis do~hardvéru. Používa sa v~len prípade jednej
+		robot. Hlavný rozdiel medzi akčným členom a~možnosťou použitia komplexného prechodu aký potrebujeme
+		pri~robotickom ramene ruky. Komponent poskytuje čítanie a~zápis do~hardvéru. Používa sa v~len prípade jednej
 		logickej komunikácie kanálov hardvéru (napríklad KUKA-RSI)~\cite{roscontrol}.
 	\item \textbf{Senzor} Robotický hardvér prizvaný na~zaznamenanie okolitého prostredia. Senzor ako komponent je
 		príbuzný s~kĺbom (napríklad prekladač) alebo rameno (napríklad snímač sily a~krútiaceho momentu). Tento
@@ -414,6 +418,6 @@ V~tomto balíku sú~definované tri základné typy komponentov:
 
 Aj~napriek všetkým týmto výhodám nemôžeme tento softvér použiť. Je to~kvôli tomu, že~na~robote sa systém ROS nenachádza
 a~nemá preto~pristúp k~jednotlivým častiam hardvéru. Ak~by tento systém na~robote bol implementovaný mohli by sme použiť
-funkciu \textbf{Delegátora zdrojov} na~cicanie a~zapisovanie dát do~jednotlivých komponentov. Mrime si preto~vytvoriť
+funkciu \textbf{Delegátora zdrojov} na~čítanie a~zapisovanie dát do~jednotlivých komponentov. Mrime si preto~vytvoriť
 vlastný systém na~čítanie, spracovanie a~ovládanie robota.
 
