@@ -1,19 +1,23 @@
 % !TEX root = ../main.tex
 
-Hlavným cieľom bakalárskej prace bolo vytvorenie ovládača pre mobilného robota v prostredí ROS2. Hlavni úlohu
-ovládača tvoril uzol, ktorý zabezpečoval prijímanie a spracovanie dát od užívateľa. Jeho ďalšou úlohou bolo vytvorenie
-klienta a odometrie. Klient zaisťoval výmenu požiadavok a odpovedi so serverom, ktorý sa nachádzal na robote. Odometria
-na druhú stranu zabezpečovala spracovanie prijatých sprav od robota a ich následnú publikáciu na tému /odom. Pre
-validáciu presnosti odometrie sme spravili s robotom test ako presne vypočíta dráhu štvorca, ktorú prejde robot.
-Ovládač je možné použiť na ovládanie robota pomocou preddefinovaných uzlov alebo pomocou vlastného uzla, ktorý
-bude publikovať spravy na tému /cmd\_vel. Vytvorený ovládač sme otestovali s uzlom \textit{teleop\_twist\_joy}.
+Hlavným cieľom bakalárskej prace bolo vytvorenie ovládača pre~mobilného robota v~prostredí ROS2. Aby sme mohli začať
+s~programovaním tohto ovládača museli sme opraviť pár chýb, ktoré sa na~robte vyskytli. Boli to~chyba v~systéme
+(\ref{subsec:brokenSystem}), oneskorenie komunikácie robota (\ref{subsec:communicationDelay}) a~nesprávna spätná väzba
+robota (\ref{subsec:wrongFeedback}).
 
-Pri prijímaní dát z robota sme zistili, že enkódery posielajú Zašumený signál. Tento problém sme vyriešili implementáciu
-kvadratického dolno-priepustného filtra. Dolno-priepustný filter zabezpečil stabilitu dát, z ktorých sme následne počítali
+Hlavnú úlohu ovládača tvoril uzol, ktorý zabezpečoval prijímanie a~spracovanie dát od~užívateľa (\ref{subsec:nodes}).
+Jeho ďalšou úlohou bolo vytvorenie klienta a~odometrie. Klient zaisťoval výmenu požiadavok a~odpovedi so~serverom,
+ktorý sa nachádzal na~robote. Odometria na~druhú stranu zabezpečovala spracovanie prijatých sprav od~robota a~ich
+následnú publikáciu na~tému /odom. Pre~validáciu presnosti odometrie sme spravili s~robotom test ako presne vypočíta
+dráhu štvorca, ktorú prejde robot. Ovládač je možné použiť na~ovládanie robota pomocou preddefinovaných uzlov alebo
+pomocou vlastného uzla, ktorý bude publikovať spravy na~tému /cmd\_vel. Vytvorený ovládač sme otestovali s~uzlom
+\textit{teleop\_twist\_joy}.
+
+Pri~prijímaní dát z~robota sme zistili, že~enkódery posielajú zašumený signál. Tento problém sme vyriešili implementáciu
+kvadratického dolno-priepustného filtra. Dolno-priepustný filter zabezpečil stabilitu dát, z~ktorých sme následne počítali
 aktuálnu polohu robota.
 
-Nami navrhnutý ovládač je len jednou z možností ako navrhnúť tento ovládač. My sme boli obmedzení tým, že na robote,
-ktorý sme ovládali sa nenachádzal robotický operačný systém. Ak by sa na robote tento systém nachádzal, tak by sme mohli
-použiť už existujúci balíček \textit{ros2\_control}. Ten bol navrhnutý a naprogramovaný skúsenejšími programátormi.
-Jeho efektivita pri ovládaní robota by bola preto lepšia ako pri našom ovládači.
+Nami navrhnutý ovládač je len jednou z~možností ako navrhnúť tento ovládač. Pre~budúce ovládače robotov by som navrhoval
+použitie druhej verzie robotického operačného systému. Jeho použitie umožňuje jednoduchšie a~bezpečnejšie programovanie,
+pričom zároveň poskytuje možnosť jednoduchého rozširovania ovládača o~ďalšie uzly.
 
