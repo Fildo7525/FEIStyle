@@ -2,13 +2,14 @@
 
 \section{Zlepšenie stavu robota}
 
-\subsection{Chyba v systéme}
+\subsection{Chyba v~systéme}
 \label{subsec:brokenSystem}
 
 Prvýkrát, keď sme prišli k~robotu do~NCR (\acrlong{NCR}), tak~sme si určili ako prvú úlohu zálohovať systém. Ak~by sa teda stala nejaká chyba
 a~robot by prestal fungovať, tak~by sme sa vedeli dostať do~posledného funkčného stavu robota. Zálohovanie systému nanešťastie nebolo možné
-hneď po~zapnutí robota. Bolo to~preto, lebo po~tom, ako na~robote robili študenti tímový projekt~\cite{timovyProjekt}, tak~na~robote niekto
-stiahol ROS1 (\acrlong{ROS}) verzia \textit{Lunar Loggerhead}. Toto by problém nespôsobilo, čo ale~problém spôsobilo, bolo jeho nesprávne odinštalovanie.
+hneď po~zapnutí robota. Bolo to~spôsobené poškodeným balíkovým systémom. Tento problém bol zapríčinený nesprávnou
+inštaláciou a~následným nesprávnym odstránením ROS1 (\acrlong{ROS}). Verzia, ktorá bola pôvodne nainštalovaná na~robote
+bola \textit{Lunar Loggerhead}. Toto by problém nespôsobilo, čo ale~problém spôsobilo, bolo jeho nesprávne odinštalovanie.
 Táto akcia mala za~dôsledok vypisovanie nasledovnej chybovej hlášky pri~zálohovaní.
 
 \begin{lstlisting}
@@ -42,13 +43,13 @@ v~dokumentácii, ktorá nám bola dodaná na~začiatku programu. Môžeme preto~
 \subsection{Oneskorenie komunikácie}
 \label{subsec:communicationDelay}
 
-Pri blízkom pohľade na kód robota sme odhalili závažnú chybu. Vo vlákne, ktoré zabezpečuje prijímanie správ sa nachádza
-cyklus, ktorý prijíma dáta z TCP/IP spojenia a bezpečne ich zapisuje do zdielanej štruktúry. Prijímanie správ je realizované
-pomocou funkcie \textit{recv} z knižnice \textit{sys/socket.h}. Táto funkcia je za normálach podmienok blokujúca, to znamená,
-že vlákno, ktoré ju volá, sa zablokuje, až pokým nemá k dispozícii dáta na čítanie. Na robote je toto blokovanie
-vypnutý s tým že po každom zavolaní tejto funkcie sa čaká \textit{100 milisekúnd}. Tento problém je ľahko opraviteľný.
-Čo sme spravili bolo, že sme odstránili funkciu \textit{usleep}, ktorá zabezpečovala čakanie. Vo funkcii \textit{recv}
-sme ďalej vymazali makro \textit{MSG\_DONTWAIT}, ktoré spôsobuje, že sa funkcia \textit{recv} nezablokovala.
+Pri~blízkom pohľade na~kód robota sme odhalili závažnú chybu. Vo~vlákne, ktoré zabezpečuje prijímanie správ sa nachádza
+cyklus, ktorý prijíma dáta z~TCP/IP spojenia a~bezpečne ich zapisuje do~zdielanej štruktúry. Prijímanie správ je realizované
+pomocou funkcie \textit{recv} z~knižnice \textit{sys/socket.h}. Táto funkcia je za~normálach podmienok blokujúca, to~znamená,
+že~vlákno, ktoré ju volá, sa zablokuje, až pokým nemá k~dispozícii dáta na~čítanie. Na~robote je toto blokovanie
+vypnutý s~tým že~po~každom zavolaní tejto funkcie sa čaká \textit{100 milisekúnd}. Tento problém je ľahko opraviteľný.
+Čo sme spravili bolo, že~sme odstránili funkciu \textit{usleep}, ktorá zabezpečovala čakanie. Vo~funkcii \textit{recv}
+sme ďalej vymazali makro \textit{MSG\_DONTWAIT}, ktoré spôsobuje, že~sa funkcia \textit{recv} nezablokovala.
 
 \subsection{Rozšírenie príkazov robota}
 \label{subsec:extendRobotCommands}
@@ -65,10 +66,10 @@ v~dokumentácii funkciu, ktorá by mala túto možnosť povoľovať. Čo sa ale~
 0,5 metra za~sekundu.\\
 
 \noindent \textbf{Command:~\ref{c8}} \\
-\indent Príkaz na~zisťovanie polohy kolies nebol originálne naprogramovaný na~robote. Pridali sme ho za~cieľom presného dostavia sa robota
-na~preddefinované miesto. Táto funkcionalita nefunguje správne rovnako ako v~predchádzajúcom príklade, keď si vypýtame polohu kolies od~robota,
-dáta ktoré obdržme sú, že~jedno koleso je priamo nastavené na~hodnotu, ktorú sme si vyžiadali a~to~druhé koleso vráti náhodnú hodnotu.
-Počas toho sa ale~kolesá robota stále točia.\\
+\indent Príkaz na~zisťovanie polohy kolies nebol pôvodne naprogramovaný na~robote. Pridali sme ho za~cieľom presného
+dostavenia sa robota na~preddefinované miesto. Táto funkcionalita nefunguje správne rovnako ako v~predchádzajúcom príklade,
+keď si vypýtame polohu kolies od~robota, dáta ktoré obdržme sú, že~jedno koleso je priamo nastavené na~hodnotu, ktorú sme si
+vyžiadali a~to~druhé koleso vráti náhodnú hodnotu. Počas toho sa ale~kolesá robota stále točia.\\
 
 Tento postup sa ukázal ako neuskutočniteľný, lebo príkazom~\ref{c8} sme z~jedného enkódery
 získavali informácie priamo nastavenej polohy a~z~druhého enkódera sme dodržiavali čisto náhodné dáta.
@@ -155,10 +156,9 @@ Nebolo treba meniť implementáciu kódu.
 \subsection{Zašumený výstup}
 \label{subsec:outputNoice}
 
-Po~prepísaní funkcie na~získavanie rýchlostí robota sme spravili pár meraní, aby sme zistili, aké presné informácie o~rýchlostiach
-motorov dostávame. Aby nám robot neodbiehal postavili sme ho na~vyvýšené miesto, tak~aby sa kolesá nedotýkali zeme. V~takomto
-postavení sa robot nepohne z~miesta a~my môžeme bez~problémov odmerať prechodové a~prevodové charakteristiky rýchlosti pravého
-a~ľavého motora.
+Po~prepísaní funkcie na~získavanie rýchlostí robota sme spravili pár meraní, aby sme zistili,
+aké presné informácie o~rýchlostiach motorov dostávame. Vykonali sme meranie prechodovej a~prevodovej charakteristiky
+oboch motorov, tým, že~bol zabezpečený pohyb kolies vo~vzduchu s~vypodložením robota.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -172,16 +172,12 @@ a~ľavého motora.
 	\label{fig:lavePraveKoleso}
 \end{figure}
 
-Na~obrázku Obr.~\ref{fig:prechChar} vidíme zašmený signál rýchlosti, ktorú sme obdržali z~enkóderov. Prvá
-otázka, ktorá nám napadla bola, či~aj~iné projekty na~tomto robote mali rovnaký problém. Kontaktovali
-sme preto~jedného z~autorov tímového projektu~\cite{timovyProjekt}, pána Adriána Kasperkeviča. On nám odpísal s~tým,
-že~aj~oni mali problémy s~enkódermi. Ich problémy boli naviazané na~staré enkódery, ktoré neskôr
-vymenili. Na~nových enkodéroch avšak netestovali ich spätnú väzbu. Na~túto tému sme sa rozprávali
-aj~s~pánom Ing. Martin Dekan PhD. Pán doktor Dekan nám spomínal, že~on mal so~študentmi raz podobný
-problém. Tento problém bol spôsobený vzájomným rušením neizolovaných častí káblov. Keď sa pozrieme
-na~obrázok Obr.~\ref{fig:robot}, tak~môžeme vidieť nesprávny manažment káblov. Toto neusporiadané vedenie káblov môže
-spôsobovať rušenie signálu spätnej väzby. Túto teóriu potvrdzuje aj~fakt, že~spätná väzba rýchlosti
-keď robot stoji neobsahuje rušenie a~je zaručene 0.
+Na~obrázku Obr.~\ref{fig:prechChar} vidíme zašmený signál rýchlostí, ktoré sme obdržali z~enkóderov. Predpokladá sa,
+že~toto zašumenie je spôsobené nesprávnym vedením káblov robota, prípadne nepostačujúcim izolovaním ich niektorých
+častí. Keď sa pozrieme na~obrázok Obr.~\ref{fig:robot}, tak~môžeme vidieť nesprávny manažment káblov. Túto teóriu
+potvrdzuje aj~fakt, že~spätná väzba rýchlosti, keď robot stojí neobsahuje rušenie a~je zaručene 0. Problémy zo~zašmeným
+signálom riešili aj~už~v~spomínanom tímovom projekte~\cite{timovyProjekt}. Im sa podarilo spraviť graf prechodovej
+charakteristiky rýchlosti kolies zobrazený na~Obr.~\ref{fig:prechChar}.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -190,14 +186,5 @@ keď robot stoji neobsahuje rušenie a~je zaručene 0.
 	\caption{Prechodová charakteristika rýchlosti kolies~\cite{timovyProjekt}. }
 	\label{fig:prechChar}
 \end{figure}
-
-\subsection{Zapínanie robota}
-\label{subsec:zapinanieRobota}
-
-Pri~každom zapnutí robota prechádza systém robota do~BIOS-u (\acrlong{BIOS}). V~tomto stave sa nedá s~robotom spraviť
-nič. Musíme preto napojiť monitor a~klávesnicu na~robot, prejsť cez~BIOS a~naštartovať operačný systém. Keď tento
-postup nespravíme, tak operačný systém na~robote nebude vedieť komunikovať s~Arduino doskou, ktorá ovláda robot.
-Tento problém sme skúmali podrobnejšie a~zistili sme, že tento problém je spôsobený samotným operačným systémom.
-Je to~teda chyba, ktorú my nevieme opraviť.
 
 \clearpage
