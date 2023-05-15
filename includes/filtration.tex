@@ -1,7 +1,7 @@
 % !TEX root = ../main.tex
 
-\section{Filtrovanie zašumeného signálu}
-\label{sec:ziskavanieRychlosti}
+\section{Experimenty}
+\label{sec:experimenty}
 
 Ako bolo spomenuté v~predchádzajúcej kapitole, rýchlosti kolies sa dajú získať z~enkóderov. Tieto dáta sa posielajú v~správe, ktorá pripomína JSON formát.
 Z~týchto vzoriek poslaných robotom nevieme priamo vypočítať polohu. Musíme si tieto dáta premeniť z~impulzov za~sekundu \(\frac{1}{s}\) na~metre
@@ -30,7 +30,7 @@ v~SI jednotkách nájdeme na~nasledovných grafoch.
 
 Ako prvú vec sme si vykreslili všetky \textbf{nazbierané dáta}. Tie sú~zobrazené \textbf{modrou} farbou. Cez~ne
 sme spravili \textbf{lineárnu regresiu}. Je zobrazená ako \textbf{červená} úsečka. Z~nazbieraných dát sme si
-nakoniec spravili priemer, aby sme videli, ako presne aproximuje nami vypočítaná lineárna regresia priemer
+nakoniec spravili aritmetický priemer, aby sme videli, ako presne aproximuje nami vypočítaná lineárna regresia priemer
 nazbieraných dát. \textbf{Priemery} jednotlivých rýchlostí sú~zobrazené ako \textbf{oranžové} body.
 Keď sme cez~tieto dáta polozili priamku lineárnej regresie dostali sme sklon prevodu ľavého enkóderu. Jeho
 hodnota je \textbf{1012,54}. Pre~pravý enkóder to~je hodnota \textbf{1053,68}. Tento parameter
@@ -40,19 +40,20 @@ Môžeme si všimnúť, že~vypočítané priemery takmer presne ležia na~vypo�
 ktoré dostávame od~robota sú~veľmi zašumené. Preto~z~nich nevieme priamo počítať polohu robota. Na~zobrazenie veľkosti odchýlky sme spravili
 meranie. Nechali sme robot aby prešiel dráhu štvorca so~stranou dlhou 1 meter a~rýchlosťou 0,5 \(\frac{m}{s}\). Výsledok bol veľmi nepresný.
 Metrom sme si odmerali jeho \textit{x}-ovú a~\textit{y}-ovú súradnicu s~počiatkom v~bode, kde~sme na~robote spustili náš ovládač. Jeho skutočná
-poloha bola v~bode~(-0,3m,~0m). Čo~nám ale~vypočítala odometriu je, že~sa robot nachádzal 4 metre od~počiatku súradnicového systému.
+poloha bola v~bode~(-0,3m,~0m). Čo~nám ale~vypočítala odometria je, že~sa robot nachádzal 4 metre od~počiatku súradnicového systému.
 
-\subsection{Zisťovanie parametru alpha $\alpha$}
+\subsection{Filtrovanie zašumeného signálu}
 
-Implementovali sme si preto~dolnopriepustný kvadraticky filter. Fungovanie tohto filtra spočíva v~skombinovaní nového vstupného parametra a~starého parametra
-uloženého vo~filtri v~danom pomere. Tento pomer je daný parametrom \textbf{alpha} $\alpha$.
+Implementovali sme si preto~dolnopriepustný kvadratický filter. Fungovanie tohto filtra spočíva v~skombinovaní nového
+vstupného parametra $\delta$ a~starého parametra $\pi_{n-1}$ uloženého vo~filtri v~danom pomere. Tento pomer je daný
+parametrom \textbf{alpha} $\alpha$. Výsledok tohto výpočtu je aktuálna hodnota filtra $\pi_n$
 
 \begin{equation}
-	stavFiltra = \alpha * stavFiltra + (1 - \alpha) * nováVzorka
+	\pi_n = \alpha * \pi_{n-1} + (1 - \alpha) * \delta
 	\label{eq:stateOfFilter}
 \end{equation}
 
-Jeho parameter $\alpha$ sme získali viacerými meraniami. Začali sme najsilnejším filtrom s~hodnotou $\alpha$ rovnou  0,9.
+Jeho parameter $\alpha$ sme získali viacerými meraniami. Začali sme s~vysokou hodnotou filtra, $\alpha$ rovnou  0,9.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -70,10 +71,34 @@ Ako môžeme vidieť na~obrázkoch Obr.~\ref{fig:rw_lw_09250} a~Obr.~\ref{fig:rw
 Problémom pri~silnom filtri je to, že~ak~na~začiatku merania dostaneme zlú hodnotu, tak~sa táto hodnota ťažko mení na~správnu. Tento
 efekt si môžeme všimnúť skoro pri~každej meranej rýchlosti. Najviditeľnejší dopad môžeme vidieť pri~pravom kolese
 na~Obr.~\ref{fig:rw_lw_09250} pri~rýchlosti -0,6 $\frac{m}{s}$. Tento problém sme riešili postupným menením parametra filtru.
-Aby sme predišli veľkému množstvu meraní, tak~sme použili metódy binárneho vyhľadávania. V~tomto prípade sme začali s~veľkou hodnotou
-a~postupne sme skákali do~stredu nášho intervalu. Pre~toto meranie nám vysie koeficient sklonu lineárnej aproximácie
-pre~ľavý enkóder \textbf{1028,04} a~pre~pravý nám vyšiel \textbf{1021,47} tento sklon. Kvôli vyššie spomenutým
-dôvodom sme si ako ďalšiu hodnotu zvolili alphu $\alpha$ rovnú 0,7.
+Aby sme predišli veľkému množstvu meraní, tak~sme použili metódy binárneho vyhľadávania.
+
+\begin{table}
+	\caption{Porovnanie výsledkov experimentov prevodu impulzov za sekundu $\frac{1}{s}$ na metre za sekundu $\frac{m}{s}$ }
+	\label{tab:prevody}
+	\begin{center}
+		\begin{tabular}{*{4}{|c}|}
+			\hline
+			$\alpha$ & Frekvencia (Hz) & Ľavý enkóder & Pravý enkóder \\
+			\hline
+			0,9 & 250 & 1028,04 & 1021,47 \\
+			\hline
+			0,7 & 250 & 1126,16 & 1028,62 \\
+			\hline
+			0,75 & 250 & 1145,83 & 1060,25 \\
+			\hline
+			0,8 & 250 & 1028,81 & 1070,02 \\
+			\hline
+			0,8 & 100 & 1198,86 & 1212,52 \\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+
+V~tomto prípade sme začali s~veľkou hodnotou a~postupne sme skákali do~stredu nášho intervalu. Pre~toto meranie nám vyšiel
+koeficient sklonu lineárnej aproximácie pre~ľavý enkóder \textbf{1028,04} a~pre~pravý nám vyšiel \textbf{1021,47} tento sklon.
+Kvôli vyššie spomenutým dôvodom sme si ako ďalšiu hodnotu koeficientu $\alpha$ sme si zvolili 0,7.
 
 \begin{figure}[!htbp]
 	\begin{subfigure}{0.5\textwidth}
@@ -148,8 +173,8 @@ s~rovnakou hodnotou koeficientu alpha $\alpha$ rovnou 0,8, ale~s~frekvenciou 10H
 
 Výsledok spomínaného merania vidíme na~obrázku Obr.~\ref{fig:rw_lw_08100}. Nie všetky získane hodnoty impulzov
 z~robota sa nachádzajú pri~úsečke lineárnej aproximácie. Aj~napriek tomuto faktu sa väčšina priemerov získaných
-dát nachádza na~tejto úsečke. Hodnota sklonu lineárnej aproximácie pre~pravý enkóder je \textbf{1028.81} a~pre~pravý
-enkóder má aproximácia hodnotu \textbf{1070.02}. Disperzia získaných dát je chyba, ktorú odstránime ako ďalšiu.
+dát nachádza na~tejto úsečke. Hodnota sklonu lineárnej aproximácie pre~pravý enkóder je \textbf{1028,81} a~pre~pravý
+enkóder má aproximácia hodnotu \textbf{1070,02}. Disperzia získaných dát je chyba, ktorú odstránime ako ďalšiu.
 
 Koeficient alpha $\alpha$ s~najlepšími parametrami nám vyšiel s~hodnotou \textbf{0,8}. Pri~implementácii tohto filtra
 sme museli myslieť na~dôležitú vec. Keď sa zmenia jednorazovo impulzy na~hodnotu 0 a~hneď spať, tak~nám táto vzorka
@@ -183,8 +208,8 @@ Meranie so~zmenou predpočítavania prvej hodnoty sme zopakovali viackrát aby s
 Po~opakovanom experimente sa nám hodnoty sklonov lineárnych aproximácii ustálili na~hodnotách:
 
 \begin{itemize}
-	\item Lávy enkóder: \textbf{1198.86}
-\item Pravý enkóder: \textbf{1212.52}
+	\item Ľavý enkóder: \textbf{1198,86}
+	\item Pravý enkóder: \textbf{1212,52}
 \end{itemize}
 
 Výsledok tohto postupu vidíme na~nasledujúcom grafe Obr.~\ref{fig:rw_lw_08100_3}.
@@ -196,8 +221,8 @@ Výsledok tohto postupu vidíme na~nasledujúcom grafe Obr.~\ref{fig:rw_lw_08100
 
 Výsledky posledných meraní filtrov sme si vyskúšali na~znázornení prejdenej dráhy v~tvare štvorca a~následne sme si
 zobrazili na~grafe túto trasu. Pre~porovnanie účinnosti filtra sme porovnali tri grafy. Prvý graf zobrazuje prejdenú
-dráhu počas toho ako je filter vypnutý. Druhý graf znázorňuje prejdenú dráhu s~aktívnym filtrom a~jeho hodnota je
-najlepšia, ktorú sme namerali. Tretí graf reprezentuje dráhu prejdenú so~slabším filtrom ako sme sa rozhodli použiť.
+dráhu počas toho ako je filter vypnutý. Druhý graf znázorňuje prejdenú dráhu s~aktívnym filtrom s koeficientom $\alpha$
+rovným 0,8. Tretí graf reprezentuje dráhu prejdenú so~slabším filtrom s hodnotou koeficientu $\alpha$ 0,7.
 
 \begin{figure}[!htbp]
 	\begin{center}
@@ -241,8 +266,8 @@ je znázornení na~grafe nie je štvorec. Môže to~byť spôsobené viacerými 
 Pre~porovnanie odmeraných výsledkov odometrie a~reálneho prejdenia dráhy robotom sme odmerali vzdialenosť robota
 od~začiatočnej po~konečnú pozíciu robota. Obrázky zobrazujúce toto meranie môžeme vidieť
 na~Obr.~\ref{fig:stvorec_meranie_X} a~Obr.~\ref{fig:stvorec_meranie_Y}.
-Odometria odmerala koniec trasy na~bod \textbf{[0.52; 0.30]}, kde~prvá hodnota zobrazuje súradnicu na~osi X a~druhá hodnota
-zobrazuje súradnicu na~osi Y. Obe hodnoty boli merané v~metroch. Odmerané hodnoty metrom sme vyčíslili na~\textbf{[0.52; 0.34]}.
+Odometria odmerala koniec trasy na~bod \textbf{[0,52; 0,30]}, kde~prvá hodnota zobrazuje súradnicu na~osi X a~druhá hodnota
+zobrazuje súradnicu na~osi Y. Obe hodnoty boli merané v~metroch. Odmerané hodnoty metrom sme vyčíslili na~\textbf{[0,52; 0,34]}.
 
 \begin{figure}[!htbp]
 	\begin{center}
