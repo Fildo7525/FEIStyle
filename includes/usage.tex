@@ -7,9 +7,10 @@ Robot, ktorý sme dostali na~tento projekt bol povodne ovládateľný len pomoco
 par zmien aby sme vedeli počítať odometriu a~tým pádom mali spätnú väzbu. Pri~odometrii sme čelili pár prekážkam, ktoré
 sa nám podarilo z~časti odstrániť. Skončili sme s~ovládačom nenaprogramovaným v~jazyku C++ v~prostredí ROS2.
 
-Ďalšou otázkou môže byť ako sa tento ovaliac môže využiť? Odpoveď na~túto otázku nie je jedna ale~rovno viacero.
-Prostredie ROS2 nám otvára mnoho ďalších možnosti ako posielať príkazy na~robot. Ich implementácia je nastokrát
-už~dokončená a~my môžeme tieto kódy len jednoducho pripojiť k~programu. Možnosťami sú~napríklad:
+Ďalšou otázkou môže byť ako sa tento ovládač môže využiť? Odpoveď na~túto otázku nie je jedna ale~rovno viacero.
+Prostredie ROS2 nám otvára mnoho ďalších možností ako posielať príkazy na~robot. Balíky naprogramované v~prostredí ROS
+posielaniu dáta na~tému \textit{/cmd\_vel}. Ich implementácia je už~dokončená a~my môžeme tieto kódy len jednoducho pripojiť
+k~programu v spúšťacom súbore. Možnosťami sú~napríklad:
 
 \begin{itemize}
 	\item \textbf{Manuálne ovládanie} Ovládanie pomocou
@@ -17,12 +18,12 @@ už~dokončená a~my môžeme tieto kódy len jednoducho pripojiť k~programu. M
 			\item \textbf{klávesnice} použitie uzlu \textit{teleop\_twist\_keyboard},
 			\item \textbf{joystick} použitie uzlu \textit{teleop\_twist\_joy},
 			\item \textbf{príkazov} skripty poprípade priame zadávanie príkazov do~konzoly.
+			\item \textbf{hlasu} použitie umelej inteligencie na~pretvorenie hlasu na~text,
+			\item \textbf{gestami} použitie počítačového videnia na~detekciu pohybu užívateľa.
 		\end{itemize}
 	\item \textbf{Automatické ovládanie} Ovládanie pomocou
 		\begin{itemize}
-			\item \textbf{algoritmov} použitie algoritmov pre nájdenie najlepšej trasy,
-			\item \textbf{hlasu} použitie umelej inteligencie na pretvorenie hlasu na text,
-			\item \textbf{gestami} použitie počítačového videnia na detekciu pohybu užívateľa.
+			\item \textbf{algoritmov} použitie algoritmov pre~nájdenie najlepšej trasy,
 		\end{itemize}
 \end{itemize}
 
@@ -42,6 +43,6 @@ Pri~používaní ovládača nastáva jeden problém a~to~je, že~pri~hocijakom p
 rýchlosti robota. To~spôsobuje zahltenie odosielacej rady. To~má za~dôsledok zlyhanie odometrie. Môže sa stať,
 že~odometria nezlyhá a~začne posielať príkazy robotu. Keďže je vstavané oneskorenie do~posielania správ robota,
 tak~na~poslanie každej správy z~odometrie potrebujeme 100 milisekúnd. Ak~pridáme do~toho ešte neustále posielanie správ
-z~joysitcku, tak sa môže stať, že~robot začne sekať. Ako vieme tento problém vyriešiť je zväčšiť interval posielania
-správ odometrie. To~bude mať za~dôsledok nepresnejšie určenie polohy.
+z~joysitcku, tak~sa môže stať, že~robot začne sekať. Ako vieme tento problém vyriešiť je filtrovaním opakovaných správ
+ovládača.
 
