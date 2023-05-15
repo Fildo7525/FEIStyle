@@ -11,32 +11,31 @@
 	\label{fig:flowchart}
 \end{figure}
 
-\subsection{Úvod do~čítania grafu}
-\label{sec:citanie_grafu}
-
-Na~obrázku Obr.~\ref{fig:flowchart} môžeme vidieť viacero objektov rôznych farieb. Objekty zobrazené
-červenou farbou sú~uzly spracovávané a~vytvárané v~rámci ROS2. Každý tento objekt sa vykonáva
-v~osobitnom procese. Objekty zobrazené oranžovou farbou sú~objekty, ktoré majú svoje
-vlastné vlákno.
-Tieto objekty boli vytvorené uzlom BlackMetal. Dátové štruktúry Queue, zobrazené bielou farbou
-sú~vytvorené tak, aby zabezpečovali bezchybnú komunikáciu a~synchronizáciu medzi viacerými
-vláknami. Objekt so~zelenou farbou je vstup do~programu. Je zadávaný užívateľom a~reprezentuje
-žiadanú rýchlosť robota. Modrý objekt je výstupom programu. Je to~téma, na~ktorú sa publikuje
-aktuálna pozícia robota. Robot samotný je zobrazený bielou farbou vo~forme malého obláčika.
-Prerušované čiary na~diagrame znázorňujú sieťovú komunikáciu ovládača a~robota. Červené dvojité
-čiary udávajú, ktoré objekty patria ROS-u. Nakoniec čierne plné čiary reprezentujú tok dát medzi
-objektmi.
+Cieľom kapitoly je navrhnúť a~implementoval ovládač v~prostredí ROS2, ktorý komunikuje s~robotom
+cez~protokol TCP/IP. Na~obrázku Obr.~\ref{fig:flowchart} môžeme vidieť viacero objektov rôznych
+farieb. Objekty zobrazené červenou farbou sú~uzly spracovávané a~vytvárané v~rámci ROS2. Každý
+tento objekt sa vykonáva v~osobitnom procese. Objekty zobrazené oranžovou farbou sú~objekty, ktoré
+majú svoje vlastné vlákno. Tieto objekty boli vytvorené uzlom BlackMetal. Dátové štruktúry Queue,
+zobrazené bielou farbou sú~vytvorené tak, aby zabezpečovali bezchybnú komunikáciu a~synchronizáciu
+medzi viacerými vláknami. Objekt so~zelenou farbou je vstup do~programu. Je zadávaný užívateľom
+a~reprezentuje žiadanú rýchlosť robota. Modrý objekt je výstupom programu. Je to~téma, na~ktorú
+sa publikuje aktuálna pozícia robota. Robot samotný je zobrazený bielou farbou vo~forme malého
+obláčika. Prerušované čiary na~diagrame znázorňujú sieťovú komunikáciu ovládača a~robota. Červené
+dvojité čiary udávajú, ktoré objekty patria ROS-u. Nakoniec čierne plné čiary reprezentujú tok dát
+medzi objektmi.
 
 \subsection{Uzly}
 \label{subsec:nodes}
 
 Na~obrázku Obr.~\ref{fig:flowchart} môžeme vidieť postup vykonávania programu na~ovládanie
-robota BlackMetal pomocou ROS2. Na~začiatku programu sa vytvoria 3 uzly. Prvý uzol
-\textbf{Position Publisher} je uzol, na~ktorý sa publikuje vypočítaná pozícia robota.
-Tento uzol existuje v~programe len na~overenie publikovaných informácii a~ich následné uchovávanie.
-Pozícia sa počíta sa na~základe obdržaných dát z~enkóderov robota. Uzol \textbf{Logger} slúži na~zaznamenávanie
-stavu robota~\ref{sec:logovanie}. Posledný uzol \textbf{BlackMetal} ovláda robota podľa
-zadaných dát užívateľom.
+robota BlackMetal pomocou ROS2. Na~začiatku programu sa vytvoria 3 uzly.
+
+\begin{itemize}
+	\item \textbf{Position Publisher} -- uzol, na~ktorý sa publikuje vypočítaná pozícia robota.
+		Tento uzol existuje v~programe len na~overenie publikovaných informácii a~ich následné uchovávanie,
+	\item \textbf{Logger} -- uzol slúžiaci na~zaznamenávanie stavu robota~\ref{sec:logovanie},
+	\item \textbf{BlackMetal} --  uzol ovládajúci robot podľa zadaných dát užívateľom.
+\end{itemize}
 
 \subsection{Vstup}
 \label{subsec:input}
@@ -86,30 +85,29 @@ sa správa spracuje a~uloží sa do~ďalšej rady.
 \subsection{Odometria}
 \label{sec:odometria}
 
-Odometria, počítanie polohy na~základe rýchlosti kolies, sa vykonáva rovnako ako komunikácia
+Odometria, počítanie polohy na~základe rýchlostí kolies, sa vykonáva rovnako ako komunikácia
 s~robotom, v~separátnom vlákne. Tu je potreba si uvedomiť jednu skutočnosť. To~je tá, že~keď
 posielame žiadosť na~nastavenie rýchlostí kolies robota, tak~robot si hodnoty v~žiadosti prepočíta.
 Prepočítané dáta následne poskytne enkóderom. Keď si ale~tieto rýchlosti vyžiadame z~enkóderov,
-tak~sa robot týchto dát nechytá a~my si ich musíme prepočíta na~metre za~sekundu. Aby sme dostali
-rýchlosti kolies od~robota, tak~si ich musíme od~neho vypýtať. Ako sme už~spomenuli v~\ref{sec:robotComms},
+tak~sa robot týchto dát nechytá a~my si ich musíme prepočítať na~metre za~sekundu. Aby sme dostali
+rýchlosti kolies od~robota, tak~si ich musíme od~neho vypýtať. Ako sme už~spomenuli v~kapitole~\ref{sec:robotComms},
 tieto správy majú nižšiu prioritu ako nastavenie rýchlosti kolies alebo bezpečnostné zastavenie
 robota. Preto~sa môže stať, že~správy posielané robotu nebudú dodržiavať presne stanovenú frekvenciu
-v~čase keď mu bude užívateľ posielať príkazy. Toto nám až tak~neprekáža. My sa síce pýtame od~robota
-jeho rýchlosť každých 100 milisekúnd, ale~v~odometrii si zisťujeme aktuálny čas a~zmenu času od~poslednej
-odpovede.
+v~čase keď mu bude užívateľ posielať príkazy. Toto nám až tak~neprekáža, lebo server na~robote sme upravili, tak aby tieto
+spravy prijímal neustále (kapitola~\ref{subsec:communicationDelay}).
 
-Po~obdržaní rýchlosti robota v~impulzoch za~sekundu si tieto dáta kvôli zašumeniu preženieme cez~filter
+Po~obdržaní rýchlostí robota v~impulzoch za~sekundu si tieto dáta kvôli zašumeniu preženieme cez~filter
 a~následne ich spracujeme. Spracovanie prebieha nasledovne:
 
-\begin{itemize}
+\begin{enumerate}
 	\item Prepočítanie rýchlostí kolies robota z~impulzov za~sekundu na~metre za~sekundu,
 	\item Prepočítanie lineárnej a~uhlovej rýchlosti robota na~jeho ťažisko,
 	\item Zistenie aktuálnej zmeny času oproti predchádzajúcemu meraniu,
 	\item Zapísanie aktuálneho času, lineárnej a~uhlovej rýchlosti do~spravy,
 	\item Prepočítanie aktuálnej polohy z~nameraných rýchlostí.
-\end{itemize}
+\end{enumerate}
 
-Pre~cely počítania odometrie sme si odmerali polomer kolies a~vzdialenosť stredov týchto kolies.
+Za~cieľom počítania odometrie sme si odmerali polomer kolies a~vzdialenosť stredov týchto kolies.
 \textit{Polomer kolies} (\textbf{R}) sme určili na~\textbf{0,08m}. \textit{Polomer stredov kolies}
 \textbf{L} robota sme určili na~\textbf{0,56m}. Z~dokumentácie robota \cite{encoder} sme si zistili
 \textit{rozsah enkóderov} (\textbf{E}) (\textbf{1024} impulzov na~otočku)  Tieto údaje sme použili
