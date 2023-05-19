@@ -1,5 +1,4 @@
 % !TEX root = ../main.tex
-
 \section{Experimenty}
 \label{sec:experimenty}
 
@@ -133,7 +132,7 @@ pri~ktorom sme použili hodnotu koeficientu $\alpha$ rovnú 0,75.
 	\label{fig:rw_lw_075250}
 \end{figure}
 
-Obr.~\ref{fig:rw_lw_075250} zobrazuje graf výsledkov nameraných pri~aplikácii filtra s~koeficientom alpha $\alpha$ o~veľkosti
+Obrázok~\ref{fig:rw_lw_075250} zobrazuje graf výsledkov nameraných pri~aplikácii filtra s~koeficientom alpha $\alpha$ o~veľkosti
 0,75. V~tomto prípade sa priemerné hodnoty na~rozdiel od~filtrov s~koeficientami alpha 0,9 a~0,7 dostali takmer priamo na~úsečku
 lineárnej regresie prevodu z~impulzov za~sekundu na~metre za~sekundu. Pričom sklon aproximácie sa zmenil pre~ľavý
 enkóder na~hodnotu \textbf{1145,83} a~pre~pravý enkóder je hodnota sklonu aproximácie \textbf{1060,25}. Použitie silnejšieho filtra
@@ -151,7 +150,7 @@ síce pomohlo rýchlejšiemu ustáleniu hodnoty, ale~pre~istotu sme~skúsili eš
 	\label{fig:rw_lw_08250}
 \end{figure}
 
-Ako môžeme vidieť na~Obr.~\ref{fig:rw_lw_08250} ustálenie hodnôt je veľmi jednoznačné. Vybrali sme si preto~filter s~hodnotou
+Ako môžeme vidieť na~obrázku~\ref{fig:rw_lw_08250} ustálenie hodnôt je veľmi jednoznačné. Vybrali sme si preto~filter s~hodnotou
 koeficientu alpha $\alpha$ rovnou 0,8. Zatiaľ všetky dáta čo sme merali boli s~frekvenciou 4Hz (1 vzorka za~250 milisekúnd).
 Pre~presnejší výsledok sme túto frekvenciu ešte zvýšili. Z~testov robota sme vypozorovali, že~najfrekventovanejšia frekvencia,
 ktorú môže robot sprostredkovať je 10Hz (1 vzorka za~100 milisekúnd). Spravili sme si preto~test na~prevod rýchlosti ešte raz
@@ -171,7 +170,7 @@ s~rovnakou hodnotou koeficientu alpha $\alpha$ rovnou 0,8, ale~s~frekvenciou 10H
 	\label{fig:rw_lw_08100}
 \end{figure}
 
-Výsledok spomínaného merania vidíme na~obrázku Obr.~\ref{fig:rw_lw_08100}. Nie všetky získane hodnoty impulzov
+Výsledok spomínaného merania vidíme na~obrázku~\ref{fig:rw_lw_08100}. Nie všetky získane hodnoty impulzov
 z~robota sa nachádzajú pri~úsečke lineárnej aproximácie. Aj~napriek tomuto faktu sa väčšina priemerov získaných
 dát nachádza na~tejto úsečke. Hodnota sklonu lineárnej aproximácie pre~pravý enkóder je \textbf{1028,81} a~pre~pravý
 enkóder má aproximácia hodnotu \textbf{1070,02}. Disperzia získaných dát je chyba, ktorú odstránime ako ďalšiu.
@@ -186,7 +185,7 @@ ukázalo ako najlepšie so~skúšaných riešení.
 Toto riešenie má ale~jeden problém. Ak~prvá prijatá hodnota po~zmene rýchlosti nie je v~blízkom okolí žiadanej
 hodnoty, tak~pôsobením filtra bude trvať dlho pokým sa hodnoty vyprodukované filtrom dostanú na~správnu hodnotu.
 Tento problém vieme vyriešiť predpočítavaním hodnôt za~pomoci vypočítaných lineárnych aproximácii. Problém so~zlou
-počiatočnou hodnotou môžeme vidieť aj~na~posledom grafe Obr.~\ref{fig:rw_lw_08100}. Tento problém sme vyriešili
+počiatočnou hodnotou môžeme vidieť aj~na~posledom grafe~\ref{fig:rw_lw_08100}. Tento problém sme vyriešili
 predpočítavaním prvej hodnoty filtra po~zmene rýchlosti. Keďže sme už~mali koeficienty lineárnej regresie, tak~sme
 ich využili na~predpočítanie počiatočnej hodnoty.
 
@@ -233,7 +232,7 @@ rovným 0,8. Tretí graf reprezentuje dráhu prejdenú so~slabším filtrom s ho
 \end{figure}
 
 Ako prvý pokus sme vypli filtrovanie prichádzajúcich dát. To~malo za~dôsledok, že~všetky skoky, ktoré môžeme vidieť
-napríklad na~obrázku Obr.~\ref{fig:rw_lw_nf} sa ukázali na~grafe. Obrázok Obr.~\ref{fig:stvorecBezFiltra} reprezentuje
+napríklad na~obrázku~\ref{fig:rw_lw_nf} sa ukázali na~grafe. Obrázok~\ref{fig:stvorecBezFiltra} reprezentuje
 dráhu, ktorú robot prešiel bez aplikácie filtra. Na~grafe môžeme vidieť zašumenie nazbieraných dát z~robota. To~sa
 zobrazuje najmä v~častiach, keď má robot isť rovno. V~prípade, že~filter nepožívame, tak~rovné čiary sa premenia
 na~krivky. To~spôsobuje nepresné uvedenie aktuálnej polohy. Tieto nepresnosti sa prejavujú aj~pri~otáčaní robota.
@@ -242,7 +241,7 @@ reprezentuje iným uhlom, poprípade aj~posunutím.
 
 Aby sme videli ako ovplyvňuje filter s~nami navrhnutými parametrami tak~sme spravili ďalšie meranie s~filtrom
 s~najlepšími hodnotami. Druhý pokus sme zvolili najlepšiu hodnotu filtra s~koeficientom $\alpha$ rovným 0.8.
-Obrázok Obr.~\ref{fig:stvorecSFiltrom} reprezentuje dráhu, ktorú robot prešiel, keď sme na~prichádzajúce dáta
+Obrázok~\ref{fig:stvorecSFiltrom} reprezentuje dráhu, ktorú robot prešiel, keď sme na~prichádzajúce dáta
 aplikovali tento filter.
 
 \begin{figure}[!htbp]
@@ -288,8 +287,8 @@ zobrazuje súradnicu na~osi Y. Obe hodnoty boli merané v~metroch. Odmerané hod
 \clearpage
 
 Tretie a~posledné meranie, ktoré sme spravili bolo meranie so~slabším filtrom ako sme sa rozhodli použiť. Obsahovalo
-koeficient $\alpha$ s~hodnotou 0.7. Pri~takejto konfigurácii filtra sme dostali graf zobrazený na~obrázku
-Obr.~\ref{fig:stvorecSoSlabsimFiltrom}. Toto zhoršenie spôsobilo slabšie filtrovanie prichádzajúcich dát a~tým pádom aj
+koeficient $\alpha$ s~hodnotou 0.7. Pri~takejto konfigurácii filtra sme dostali graf zobrazený
+na~obrázku~\ref{fig:stvorecSoSlabsimFiltrom}. Toto zhoršenie spôsobilo slabšie filtrovanie prichádzajúcich dát a~tým pádom aj
 zhoršenie presnosti určovania polohy robota.
 
 \begin{figure}[!htbp]
