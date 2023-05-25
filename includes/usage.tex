@@ -3,14 +3,15 @@
 \section{Využitie}
 \label{sec:vyuzitie}
 
-Robot, ktorý sme dostali na~tento projekt bol povodne ovládateľný len pomocou JSON reťazcov. My sme na~ňom museli spraviť
-par zmien aby sme vedeli počítať odometriu a~tým pádom mali spätnú väzbu. Pri~odometrii sme čelili pár prekážkam, ktoré
-sa nám podarilo z~časti odstrániť. Skončili sme s~ovládačom nenaprogramovaným v~jazyku C++ v~prostredí ROS2.
+Robot, ktorý sme dostali na~tento projekt bol pôvodne ovládateľný len pomocou JSON reťazcov. My sme na~ňom museli
+vykonať pár zmien, aby sme vedeli počítať odometriu a~obdržali sme mali spätnú väzbu. Pri~odometrii sme čelili pár
+prekážkam, ktoré sa nám podarilo z~časti odstrániť. Skončili sme s~ovládačom nenaprogramovaným v~jazyku C++
+v~prostredí ROS2.
 
-Ďalšou otázkou môže byť ako sa tento ovládač môže využiť? Odpoveď na~túto otázku nie je jedna ale~rovno viacero.
+Ďalšou otázkou môže byť ako sa tento ovládač môže využiť? Odpoveď na~túto otázku nie je jedna, ale~rovno viacero.
 Prostredie ROS2 nám otvára mnoho ďalších možností ako posielať príkazy na~robot. Balíky naprogramované v~prostredí ROS
 posielaniu dáta na~tému \textit{/cmd\_vel}. Ich implementácia je už~dokončená a~my môžeme tieto kódy len jednoducho pripojiť
-k~programu v spúšťacom súbore. Možnosťami sú~napríklad:
+k~programu v~spúšťacom súbore. Možnosťami sú~napríklad:
 
 \begin{itemize}
 	\item \textbf{Manuálne ovládanie} Ovládanie pomocou
@@ -35,14 +36,11 @@ spomenuté vyššie (Kapitola~\ref{sec:vyuzitie}) joystick je možné použiť s
 sprostredkuje využitie hardware-u ovládača. Pohyby vykonané na~ovládači sa transformujú do~typu správy
 \textit{geometry\_msgs/Twist} a~publikujú sa priamo na~tému \textit{cmd\_vel}. Táto téma je priamo pripojená
 na~náš uzol \textit{BlackMetal} (Kapitola~\ref{subsec:nodes}). Prijatú správu nami vytvorený ovládač spracuje a~pošle
-ju robotu. Ovládač je možné spustiť s~viacerými tipmi ovládačov sú~to~\textit{atk3}, \textit{ps3-holonomic},
+ju robotu. Ovládač je možné spustiť s~viacerými typmi ovládačov sú~to~\textit{atk3}, \textit{ps3-holonomic},
 \textit{ps3}, \textit{xbox}, \textit{xd3} \cite{teleopjoy}. Po~pripojení ovládača k~nášmu programu a~prepojení
 programu s~robotom sme mohli začať s~jeho ovládaním.
 
 Pri~používaní ovládača nastáva jeden problém a~to~je, že~pri~hocijakom pohybe joysitcku sa pošle požiadavka na~zmenu
-rýchlosti robota. To~spôsobuje zahltenie odosielacej rady. To~má za~dôsledok zlyhanie odometrie. Môže sa stať,
-že~odometria nezlyhá a~začne posielať príkazy robotu. Keďže je vstavané oneskorenie do~posielania správ robota,
-tak~na~poslanie každej správy z~odometrie potrebujeme 100 milisekúnd. Ak~pridáme do~toho ešte neustále posielanie správ
-z~joysitcku, tak~sa môže stať, že~robot začne sekať. Ako vieme tento problém vyriešiť je filtrovaním opakovaných správ
-ovládača.
-
+rýchlosti robota. To~spôsobuje zahltenie odosielacej rady. To~má za~dôsledok zlyhanie rady odometrie. Aby sme tomuto
+problému predišli, spravili sme filter prichádzajúcich správ. Keďže vieme, že~robot čaká 10 sekúnd a~následne
+pri~žiadnej sprostredkovanej komunikácii zastaví, tak~sme nastavili limit na~posielanie rovnakých požiadaviek na~9 sekúnd.

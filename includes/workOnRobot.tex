@@ -2,7 +2,7 @@
 
 \section{Zlepšenie stavu robota}
 
-\subsection{Chyba v~systéme}
+\subsection{Chyba v systéme}
 \label{subsec:brokenSystem}
 
 Prvýkrát, keď sme prišli k~robotu do~NCR (\acrlong{NCR}), tak~sme si určili ako prvú úlohu zálohovať systém. Ak~by sa teda stala nejaká chyba
@@ -27,7 +27,7 @@ Tento príkaz najprv odstráni všetky balíčky, ktoré nie sú~používané ž
 ktoré taktiež nie sú~používané žiadnym balíčkom a~nasilu odinštaluje. Po~vykonaní tejto operácie sme ešte museli odstrániť všetky referencie
 na~ROS1 v~systéme. Toto sme vykonali odstránením prepojení na~už~neaktívne repozitáre, ktoré sa nachádzali v~súbore \textit{/etc/apt/sources.list}.
 
-\subsection{Chyba v~dokumentácii}
+\subsection{Chyba v dokumentácii}
 \label{subsec:documentationIssue}
 
 V~kapitole~\ref{sec:ovladanie} sme uviedli pôvodný stav ovládania robota pomocou správ typu JSON.
@@ -47,7 +47,7 @@ Pri~blízkom pohľade na~kód robota sme odhalili závažnú chybu. Vo~vlákne, 
 cyklus, ktorý prijíma dáta z~TCP/IP spojenia a~bezpečne ich zapisuje do~zdielanej štruktúry. Prijímanie správ je realizované
 pomocou funkcie \textit{recv} z~knižnice \textit{sys/socket.h}. Táto funkcia je za~normálach podmienok blokujúca, to~znamená,
 že~vlákno, ktoré ju volá, sa zablokuje, až pokým nemá k~dispozícii dáta na~čítanie. Na~robote je toto blokovanie
-vypnutý s~tým že~po~každom zavolaní tejto funkcie sa čaká \textit{100 milisekúnd}. Tento problém je ľahko opraviteľný.
+vypnutý s~tým, že~po~každom zavolaní tejto funkcie sa čaká \textit{100 milisekúnd}. Tento problém je ľahko opraviteľný.
 Čo sme spravili bolo, že~sme odstránili funkciu \textit{usleep}, ktorá zabezpečovala čakanie. Vo~funkcii \textit{recv}
 sme ďalej vymazali makro \textit{MSG\_DONTWAIT}, ktoré spôsobuje, že~sa funkcia \textit{recv} nezablokovala.
 
@@ -66,7 +66,7 @@ v~dokumentácii funkciu, ktorá by mala túto možnosť povoľovať. Čo sa ale~
 0,5 metra za~sekundu.\\
 
 \noindent \textbf{Command:~\ref{c8}} \\
-\indent Príkaz na~zisťovanie polohy kolies nebol pôvodne naprogramovaný na~robote. Pridali sme ho za~cieľom presného
+\indent Príkaz na~zisťovanie polohy kolies nebol pôvodne naprogramovaný na~robote. Pridali sme ho s~cieľom presného
 dostavenia sa robota na~preddefinované miesto. Táto funkcionalita nefunguje správne rovnako ako v~predchádzajúcom príklade,
 keď si vypýtame polohu kolies od~robota, dáta ktoré obdržme sú, že~jedno koleso je priamo nastavené na~hodnotu, ktorú sme si
 vyžiadali a~to~druhé koleso vráti náhodnú hodnotu. Počas toho sa ale~kolesá robota stále točia.\\
@@ -80,7 +80,7 @@ Z~tohto dôvodu sme sa rozhodli využívať spätnú väzbu, ktorá obsahuje rý
 \subsection{Nesprávna spätná väzba}
 \label{subsec:wrongFeedback}
 
-Ako bolo spomenuté vyššie, pri~poslaní príkazu s~číslom~\ref{c6} nám robot vráti aktuálne rýchlosti kolies. Počas skúšania tejto funkcionality
+Ako bolo spomenuté vyššie, pri~poslaní príkazu s~číslom~\ref{c8} nám robot vráti aktuálne rýchlosti kolies. Počas skúšania tejto funkcionality
 sme narazili na~problém. Keď sme sa robota spýtali na~jeho rýchlosti. Dostali sme reťazec, ktorý obsahoval náhodne veľké čísla. Tieto čísla sa
 menili, keď sme zadávali nejaké hodnoty pre~rýchlosti kolies aby~sa robot hýbal. Ich magnitúda ale~ostávala nezmenená. V~nasledujúcom príklade
 môžeme vidieť ako tento reťazec vyzeral:
@@ -172,11 +172,11 @@ oboch motorov, tým, že~bol zabezpečený pohyb kolies vo~vzduchu s~vypodložen
 	\label{fig:lavePraveKoleso}
 \end{figure}
 
-Na~obrázku~\ref{fig:prechChar} vidíme zašmený signál rýchlostí, ktoré sme obdržali z~enkóderov. Predpokladá sa,
+Na~obrázku~\ref{fig:prechChar} vidíme zašumený signál rýchlostí, ktoré sme obdržali z~enkóderov. Predpokladá sa,
 že~toto zašumenie je spôsobené nesprávnym vedením káblov robota, prípadne nepostačujúcim izolovaním ich niektorých
 častí. Keď sa pozrieme na~obrázok~\ref{fig:robot}, tak~môžeme vidieť nesprávny manažment káblov. Túto teóriu
-potvrdzuje aj~fakt, že~spätná väzba rýchlosti, keď robot stojí neobsahuje rušenie a~je zaručene 0. Problémy zo~zašmeným
-signálom riešili aj~už~v~spomínanom tímovom projekte~\cite{timovyProjekt}. Im sa podarilo spraviť graf prechodovej
+potvrdzuje aj~fakt, že~spätná väzba rýchlosti, keď robot stojí neobsahuje rušenie a~je zaručene 0. Problémy zo~zašumeným
+signálom riešili už~v~spomínanom tímovom projekte~\cite{timovyProjekt}. Im sa podarilo spraviť graf prechodovej
 charakteristiky rýchlosti kolies zobrazený na~Obr.~\ref{fig:prechChar}.
 
 \begin{figure}[!htbp]

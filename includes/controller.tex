@@ -86,14 +86,14 @@ sa správa spracuje a~uloží sa do~ďalšej rady.
 \label{sec:odometria}
 
 Odometria, počítanie polohy na~základe rýchlostí kolies, sa vykonáva rovnako ako komunikácia
-s~robotom, v~separátnom vlákne. Tu je potreba si uvedomiť jednu skutočnosť. To~je tá, že~keď
+s~robotom, v~separátnom vlákne. Tu je potreba si uvedomiť jednu skutočnosť. A~to~je tá, že~keď
 posielame žiadosť na~nastavenie rýchlostí kolies robota, tak~robot si hodnoty v~žiadosti prepočíta.
 Prepočítané dáta následne poskytne enkóderom. Keď si ale~tieto rýchlosti vyžiadame z~enkóderov,
 tak~sa robot týchto dát nechytá a~my si ich musíme prepočítať na~metre za~sekundu. Aby sme dostali
 rýchlosti kolies od~robota, tak~si ich musíme od~neho vypýtať. Ako sme už~spomenuli v~kapitole~\ref{sec:robotComms},
 tieto správy majú nižšiu prioritu ako nastavenie rýchlosti kolies alebo bezpečnostné zastavenie
 robota. Preto~sa môže stať, že~správy posielané robotu nebudú dodržiavať presne stanovenú frekvenciu
-v~čase keď mu bude užívateľ posielať príkazy. Toto nám až tak~neprekáža, lebo server na~robote sme upravili, tak aby tieto
+v~čase, keď mu bude užívateľ posielať príkazy. Toto nám až tak~neprekáža, lebo server na~robote sme upravili, tak aby tieto
 spravy prijímal neustále (kapitola~\ref{subsec:communicationDelay}).
 
 Po~obdržaní rýchlostí robota v~impulzoch za~sekundu si tieto dáta kvôli zašumeniu preženieme cez~filter

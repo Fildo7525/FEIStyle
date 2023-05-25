@@ -11,7 +11,7 @@ na~mobilnom robote v~záložke \newline \texttt{\$(HOME)/Desktop/Blackmetal}~\ci
 
 Robot je v~tvare kvádra. Jeho šírka je 60cm a~je vyzdvihnutý nad zem o~1.5cm. Nachádza sa na~kolesách o~polomere 8cm.
 Jeho kostra sa skladá z~dvoch oceľových plátov, ktoré tvoria dno a~strechu robota. Steny robota sú~spravené z~hliníku.
-Konkrétne z~hliníkových tyčí, ktoré sú~pospájané plexisklovými plátmi. Jeho podobizeň vidíme na~nasledujúcom
+Konkrétne z~hliníkových tyčí, ktoré sú~pospájané plexisklovými plátmi. Jeho vyhotovenie vidíme na~nasledujúcom
 obrázku.
 
 \begin{figure}[!htbp]
@@ -22,10 +22,10 @@ obrázku.
 	\label{fig:robot}
 \end{figure}
 
-Na~obrázku ďalej vidíme olemovanie robota pásom s~LED-kami. Tie svietia nasledovným spôsobom. Keď sa robot nehýbe
+Na~obrázku vidíme olemovanie robota pásom s~LED-kami. Tie svietia nasledovným spôsobom. Keď sa robot nehýbe
 všetky LED-ky svietia na~zeleno. Keď sa robot pohne do~nejakej strany, LED-ky znázornia jeho pohyb tým, že~svietia
 na~modro na~strane, do~ktorej sa robot hýbe a~na~červeno na~všetkých ostatných stranách. Keď nastane situácia,
-kedy počítač ovládajúci motory prestane komunikovať s~Arduinom, ktoré sa stará o~detekciu stavov robota
+kedy počítač ovládajúci motory prestane komunikovať s~Arduinom, ktoré sa stará o~detekciu stavov robota,
 tak~LED-ky začnú blikať červeno-modrými farbami.
 
 \clearpage
@@ -55,7 +55,7 @@ podpornými všesmerovými kolesami. Motory robota sú~pripojené na~meniče. Ti
 		Redukcia prevodovky je 43:1. Jej účinnosť je 72\%~\cite{prevodovka}.
 \end{itemize}
 
-\noindent Ovládanie robota je zabezpečené externými počítačmi
+\noindent Ovládanie robota je zabezpečené externými počítačmi:
 \begin{itemize}
 	\item Control PC (Riadiaci klient) -- Klient posielajúci príkazy na~robot cez~TCP/IP protokol.
 	\item Logging PC (Logovací klient) -- Klient prijímajúci stav robota cez~TCP/IP protokol.
@@ -94,11 +94,11 @@ a~je taktiež otvorený len pre~jedného užívateľa.
 			{"state":1,"direction":1}
 	\end{lstlisting}
 
-	Hodnoty sa pri~stave (state) a~ani pri~smere (direction) nemenia. Sú~to~stále jednotky. Pokým robot nezastavíme
-	buď príkazom, alebo stlačením tlačidla vypnutia, alebo zablokovaním jedného z~kolies, tak~sa tieto správy budú
-	posielať. Ak~nejaká z~týchto udalostí nastane, server prestane posielať tieto správy.
+	Hodnoty sa pri~stave (state) a~ani pri~smere (direction) nemenia. Sú~to~stále jednotky. Tieto správy budú
+	posielať pokým robot nezastavíme príkazom, stlačením tlačidla vypnutia, alebo stlačením bezpečnostného
+	tlačidla. Ak~nejaká z~týchto udalostí nastane, server prestane posielať správy.
 
-	Môžeme potom začať polemizovať o~tom či~by nebolo lepšie už~tieto správy využiť na~to~čo reálne
+	Potom môžeme začať polemizovať o~tom, či~by nebolo lepšie už~tieto správy využiť na~to, čo reálne
 	spomenutý \textit{JSON} reťazec ukazuje. A~to~udávať smer a~stav robota. Momentálne tieto správy slúžia len na~to,
 	aby sme vedeli, že~tento robot je aktívny a~vie primať a~spracúvať informácie.
 
@@ -119,8 +119,8 @@ a~je taktiež otvorený len pre~jedného užívateľa.
 			\begin{itemize}
 				\item Znázorňuje ID užívateľa, ktorý je pripojený na~robot. Predvolená hodnota je 1.
 				\item Táto možnosť je v~momentálnom stave robota nevyužitá. Počet zariadení, ktoré sa môžu pripojiť na~port,
-			   cez~ktorý sa dá robot ovládať je 1. Je to~ale~dobrá možnosť na~rozšírenie kódu. Keď sa budú môcť pripojiť
-			   viacerí užívatelia, tak~sa bude musieť vyriešiť, koho príkaz bude mať akú prioritu.
+				cez~ktorý sa dá robot ovládať je 1. Je to~ale~dobrá možnosť na~rozšírenie kódu. V~prípade, že~sa budú môcť pripojiť
+				viacerí užívatelia, tak~sa bude musieť vyriešiť, koho príkaz bude mať akú prioritu.
 			\end{itemize}
 
 		\item \textbf{Command}
@@ -150,9 +150,8 @@ a~je taktiež otvorený len pre~jedného užívateľa.
 			pre~príkaz \ref{c3}.
 	\end{itemize}
 
-	Spracovanie týchto správ je spravená v~samostatnom vlákne. Toto vlákno je vytvorené pomocou metódy \textbf{polling}.
+	Spracovanie týchto správ je spravené v~samostatnom vlákne. Toto vlákno je vytvorené pomocou metódy \textbf{polling}.
 	Neustále dookola sa volá funkcia \textit{read} (čítaj). Táto funkcia je nastavená tak, aby nezablokovala vlastné vlákno.
-	Keď sa funkcia read vykonala, nezáleží na~tom či~skončila úspešne alebo nie, uspí sa vlákno prijímania správ na~100 milisekúnd.
 
 	Študenti, ktorí navrhovali systém posielania požiadavok (request) a~odpovedí (response) robili tieto správy
 	ručne. Preto~nastávajú situácie, kedy robot pošle správu, ktorá nezodpovedá štandardu písania textu v~JSON
@@ -165,6 +164,5 @@ a~je taktiež otvorený len pre~jedného užívateľa.
 	Pri~každom zapnutí robota prechádza systém robota do~BIOS-u (\acrlong{BIOS}). V~tomto stave sa nedá s~robotom spraviť
 	nič. Musíme preto~napojiť monitor a~klávesnicu na~robot, prejsť cez~BIOS a~naštartovať operačný systém. Keď tento
 	postup nespravíme, tak~operačný systém na~robote nebude vedieť komunikovať s~Arduino doskou, ktorá ovláda robot.
-	Tento problém sme skúmali podrobnejšie a~zistili sme, že~tento problém je spôsobený samotným operačným systémom.
-	Je to~teda chyba, ktorú my nevieme opraviť.
-
+	Tento problém sme skúmali podrobnejšie a~zistili sme, že je spôsobený samotným operačným systémom. Je to~teda
+	chyba, ktorú my nevieme opraviť.

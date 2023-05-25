@@ -67,14 +67,14 @@ robotoch. Nad~operačným systémom Windows má niekoľko výhod.
 
 	\item \textbf{Stabilita} Linux má tendenciu byť stabilnejší ako Windows, pretože nie je závislý na~ovládačoch a~softvéri
 		od~tretích strán. Linux poskytuje jednotný prístup k~správe a~aktualizácii softvéru. Pri~vylepšovaní systému nie je
-		za~potreby reštartovať počítač alebo server čo má za~dôsledok zvýšenie spoľahlivosti zariadenia.
+		za~potreby reštartovať počítač alebo server, čo má za~dôsledok zvýšenie spoľahlivosti zariadenia.
 
 	\item \textbf{Flexibilita} Linux je veľmi flexibilný operačný systém, ktorý umožňuje programátorom prispôsobiť si svoje pracovné
 		prostredie a~používať programy, ktoré najlepšie vyhovujú ich potrebám. Linux dovoľuje upraviť samotné jadro
 		operačného systému a~vybrať si z~neho len tie časti, ktoré užívateľ potrebuje. Tie, ktoré nepotrebuje sa
 		v~systéme nenachádzajú. Týmto spôsobom sa zvyšuje rýchlosť systému a~zabezpečuje sa jeho bezpečnosť.
 
-	\item \textbf{Podpora a~komunita} Linux má veľkú a~aktívnu komunitu. Ta obsahuje ako aj~programatorov tak~aj
+	\item \textbf{Podpora a~komunita} Linux má veľkú a~aktívnu komunitu. Ta obsahuje ako aj~programatorov, tak~aj
 		menej technicky zdatných ľudí. Táto komunita poskytuje podporu a~rieši problémy. Vďaka tomu, že~Linux je
 		open source, mnoho ľudí prispieva k~jeho vylepšeniu a~vytvára nové programy, čo znamená, že~je vždy
 		niečo nové na~objavovanie.
@@ -150,7 +150,7 @@ objaviť v~automobiloch, mobilných robotoch, dronoch alebo manipulátoroch.
 Komunikácia v~ROSe je zabezpečená cez~IPC (\acrlong{IPC}), TCP/IP a~UDP/IP komunikáciou pomocou troch zakladacích metód:
 \textbf{témy} (Topics), \textbf{služby} (Services) a~\textbf{akcie} (Actions).
 Všetky tieto metódy slúžia na~posielanie správ na~synchronizáciu vykonávania programu a~komunikáciu jednotlivých častí programu.
-Na~to~aby sme ich vedeli správne využiť musíme poznať ich základnú implementáciu a~funkcionalitu. Správanie týchto metód je nasledovné.
+Na~to, aby sme ich vedeli správne využiť musíme poznať ich základnú implementáciu a~funkcionalitu. Správanie týchto metód je nasledovné.
 
 \subsubsection{Témy}
 \label{sec:topic}
@@ -303,12 +303,12 @@ verzie ROSu.
 
 Čo je určite dobrou správou pre~všetkých programátorov, ktorí robili v~prvej verzii a~sú~zvyknutí na~jej štandardy a~funkcionalitu. Tak~títo
 sa nemajú čoho obávať. Prechod z~ROS1 na~ROS2 je dosť priamočiary. Čo sa zmenilo je spôsob písania kódu, ale~koncepty ostali všetky rovnaké.
-V~tejto sekcii nebudeme písať konkrétne kódy, budeme len opisovať čo je podobné a~čo zasa rozdielne medzi verziami spomínaného systému. Keďže
-celý projekt bol písaný v~programovacom jazyku C++ tak~sa aj~tieto zmeny budu týkať hlavne jazyka C++.
+V~tejto sekcii nebudeme písať konkrétne kódy, budeme len opisovať, čo je podobné a~čo zasa rozdielne medzi verziami spomínaného systému. Keďže
+celý projekt bol písaný v~programovacom jazyku C++, tak~sa aj~tieto zmeny budu týkať hlavne jazyka C++.
 
 \subsubsection{Štandard jazyka}
 
-	Pokým ROS1 bola písaná v~štandarde C++03 tak~ROS2 je už~písaná v~novom štandarde. A~to~hlavne C++11, ale~používa aj~nejaké časti z~C++14
+	Pokým ROS1 bola písaná v~štandarde C++03, tak~ROS2 je už~písaná v~novom štandarde. A~to~hlavne C++11, ale~používa aj~nejaké časti z~C++14
 	a~C++17. To~zahŕňa inicializovanie templatov a~ich používanie. Tým, že~ROS2 je stále nová a~stále vyvíjajúca sa platforma, tak~môžeme očakávať aj~časti
 	kódu, ktoré budú podporovať najnovší C++ štandard a~to~štandard z~rokov 2020 a~2023.
 
@@ -411,13 +411,13 @@ V~tomto balíku sú~definované tri základné typy komponentov:
 		komponent ma len schopnosť čítania vlastnosti~\cite{roscontrol}.
 	\item \textbf{Akčný člen} Jednoduchý (1 DOF) robotický hardvér ako motor, chlopňa alebo podobný člen.
 		Akčný člen implementuje len jeden kĺb. Tento komponent má schopnosť čítať aj~zapisovať vlastnosti. Čítanie nie
-		je požadované ak~nie je uskutočniteľné (napríklad DC ovládač motora s~Arduino doskou). Tento akčný člen môže byť
-		tiež použitý s~viac stupňovými kĺbmi voľnosti robota ak~jeho hardvér umožňuje tento dizajn (napríklad
+		je požadované, ak~nie je uskutočniteľné (napríklad DC ovládač motora s~Arduino doskou). Tento akčný člen môže byť
+		tiež použitý s~viac stupňovými kĺbmi voľnosti robota, ak~jeho hardvér umožňuje tento dizajn (napríklad
 		CAN-komunikácia s~každým motorom nezávisle)~\cite{roscontrol}.
 \end{itemize}
 
 Aj~napriek všetkým týmto výhodám nemôžeme tento softvér použiť. Je to~kvôli tomu, že~na~robote sa systém ROS nenachádza
-a~nemá preto~pristúp k~jednotlivým častiam hardvéru. Ak~by tento systém na~robote bol implementovaný mohli by sme použiť
-funkciu \textbf{Delegátora zdrojov} na~čítanie a~zapisovanie dát do~jednotlivých komponentov. Mrime si preto~vytvoriť
+a~nemá preto~pristúp k~jednotlivým častiam hardvéru. Ak~by tento systém na~robote bol implementovaný, mohli by sme použiť
+funkciu \textbf{Delegátora zdrojov} na~čítanie a~zapisovanie dát do~jednotlivých komponentov. Mienime si preto~vytvoriť
 vlastný systém na~čítanie, spracovanie a~ovládanie robota.
 
