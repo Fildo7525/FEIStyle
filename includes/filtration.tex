@@ -44,8 +44,8 @@ poloha bola v~bode~(-0,3m,~0m). Čo~nám ale~vypočítala odometria je, že~sa r
 \subsection{Filtrovanie zašumeného signálu}
 
 Implementovali sme si preto~dolnopriepustný kvadratický filter. Fungovanie tohto filtra spočíva v~skombinovaní nového
-vstupného parametra $\delta$ a~starého parametra $\pi_{n-1}$ uloženého vo~filtri v~danom pomere. Tento pomer je daný
-parametrom \textbf{alpha} $\alpha$. Výsledok tohto výpočtu je aktuálna hodnota filtra $\pi_n$
+\textbf{vstupného parametra} $\delta$ a~\textbf{starého parametra} $\pi_{n-1}$ uloženého vo~filtri v~danom pomere. Tento pomer je daný
+parametrom \textbf{alpha} $\alpha$. Výsledok tohto výpočtu je \textbf{nová hodnota filtra} $\pi_n$
 
 \begin{equation}
 	\pi_n = \alpha * \pi_{n-1} + (1 - \alpha) * \delta
