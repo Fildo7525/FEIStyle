@@ -74,32 +74,33 @@
 
 % we should use ISO 690 & 690-2 http://www.fei.stuba.sk/sk/kniznica-fei/vzory-bibliografickych-odkazov-a-citovanie.html?page_id=1756
 % package for biblatex https://github.com/michal-h21/biblatex-iso690
+\usepackage{algorithmic}
+\usepackage{algorithm}
 \usepackage[backend=biber,style=iso-numeric,autolang=other,bibencoding=utf8,seconds=true]{biblatex}
-\usepackage[overload]{textcase}
-\usepackage{chngcntr}
-\usepackage{tocloft}
-\usepackage{rotating}
-\usepackage{anysize}
-\usepackage{xifthen}
-\usepackage{sectsty}
 \usepackage{amsmath}
+\usepackage{anysize}
+\usepackage{caption}
+\usepackage{changepage}
+\usepackage{chngcntr}
+\usepackage{enumitem}
+\usepackage[acronym,nopostdot,nogroupskip,nonumberlist]{glossaries}
+\usepackage[bookmarksopen,colorlinks,plainpages=false,urlcolor=blue,hypertexnames=false,unicode]{hyperref}
 \usepackage{ifmtarg}
-\usepackage{xstring}
-\usepackage[compact]{titlesec}
-\usepackage{xcolor}
 \usepackage{listings}
 \usepackage{lmodern}
-\usepackage{changepage}
+\usepackage{pdfpages}
+\usepackage{rotating}
 \usepackage{scrextend}
-\usepackage{xstring}
-\usepackage{url}
-\usepackage{enumitem}
-\usepackage{caption}
+\usepackage{sectsty}
 \usepackage{subcaption}
-\usepackage[bookmarksopen,colorlinks,plainpages=false,urlcolor=blue,hypertexnames=false,unicode]{hyperref}
-\usepackage{algorithm}
-\usepackage{algorithmic}
-\usepackage[acronym,nopostdot,nogroupskip,nonumberlist]{glossaries}
+\usepackage[overload]{textcase}
+\usepackage[compact]{titlesec}
+\usepackage{tocloft}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{xifthen}
+\usepackage{xstring}
+\usepackage{xstring}
 % \usepackage{showframe} % debugging overflows
 
 % Set the style of figure, table and equation numbering
@@ -465,13 +466,7 @@
 }
 
 \newcommand\FEIassignment[1]{
-	\pagestyle{empty}
-	\setlength{\voffset}{-2.5cm}
-	\begin{center}
-		\makebox[\textwidth]{\includegraphics[width=\paperwidth]{#1}}
-	\end{center}
-	\setlength{\hoffset}{0cm}
-	\setlength{\voffset}{0cm}
+	\includepdf[pages=-]{#1}
 }
 
 \newcommand\FEIabstract[1]{
